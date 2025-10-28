@@ -1,0 +1,87 @@
+{
+  "description": "Project-specific configuration overrides. Copy to project-overrides.json and customize.",
+  "projects": {
+    "frontend": {
+      "mainBranch": "main",
+      "documentationPath": "docs/git",
+      "type": "nodejs",
+      "commands": {
+        "build": "npm run build",
+        "test": "npm run test:ci",
+        "deploy": "npm run deploy:staging"
+      },
+      "branchPatterns": {
+        "feature": "feature/*",
+        "bugfix": "bugfix/*",
+        "hotfix": "hotfix/*"
+      },
+      "excludeFromAudit": false,
+      "autoUpdateBranches": true
+    },
+    "backend": {
+      "mainBranch": "main",
+      "documentationPath": "documentation/git",
+      "type": "nodejs",
+      "commands": {
+        "build": "npm run build",
+        "test": "npm run test && npm run test:integration",
+        "deploy": "docker-compose up -d"
+      },
+      "branchPatterns": {
+        "feature": "feature/*",
+        "fix": "fix/*",
+        "enhancement": "enhancement/*"
+      },
+      "excludeFromAudit": false,
+      "staleBranchDays": 45
+    },
+    "mobile-app": {
+      "mainBranch": "develop",
+      "documentationPath": "docs/development",
+      "type": "react-native",
+      "commands": {
+        "build": "npx react-native run-ios",
+        "test": "npm test",
+        "deploy": "fastlane deploy"
+      },
+      "branchPatterns": {
+        "feature": "feature/*",
+        "bugfix": "bugfix/*",
+        "release": "release/*"
+      },
+      "excludeFromAudit": false
+    },
+    "legacy-system": {
+      "mainBranch": "master",
+      "documentationPath": "docs",
+      "type": "custom",
+      "commands": {
+        "build": "./build.sh",
+        "test": "./run-tests.sh",
+        "deploy": "echo 'Manual deployment required'"
+      },
+      "excludeFromAudit": true,
+      "notes": "Legacy system - minimal maintenance mode"
+    }
+  },
+  "globalDefaults": {
+    "documentationPath": "docs/git",
+    "staleBranchDays": 30,
+    "autoUpdateBranches": false,
+    "createDocsStructure": true,
+    "branchCategories": [
+      "feature",
+      "enhancement",
+      "fix",
+      "bugfix",
+      "hotfix",
+      "security",
+      "performance",
+      "refactor",
+      "docs",
+      "test",
+      "chore",
+      "release"
+    ]
+  }
+}

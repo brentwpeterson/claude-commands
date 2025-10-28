@@ -1,0 +1,123 @@
+{
+  "description": "User-specific preferences for Claude Code commands. Copy to user-preferences.json and customize.",
+  "interface": {
+    "useEmojis": true,
+    "verboseOutput": false,
+    "colorOutput": true,
+    "confirmActions": true,
+    "showProgress": true,
+    "compactMode": false
+  },
+  "editor": {
+    "preferredEditor": "code",
+    "editorArguments": "--wait",
+    "openFilesInTabs": true,
+    "autoSaveBeforeCommit": true
+  },
+  "git": {
+    "defaultCommitMessageStyle": "conventional",
+    "signCommits": false,
+    "pushAfterCommit": false,
+    "autoFetchBeforeAudit": true,
+    "preserveMergeCommits": true,
+    "squashFeatureBranches": false
+  },
+  "notifications": {
+    "enabled": false,
+    "sound": false,
+    "desktop": false,
+    "onCompletion": true,
+    "onError": true,
+    "onConflict": true
+  },
+  "security": {
+    "autoScanEnabled": true,
+    "strictMode": false,
+    "warnOnSensitivePatterns": true,
+    "blockCommitsWithSecrets": false,
+    "customSensitivePatterns": [
+      "api_key",
+      "secret_key",
+      "password",
+      "token",
+      "credential"
+    ]
+  },
+  "workflow": {
+    "autoCreateBranches": false,
+    "autoUpdateTodos": true,
+    "linkBranchesToTodos": true,
+    "autoArchiveCompleted": true,
+    "preferredBranchPrefix": "feature/",
+    "requireDescriptionForBranches": false
+  },
+  "commands": {
+    "auditBranches": {
+      "autoUpdate": false,
+      "showAllBranches": true,
+      "includeRemoteBranches": true,
+      "maxBranchAge": 90,
+      "interactiveMode": true,
+      "cleanupContextFiles": true
+    },
+    "createBranch": {
+      "autoSwitchToBranch": true,
+      "autoCreateTodo": true,
+      "pushToRemote": true,
+      "setUpstream": true
+    },
+    "deployCommands": {
+      "confirmBeforeDeploy": true,
+      "runTestsFirst": true,
+      "backupBeforeDeploy": false
+    },
+    "securityScan": {
+      "strictMode": false,
+      "includeComments": false,
+      "scanBinaryFiles": false,
+      "customExclusions": [
+        "*.log",
+        "*.tmp",
+        "node_modules/**"
+      ]
+    }
+  },
+  "reporting": {
+    "generateMarkdownReports": true,
+    "includeMetrics": true,
+    "timestampFormat": "YYYY-MM-DD HH:mm:ss",
+    "reportDirectory": "reports",
+    "autoOpenReports": false
+  },
+  "integrations": {
+    "slack": {
+      "enabled": false,
+      "webhookUrl": "",
+      "channel": "#development",
+      "notifyOnDeployment": false,
+      "notifyOnBranchCleanup": false
+    },
+    "jira": {
+      "enabled": false,
+      "serverUrl": "",
+      "projectKey": "",
+      "autoLinkBranches": false,
+      "updateTicketStatus": false
+    },
+    "github": {
+      "enabled": false,
+      "autoCreatePRs": false,
+      "prTemplate": "",
+      "assignReviewers": false,
+      "defaultReviewers": []
+    }
+  },
+  "shortcuts": {
+    "quickCommit": "qc",
+    "quickPush": "qp",
+    "auditAndClean": "aac",
+    "createAndSwitch": "cas",
+    "deployStaging": "ds",
+    "deployProduction": "dp"
+  }
+}

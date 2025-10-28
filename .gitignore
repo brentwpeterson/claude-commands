@@ -1,0 +1,39 @@
+# Claude Code Template Repository - Exclude sensitive files
+
+# NEVER commit local settings - contains sensitive permissions and paths
+settings.local.json
+
+# Exclude any real context files that might contain sensitive info
+branch-context/*-context.md
+!branch-context/feature-example-implementation-context.md
+!branch-context/README.md
+
+# Exclude real security scans
+security-scans/*.md
+!security-scans/README.md
+
+# Exclude real violations
+violations/*.md
+!violations/README.md
+
+# Exclude archived directories entirely - may contain sensitive historical data
+archived-contexts/
+archived-commands/
+
+# Local workspace configuration - exclude actual config files but keep templates
+local/workspace.env
+local/project-overrides.json
+local/user-preferences.json
+local/*.local.*
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Temporary files
+*.tmp
+*.temp
+*~

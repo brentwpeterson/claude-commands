@@ -1,0 +1,34 @@
+# Claude Code Configuration - Gitignore Template
+# Copy this content to your project's main .gitignore file
+
+# Claude Code - NEVER commit these sensitive files
+.claude/settings.local.json
+.claude/branch-context/
+.claude/security-scans/
+.claude/violations/
+.claude/archived-contexts/
+
+# Optional: Exclude if they contain project-specific sensitive info
+# .claude/commands/
+# .claude/agents/
+
+# Always safe to commit (templates and documentation)
+# .claude/settings.template.json
+# .claude/README.md
+# .claude/commands/*.md
+# .claude/agents/*.md
+# .claude/archived-commands/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*~
