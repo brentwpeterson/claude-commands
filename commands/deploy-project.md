@@ -240,8 +240,10 @@ Deploy current project branch to production using tag-based deployment system
      - Examples: `global-terms`, `content-fix`, `auth-improvement`
    - Check if tag already exists: `git tag | grep [descriptive-tag]`
    - If tag exists, append timestamp: `[descriptive-tag]-$(date +%H%M)`
-   - `git tag [final-tag]`
-   - `git push origin [final-tag]` (triggers production deployment)
+   - **🚨 CRITICAL DEPLOYMENT STEPS - BOTH REQUIRED:**
+     1. **CREATE TAG:** `git tag [final-tag]`
+     2. **🚀 PUSH TAG:** `git push origin [final-tag]` **← DEPLOYMENT ONLY STARTS AFTER PUSH!**
+   - **⚠️ IMPORTANT:** Tag creation alone does NOT start deployment - you MUST push the tag!
    - Monitor GitHub Actions for deployment success
 
 7. **Deploy Documentation (if docs changed):**
