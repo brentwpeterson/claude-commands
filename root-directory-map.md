@@ -1,7 +1,7 @@
 # CB-Workspace Root Directory Map
 
 **Purpose**: Authoritative reference for CB-Workspace directory structure - prevents random file creation
-**Last Updated**: 2025-09-26
+**Last Updated**: 2025-11-01
 **Status**: Workspace Configuration - Multi-project management
 
 ## ✅ **APPROVED WORKSPACE STRUCTURE**
@@ -13,6 +13,7 @@
 │   ├── branch-context/              # Branch-specific context files
 │   ├── root-directory-map.md        # This file - workspace structure reference
 │   └── incorrect-instruction-log.md # Claude violation tracking
+├── .claude-cb-specific/             # CB-specific Claude configuration and documentation [TRACKED]
 ├── .git/                            # Git repository data (workspace-level) [GITIGNORED: automatically]
 ├── .idea/                           # JetBrains IDE settings (workspace-level) [GITIGNORED: entire directory]
 ├── .venv/                           # Python virtual environment (workspace-level) [GITIGNORED: entire directory]
@@ -78,6 +79,9 @@
 │   ├── cb-magento/                  # Magento integration documentation
 │   ├── cb-junogo/                   # JunoGO integration documentation
 │   └── README.md                    # Documentation overview
+├── jobs/                            # Automated maintenance and monitoring systems [TRACKED]
+│   ├── scripts/                     # Automated maintenance scripts
+│   └── README.md                    # Jobs documentation
 ├── .DS_Store                        # macOS system file [GITIGNORED: all .DS_Store files]
 ├── TODO/                            # Write-protected directory [WRITE-PROTECTED: root-owned]
 ├── .gitignore                       # Workspace git ignore patterns [TRACKED]
@@ -134,7 +138,8 @@
 ## 📁 **PROPER FILE LOCATIONS BY TYPE**
 
 ### Workspace-Level Files (Root)
-- **Claude configuration**: `.claude/` directory only
+- **Claude configuration**: `.claude/` directory for general configuration
+- **CB-specific Claude configuration**: `.claude-cb-specific/` directory for CB-specific documentation
 - **Workspace documentation**: `CLAUDE.md`, `README.md`, `AGENTS.md`, `documentation/`
 - **Cross-project testing**: `automated-testing/` directory
 - **Git configuration**: `.gitignore`, `.git/`
@@ -156,7 +161,7 @@
 ## 🎯 **WORKSPACE VS PROJECT RESPONSIBILITIES**
 
 ### Workspace Repository Manages:
-- ✅ Claude command definitions and configuration
+- ✅ Claude command definitions and configuration (general and CB-specific)
 - ✅ Cross-project coordination documentation
 - ✅ Comprehensive project documentation (documentation/ directory)
 - ✅ Workspace setup and onboarding instructions
@@ -181,10 +186,10 @@
 **Check workspace root compliance:**
 ```bash
 # Workspace root should only contain these items
-ls -la | grep -E "(\.claude|\.git|\.idea|\.venv|cb-|documentation|automated-testing|CLAUDE\.md|README\.md|AGENTS\.md|\.gitignore|\.DS_Store)"
+ls -la | grep -E "(\.claude|\.claude-cb-specific|\.git|\.idea|\.venv|cb-|documentation|automated-testing|CLAUDE\.md|README\.md|AGENTS\.md|\.gitignore|\.DS_Store)"
 
 # Find prohibited workspace items (should return empty)
-ls -la | grep -v -E "(\.claude|\.git|\.idea|\.venv|cb-|documentation|automated-testing|CLAUDE\.md|README\.md|AGENTS\.md|\.gitignore|\.DS_Store|total|drwx)"
+ls -la | grep -v -E "(\.claude|\.claude-cb-specific|\.git|\.idea|\.venv|cb-|documentation|automated-testing|CLAUDE\.md|README\.md|AGENTS\.md|\.gitignore|\.DS_Store|total|drwx)"
 ```
 
 **Check project isolation:**

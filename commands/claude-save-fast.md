@@ -1,51 +1,72 @@
-Claude Session Fast Save - Context Only Preservation
+Claude Fast Save - Ultra-Minimal Resume Instructions
 
-**USAGE:** `/claude-save-fast <project>` - Save conversation context quickly without git operations
+**USAGE:** `/claude-save-fast <project>` - Create bare minimum resume instructions in seconds
 
 **🎯 PURPOSE:**
-Save conversation context for session restart without analyzing/committing development work
+Ultra-fast context save using minimal resources - captures only essential resume info
 
-**📋 FAST SAVE WORKFLOW:**
+**⚡ ULTRA-MINIMAL WORKFLOW:**
 
-**Phase 1: Context Capture Only**
-1. **Get Current State:**
-   - Get current branch: `git branch --show-current`
-   - Get working directory: `pwd`
-   - Capture current TodoWrite items with their status
+**Step 1: Capture Essentials (No Analysis)**
+1. **Get bare minimum:**
+   - Current directory: `pwd`
+   - Current branch: `git branch --show-current`
+   - **MANDATORY: Current todo path** - Ask user if not obvious
+   - Current TodoWrite state (if any)
 
-2. **Save Branch Context:**
-   - Create/update: `.claude/branch-context/[branch-name]-context.md`
-   - Include: conversation summary, key decisions, immediate next steps
-   - Include: current TodoWrite status
-   - Include: session accomplishments summary
+**Step 2: Create Minimal Instructions**
+2. **Write tiny instruction file:**
+   - Create: `.claude/branch-context/[branch-name]-context.md`
+   - **Ultra-simple format:**
 
-3. **Update CLAUDE.md Header:**
-   - Insert at top of CLAUDE.md (project-specific):
-     - Current branch and working directory
-     - Session accomplishments (brief)
-     - Next priority action (single line)
-     - Status: ready for restart
+```markdown
+# Quick Resume
 
-**Phase 2: Minimal Commit**
-4. **Context-Only Commit:**
-   - Stage context files: `git add ../.claude/branch-context/`
-   - Stage CLAUDE.md: `git add CLAUDE.md`
-   - Commit with: "Save context for session restart - Fast save"
+## SETUP
+- `cd [working-directory]`
+- Branch: [branch-name]
 
-5. **Exit Signal:**
-   - Say "CONTEXT SAVED (Fast) - Ready for /clear new"
+## TODO
+**Path:** file:[exact-path-to-todo-readme]
 
-**⚡ FAST & LIGHTWEIGHT:**
-- **Skips**: Git status analysis, file analysis, development work commits
-- **Focuses**: Pure conversation context preservation
-- **Benefits**: Much lower context usage, quick execution
-- **Trade-off**: No automatic work preservation (manual git management needed)
+## TASK
+[One line: what you were doing]
+
+## TODOS
+[Current TodoWrite state]
+
+## NEXT
+[One action to continue]
+```
+
+**Step 3: Save and Show Path (NO COMMITS)**
+3. **Save file and display path:**
+   - Write context file directly (no git operations)
+   - **⚠️ CRITICAL**: If todo path doesn't exist, STOP and ask user to clarify
+   - Display: "📁 Fast resume: `.claude/branch-context/[branch-name]-context.md`"
+
+**🚀 ULTRA-FAST FEATURES:**
+- **Zero git operations** (no status, no commits, no analysis)
+- **Zero process checking** (no docker, no lsof)
+- **Minimal template** (4 sections, ~5 lines)
+- **No file analysis** (just capture current state)
+- **Instant execution** (seconds, not minutes)
+
+**⚡ SPEED OPTIMIZATIONS:**
+- No git status checking
+- No file modification analysis
+- No process verification
+- No work commits
+- No detailed context
+- Minimal instruction template
 
 **🔄 EXPECTED WORKFLOW:**
-1. `/claude-save-fast <project>`
-2. `/clear new`
-3. `/claude-start`
+1. `/claude-save-fast <project>` → Instant minimal save, shows path
+2. `/clear new` → Clear session
+3. `/claude-start <project>` → Resume from minimal instructions
 
-**📝 NOTE:**
-This saves conversation context but does NOT preserve uncommitted development work.
-Use regular `/claude-save` if you need comprehensive work + context preservation.
+**📝 WHEN TO USE:**
+- Context getting full and need quick save
+- Don't need work preservation
+- Want instant save with zero analysis
+- Minimal resume instructions sufficient

@@ -1,16 +1,16 @@
-Claude Session Save - Context + Work Preservation
+Claude Session Save - Create Resume Instructions + Preserve Work
 
-**USAGE:** `/claude-save <project>` - Save context AND commit development work for session restart
+**USAGE:** `/claude-save <project>` - Save work + create handoff instructions for next Claude session
 
 **🎯 PURPOSE:**
-Save conversation context + preserve all development work, then prepare for `/clear new` + `/claude-start` workflow
+Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where you left off
 
 **📋 COMPLETE SAVE WORKFLOW:**
 
 **Phase 1: Work Preservation**
 1. **Check Development Status:**
-   - Run `git status` to identify all modified/untracked files
-   - Analyze changes to understand what work has been completed
+   - Run `git status` to capture exact file states
+   - Analyze changes to understand what work was completed
    - Ensure no sensitive files (.env, keys, etc.) are included
 
 2. **Commit Development Work:**
@@ -19,42 +19,77 @@ Save conversation context + preserve all development work, then prepare for `/cl
    - Format: `git commit -m "[Description of work completed] 🤖 Generated with Claude Code"`
    - **IMPORTANT**: Commit actual development work FIRST before context
 
-**Phase 2: Context Capture**
-3. **Save Branch Context:**
+**Phase 2: Create Handoff Instructions**
+3. **Create Resume Instruction File:**
    - Get current branch: `git branch --show-current`
    - Get working directory: `pwd`
-   - Create/update: `.claude/branch-context/[branch-name]-context.md`
-   - Include: conversation summary, key decisions, immediate next steps
-   - **Capture current todos**: Include any active TodoWrite items with their status
+   - **MANDATORY: Get current todo path** - Ask user if not obvious
+   - Check running processes: `docker ps`, `lsof -i :3000`, etc.
+   - Create: `.claude/branch-context/[branch-name]-context.md`
+   - **Format as INSTRUCTIONS TO CLAUDE**, not status report:
 
-4. **Update CLAUDE.md Header:**
-   - Insert at top of CLAUDE.md (project-specific):
-     - Current branch and working directory
-     - Session accomplishments (brief)
-     - Next priority action (single line)
-     - Status: ready for restart
+```markdown
+# Resume Instructions for Claude
 
-**Phase 3: Context Commit**
-5. **Context Commit:**
-   - Stage context files: `git add ../.claude/` (workspace-level branch context)
-   - Stage CLAUDE.md: `git add CLAUDE.md` (project-level)
-   - Commit with: "Save context for session restart"
+## IMMEDIATE SETUP
+1. **Change directory:** `cd [exact-working-directory]`
+2. **Verify git status:** `git status` (expect: [list files])
+3. **Check processes:** `docker ps` (expect: [containers running])
+4. **Verify branch:** `git branch --show-current` (should be: [branch])
 
-6. **Exit Signal:**
-   - Say "WORK & CONTEXT SAVED - Ready for /clear new"
+## CURRENT TODO FILE
+**Path:** file:[exact-path-to-todo-readme]
+**Status:** [Working on step X of Y - specific current focus]
 
-**🔄 TWO-COMMIT STRATEGY:**
-1. **First commit**: Development work with descriptive message
-2. **Second commit**: Context files for session recovery
-3. **Result**: Clean git history + preserved context + no lost work
+## WHAT YOU WERE WORKING ON
+[Clear description of the task in progress]
 
-**⚡ COMPREHENSIVE BUT EFFICIENT:**
-- Preserves all development work (prevents data loss)
-- Saves conversation context for seamless restart
-- Two focused commits for clean git history
-- Ready for immediate `/clear new` + `/claude-start`
+## CURRENT STATE
+- **Last command executed:** [exact command]
+- **Files modified:** [list with status]
+- **Tests run:** [what was tested, results]
+- **Issues found:** [any blockers or problems]
+
+## TODO LIST STATE
+[Current TodoWrite items with exact status]
+- ✅ COMPLETED: [task]
+- 🔄 IN PROGRESS: [task]
+- ⏳ PENDING: [task]
+
+## NEXT ACTIONS (PRIORITY ORDER)
+1. **FIRST:** [exact command to run]
+2. **THEN:** [next command]
+3. **VERIFY:** [how to check it worked]
+
+## VERIFICATION COMMANDS
+- Check feature: [command]
+- Test endpoint: [curl/url]
+- View logs: [log command]
+
+## CONTEXT NOTES
+[Any important details, gotchas, or background]
+```
+
+4. **Update CLAUDE.md Header (Optional):**
+   - Add brief status to project CLAUDE.md if needed
+   - Keep minimal - main instructions are in context file
+
+**Phase 3: Context Commit + Display Path**
+5. **Commit Instructions:**
+   - Stage context files: `git add ../.claude/branch-context/`
+   - Commit with: "Save resume instructions for session restart"
+
+6. **END BY SHOWING CONTEXT FILE PATH:**
+   - **⚠️ CRITICAL**: If todo path doesn't exist, STOP and ask user to clarify
+   - Display: "📁 Resume instructions saved to: `.claude/branch-context/[branch-name]-context.md`"
+
+**🎯 KEY CHANGES:**
+- **Creates INSTRUCTION FILE** instead of status report
+- **Ends with context file path** for next session
+- **Includes everything needed** for immediate resume
+- **Ready for `/claude-start` to read and execute**
 
 **🔄 EXPECTED WORKFLOW:**
-1. `/claude-save <project>`
-2. `/clear new`
-3. `/claude-start`
+1. `/claude-save <project>` → Creates instruction file, shows path
+2. `/clear new` → Clear current session
+3. `/claude-start <project>` → Reads instruction file and resumes

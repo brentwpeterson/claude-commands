@@ -1,28 +1,27 @@
-Create new branch from feature document: $ARGUMENTS
+Create New Branch with Task Documentation - Automated Development Workflow
 
-**Usage**: `/create-branch <project> <feature-document-path>`
+**USAGE:** `/create-branch [feature-document-path]` - Create branch with proper documentation structure for any task type
 
-**Arguments**:
-- `<project>` (required): Project to create branch for - any Git repository in your workspace (discovered via `.claude/local/workspace.env` configuration)
-- `<feature-document-path>` (required): Path to document in project's /todo/ directory
+**Arguments:**
+- `[feature-document-path]` (required): Path to document in project's `/todo/` directory
 
-**Action:** Create branch, update task status, set up development
+**🎯 PURPOSE:**
+Create standardized development branch with automated documentation setup based on task category
 
-**Phase 1: Analyze Feature Document**
-1. **Read Feature Document:**
-   - Find and read the document at: `[project]/todo/$ARGUMENTS`
-   - Extract feature/task name, type, and requirements
-   - Determine appropriate branch category:
-     - **feature/** - New functionality, capabilities, or user-facing additions
-     - **fix/** - Bug fixes, issue resolution
-     - **hotfix/** - Urgent production fixes that can't wait
-     - **enhancement/** - Improvements to existing features
-     - **refactor/** - Code restructuring, cleanup, optimization
-     - **docs/** - Documentation updates only
-     - **test/** - Adding tests, test improvements
-     - **chore/** - Maintenance, dependencies, tooling
-     - **security/** - Security fixes, vulnerability patches
-     - **performance/** - Speed/efficiency improvements
+**📋 BRANCH CREATION WORKFLOW:**
+
+**Phase 1: Analyze Document and Determine Task Type**
+1. **Read Task Document:**
+   - Find and read the document at: `todo/[path-provided]`
+   - Extract task name, type, and requirements
+   - Determine appropriate branch category and documentation structure:
+
+   **Supported Task Categories:**
+   - **features/** - New functionality, capabilities, or user-facing additions
+   - **fixes/** - Bug fixes, issue resolution, error handling
+   - **infrastructure/** - Deployment, scaling, DevOps, system setup
+   - **refactor/** - Code restructuring, cleanup, optimization
+   - **debug/** - Debug sessions, investigation, troubleshooting
 
 2. **Generate Branch Name:**
    - Create clean branch name from document title/content
@@ -60,65 +59,105 @@ Create new branch from feature document: $ARGUMENTS
    - Push to remote: `git push -u origin [generated-branch-name]`
    - Confirm branch creation: `git branch --show-current` (should show new branch)
 
-**Phase 3: Task Management Setup**
-4. **Update Task Status:**
-   - Move document from `/TODO/backlog/` or `/TODO/` to `/TODO/current/[category]/`
-   - Create folder structure: `/TODO/current/[category]/[branch-name]/`
-   - Move task document into the new folder
-   - Update task status to "IN PROGRESS - Branch Created"
-   - Add branch name and start date to task document
+**Phase 3: Task Documentation Setup**
+4. **Create Task Folder Structure:**
+   - Create folder: `/todo/current/[category]/[branch-name]/`
+   - **COPY CORE README TEMPLATE:** Copy `/todo/README.md` into task folder
+   - **CUSTOMIZE README.md** with branch name and category-specific file catalog
 
-5. **Create Development Plan:**
-   - Analyze feature requirements from document
-   - **ADD BRANCH NAME TO README.md:**
-     - Add at the top of the README.md file:
-       ```markdown
-       **Branch:** [generated-branch-name]
-       **Status:** IN PROGRESS
-       **Created:** [current-date]
-       **Last Resumed:** [current-date]
-       ```
-   - **CREATE DEBUG LOG:**
-     - Create file: `[generated-branch-name]-debug.log` in task folder
-     - Initialize with template:
-       ```
-       ##############################################################################
-       # TEST ATTEMPT LOG
-       ##############################################################################
-       # 1. YYYY-MM-DD HH:MM - [Description of initial branch creation]
-       # 2. YYYY-MM-DD HH:MM - [Description of first modification/test attempt]
-       # 3. YYYY-MM-DD HH:MM - [Description of second modification/test attempt]
-       # [Add additional entries as testing progresses]
-       ##############################################################################
-       ```
-   - Create implementation checklist in task folder
-   - Add files like:
-     - `implementation-plan.md`
-     - `testing-checklist.md`
-     - `requirements.md` (copied from original doc)
+5. **Generate Category-Specific Documentation:**
 
-**Phase 4: Documentation Setup**
-6. **Prepare Documentation Structure:**
-   - If feature/enhancement: create placeholder in `/docs/` for user documentation
-   - Create placeholder in `/technical/` for technical documentation
-   - Add entry to changelog template (unreleased section)
+   **For FEATURES (5 files + technical diagram):**
+   - **README.md** - Task overview, branch, status (auto-populated)
+   - **requirements.md** - What needs to be built, success criteria
+   - **technical-diagram.md** - Architecture flow: frontend → datalayer → router → service → model → collection
+   - **implementation-plan.md** - Step-by-step build approach, phases
+   - **progress.log** - Chronological development progress
 
-**Phase 5: Development Environment**
-7. **Development Ready:**
-   - Confirm branch is active and tracking remote
-   - Show summary of:
-     - Branch created: [branch-name]
-     - Category: [category]
-     - Task moved to: `/TODO/current/[category]/[branch-name]/`
-     - Ready for development
+   **For INFRASTRUCTURE (5 files):**
+   - **README.md** - Task overview, branch, status (auto-populated)
+   - **requirements.md** - Infrastructure needs, system requirements
+   - **infrastructure-diagram.md** - System architecture, deployment flow
+   - **deployment-plan.md** - Deployment strategy, rollout phases
+   - **progress.log** - Chronological infrastructure progress
 
-**Usage Examples:**
-- `/project:create-branch backlog/user-authentication-system.md`
-- `/project:create-branch current/payment-bug-investigation.md`
-- `/project:create-branch ideas/dashboard-redesign.md`
+   **For REFACTOR (4 files):**
+   - **README.md** - Task overview, branch, status (auto-populated)
+   - **refactor-plan.md** - Code analysis, refactoring strategy
+   - **code-analysis.md** - Current state analysis, improvement targets
+   - **progress.log** - Chronological refactoring progress
 
-**Branch Naming Convention:**
+   **For DEBUG (4 files):**
+   - **README.md** - Task overview, branch, status (auto-populated)
+   - **debug-report.md** - Issue analysis, symptoms, investigation
+   - **investigation-plan.md** - Debug strategy, tools, approach
+   - **progress.log** - Chronological debug attempts and findings
+
+   **For FIXES (4 files):**
+   - Use `/create-bugfix` command instead - optimized for bug fix workflow
+
+**Phase 4: Final Setup and Verification**
+6. **Initialize progress.log:**
+   - Create `progress.log` with initial entry:
+```
+##############################################################################
+# [TASK-TYPE] PROGRESS LOG - [TASK-NAME]
+##############################################################################
+[current-timestamp] - Branch created: [category]/[branch-name]
+[current-timestamp] - Documentation structure set up
+[current-timestamp] - Ready to begin [category] work
+
+# Format for future entries:
+# [timestamp] - [Action taken] - [Result/Progress]
+##############################################################################
+```
+
+7. **Verification and Summary:**
+   - Confirm all required files created for task category
+   - Display task folder location: `/todo/current/[category]/[branch-name]/`
+   - Show branch name: `[category]/[branch-name]`
+   - List files created with their purposes
+   - Ready for development work
+
+**🎯 USAGE EXAMPLES:**
+```bash
+/create-branch backlog/user-authentication-system.md
+/create-branch current/payment-dashboard-redesign.md
+/create-branch ideas/api-rate-limiting.md
+```
+
+**📁 RESULT STRUCTURES BY CATEGORY:**
+
+**Features:**
+```
+/todo/current/features/[branch-name]/
+├── README.md                # Task overview with branch and status
+├── requirements.md          # What needs to be built
+├── technical-diagram.md     # Architecture: frontend → router → service → model
+├── implementation-plan.md   # Step-by-step build approach
+└── progress.log            # Development progress tracking
+```
+
+**Infrastructure:**
+```
+/todo/current/infrastructure/[branch-name]/
+├── README.md                # Task overview with branch and status
+├── requirements.md          # Infrastructure needs
+├── infrastructure-diagram.md # System architecture
+├── deployment-plan.md       # Deployment strategy
+└── progress.log            # Infrastructure progress
+```
+
+**✅ AUTOMATED ACTIONS:**
+1. Analyze task document and determine category
+2. Create standardized branch from clean master
+3. Copy and customize README.md template with category-specific file catalog
+4. Generate complete documentation structure for task type
+5. Initialize progress tracking
+6. Ready for immediate development work
+
+**🔄 BRANCH NAMING CONVENTION:**
 - Use kebab-case (hyphens, no spaces)
-- Keep descriptive but concise
-- Match the main feature/fix being addressed
-- Examples: `feature/oauth-integration`, `fix/mobile-layout`, `hotfix/security-patch`
+- Format: `[category]/[descriptive-name]`
+- Keep descriptive but concise (max 50 chars)
+- Examples: `features/oauth-integration`, `infrastructure/redis-setup`, `refactor/user-service`

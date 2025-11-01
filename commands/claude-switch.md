@@ -55,13 +55,13 @@ This command provides intelligent branch switching that:
    - Add findings to branch context if any exist
 
 3. **Save Current Branch Context**
-   - Use same logic as `/claude-close` Phase 2
-   - Create/update: `.claude/branch-context/[type]-[branch]-context.md`
+   - Use same logic as `/claude-save` command
+   - Create/update: `.claude/branch-context/[branch-name]-context.md`
    - Include:
-     - Current work status
+     - Current work status and todo directory path
      - Security findings
      - Any in-progress tasks from TodoWrite
-     - Recovery instructions
+     - Recovery instructions with exact file paths
 
 ### Phase 2: Branch Validation & Creation
 4. **Check Target Branch**
@@ -123,15 +123,16 @@ This command provides intelligent branch switching that:
 
 ### Phase 4: Post-Switch Setup
 7. **Load Target Branch Context**
-   - Check for `.claude/branch-context/[type]-[branch]-context.md`
+   - Check for `.claude/branch-context/[branch-name]-context.md`
    - If exists, display summary:
      ```
-     📂 BRANCH CONTEXT LOADED: feature/api-integration
-     
+     📂 BRANCH CONTEXT LOADED: features/api-integration
+
      Last worked: 2 days ago
      Status: In progress - implementing user endpoints
-     Security: ✅ Clean (last scan: 2025-09-02)
-     
+     Security: ✅ Clean (last scan: 2025-11-01)
+     Todo Directory: /todo/current/features/api-integration/
+
      Recent work:
      - Added user CRUD endpoints
      - Implemented authentication middleware
@@ -140,9 +141,9 @@ This command provides intelligent branch switching that:
 
 8. **Security Scan New Branch**
    ```
-   🔒 SECURITY SCAN: feature/api-integration
+   🔒 SECURITY SCAN: features/api-integration
    [████████████████████] 100% - Scanning for security issues
-   
+
    ✅ No critical issues
    ⚠️ 1 warning: Hardcoded localhost URL in config.py:45
    ```
@@ -162,20 +163,21 @@ This command provides intelligent branch switching that:
 ### Phase 5: Summary & Next Steps
 11. **Present Switch Summary**
     ```
-    ✅ SUCCESSFULLY SWITCHED TO: feature/api-integration
-    
+    ✅ SUCCESSFULLY SWITCHED TO: features/api-integration
+
     📊 Branch Status:
-    - Type: Feature branch
+    - Type: Features branch
     - Commits ahead of master: 3
     - Commits behind master: 0 (synced)
     - Last commit: 2 hours ago
-    
+
     🔒 Security Status: Clean
-    
+
     📋 Loaded Context:
+    - Todo Directory: /todo/current/features/api-integration/
     - Previous work: Implementing API integration
     - Next steps: Add error handling and retry logic
-    
+
     Ready to continue work on this branch!
     ```
 
@@ -195,17 +197,19 @@ If the working directory has changes:
 
 ### Creating New Feature Branch
 When creating a new branch:
-- Suggest conventional naming (feature/, fix/, refactor/)
+- Suggest conventional naming (features/, fixes/, infrastructure/, refactor/, debug/)
 - Ensure branch starts from latest master
 - Initialize branch context file
 - Set up initial TodoWrite tasks
+- Reference appropriate `/create-branch` or `/create-bugfix` for full documentation setup
 
 ## Integration with Other Commands
 
-- **Before `/claude-close`**: Use `/claude-switch` to change branches without full session close
+- **Before `/claude-save`**: Use `/claude-switch` to change branches without full session save
 - **After `/claude-start`**: Use if you realize you're on wrong branch
 - **With `/claude-complete`**: Complete current branch, then switch to next task
-- **With `/project:create-branch`**: Alternative for existing branches
+- **With `/create-branch`**: Alternative for existing branches
+- **With `/create-bugfix`**: Switch after creating bug fix branches
 
 ## Error Handling
 
