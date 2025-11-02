@@ -12,11 +12,19 @@ Ultra-fast context save using minimal resources - captures only essential resume
 
 **⚡ ULTRA-MINIMAL WORKFLOW:**
 
-**Step 1: Capture Essentials (No Analysis)**
+**Step 1: Capture Essentials + Todo Inventory**
 1. **Get bare minimum:**
    - Current directory: `pwd`
    - Current branch: `git branch --show-current`
    - **MANDATORY: Current todo path** - Ask user if not obvious
+   - **Todo inventory check**: Verify exactly 7 files exist:
+     ```bash
+     # Expected 7 files exactly:
+     # 1. README.md  2. [branch-name]-plan.md  3. progress.log
+     # 4. debug.log  5. notes.md  6. architecture-map.md  7. user-documentation.md
+     ```
+   - **File count validation**: `ls -1 [todo-path] | wc -l` should return 7
+   - **Structure status**: Report "✅ 7/7" or "⚠️ X/7 missing: [files]"
    - Current TodoWrite state (if any)
 
 **Step 2: Create Minimal Instructions**
@@ -33,6 +41,7 @@ Ultra-fast context save using minimal resources - captures only essential resume
 
 ## TODO
 **Path:** file:[exact-path-to-todo-readme]
+**Files:** [✅ 7/7 or ⚠️ X/7 missing: files]
 
 ## TASK
 [One line: what you were doing]
@@ -45,6 +54,14 @@ Ultra-fast context save using minimal resources - captures only essential resume
 
 ## COMPLETION STATUS
 **User Approval Required**: NEVER mark complete without user saying "done"
+
+### Completion Trigger Protocol
+**BEFORE marking any task complete:**
+1. **Check Acceptance Criteria**: Does todo have clear criteria?
+2. **If NO criteria**: Ask user for acceptance criteria first
+3. **If criteria exist**: Verify ALL points are met
+4. **Ask for approval**: "Ready to mark complete?"
+5. **Wait for confirmation**: User must explicitly approve
 
 ## NEXT
 [One action to continue]

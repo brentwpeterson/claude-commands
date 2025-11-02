@@ -25,16 +25,26 @@ Read the instruction file created by `/claude-save` or `/claude-save-fast` and f
 3. **Locate context file:** `.claude/branch-context/[branch-name]-context.md`
 4. **Read instruction file:** Load the complete handoff document
 5. **Parse instructions:** Extract setup steps, current state, todos, next actions
+6. **Todo directory inventory check:** Verify todo directory has exactly 7 files:
+   ```bash
+   # Expected 7 files exactly:
+   # 1. README.md  2. [branch-name]-plan.md  3. progress.log
+   # 4. debug.log  5. notes.md  6. architecture-map.md  7. user-documentation.md
+   ```
+   - **File count validation**: `ls -1 [todo-path] | wc -l` should return 7
+   - **Missing file alert**: Report any missing required files
+   - **Extra file warning**: Report any unexpected files
+   - **Structure status**: "✅ Complete (7/7 files)" or "⚠️ Incomplete (X/7 files, missing: [files])"
 
 **Step 3: Execute Setup Instructions**
-6. **Follow IMMEDIATE SETUP section:** Execute each command listed
-7. **Verify expected state:** Confirm git status, processes, etc. match expectations
-8. **Restore TodoWrite:** Set up todos exactly as documented in instruction file
+7. **Follow IMMEDIATE SETUP section:** Execute each command listed
+8. **Verify expected state:** Confirm git status, processes, etc. match expectations
+9. **Restore TodoWrite:** Set up todos exactly as documented in instruction file
 
 **Step 4: Present Status and Wait**
-9. **Show resume summary:** Display what was restored and current state
-10. **Present next actions:** Show the priority actions from instruction file
-11. **Ask for direction:** "I've restored your session. Which task should I work on first?"
+10. **Show resume summary:** Display what was restored and current state (including todo inventory results)
+11. **Present next actions:** Show the priority actions from instruction file
+12. **Ask for direction:** "I've restored your session. Which task should I work on first?"
 
 **🎯 KEY PRINCIPLES:**
 - **Follow the instructions exactly** as written in the context file

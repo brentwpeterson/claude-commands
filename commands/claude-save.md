@@ -25,11 +25,31 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    - Format: `git commit -m "[Description of work completed] 🤖 Generated with Claude Code"`
    - **IMPORTANT**: Commit actual development work FIRST before context
 
-**Phase 2: Create Handoff Instructions**
-3. **Create Resume Instruction File:**
+**Phase 2: Todo Directory Inventory Check**
+3. **Verify Todo Directory Structure:**
+   - **MANDATORY: Get current todo path** - Ask user if not obvious
+   - **Check todo directory exists**: Verify `todo/current/[category]/[task-name]/` path
+   - **Inventory check**: Count files and verify standardized 7-file structure:
+     ```bash
+     # Expected 7 files exactly:
+     # 1. README.md
+     # 2. [branch-name]-plan.md
+     # 3. progress.log
+     # 4. debug.log
+     # 5. notes.md
+     # 6. architecture-map.md
+     # 7. user-documentation.md
+     ```
+   - **File count validation**: `ls -1 [todo-path] | wc -l` should return 7
+   - **Missing file alert**: List any missing required files
+   - **Extra file warning**: List any unexpected files (should only be the 7 standard files)
+   - **Structure status**: Report "✅ Complete (7/7 files)" or "⚠️ Incomplete (X/7 files)"
+
+**Phase 3: Create Handoff Instructions**
+4. **Create Resume Instruction File:**
    - Get current branch: `git branch --show-current`
    - Get working directory: `pwd`
-   - **MANDATORY: Get current todo path** - Ask user if not obvious
+   - Include todo inventory results in context
    - Check running processes: `docker ps`, `lsof -i :3000`, etc.
    - Create: `.claude/branch-context/[branch-name]-context.md`
    - **Format as INSTRUCTIONS TO CLAUDE**, not status report:
@@ -46,6 +66,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 ## CURRENT TODO FILE
 **Path:** file:[exact-path-to-todo-readme]
 **Status:** [Working on step X of Y - specific current focus]
+**Directory Structure:** [✅ Complete (7/7 files) or ⚠️ Incomplete (X/7 files) with missing files listed]
 
 ## WHAT YOU WERE WORKING ON
 [Clear description of the task in progress]
@@ -64,9 +85,20 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 
 ## COMPLETION APPROVAL STATUS
 **🚨 CRITICAL RULE**: NEVER mark tasks as completed until user explicitly approves
+
+### Completion Trigger Protocol
+**BEFORE declaring any task complete, Claude MUST:**
+1. **Check for Acceptance Criteria**: Does the todo have clear acceptance criteria?
+2. **If NO criteria exist**: STOP and ask user: "What are the acceptance criteria for this task?"
+3. **If criteria exist**: Verify each criteria point is met
+4. **Ask user**: "Task appears complete per acceptance criteria. Do you approve marking this as done?"
+5. **Wait for explicit approval**: User must confirm completion
+
+**Completion Requirements:**
 - **Completed Items**: Only mark as completed if user has said "this is done" or "approved"
 - **Context Indicator**: Always note "USER APPROVED: Yes" for completed items
-- **Acceptance Criteria**: All todos should include clear acceptance criteria for completion
+- **Acceptance Criteria**: All todos MUST include clear acceptance criteria before completion
+- **Criteria Check**: Read and verify ALL acceptance criteria before asking for approval
 
 ## NEXT ACTIONS (PRIORITY ORDER)
 1. **FIRST:** [exact command to run]
@@ -86,7 +118,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    - Add brief status to project CLAUDE.md if needed
    - Keep minimal - main instructions are in context file
 
-**Phase 3: Context Commit + Display Path**
+**Phase 4: Context Commit + Display Path**
 5. **Commit Instructions:**
    - Stage context files: `git add ../.claude/branch-context/`
    - Commit with: "Save resume instructions for session restart"
