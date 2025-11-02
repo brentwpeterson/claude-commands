@@ -126,23 +126,12 @@ Create standardized development branch with automated documentation setup based 
    ```
 
    **architecture-map.md Template:**
-   ```
-   # Architecture Map - [TASK-NAME]
+   - **Copy comprehensive template**: Copy `/todo/architecture-map-template.md` to task directory
+   - **Customize for task**: Replace all `[TASK-NAME]` and `[bracketed placeholders]` with actual values
+   - **Complete checklist**: Fill out all sections and check completion items
+   - **Validate completeness**: Must pass architecture map validation in `/claude-save`
 
-   ## CB Technical Flow
-   Frontend → DataLayer → Router → Service Layer → Model → Collection
-
-   ## Component Locations
-   - **Frontend**: [Component paths]
-   - **DataLayer**: [Data layer files]
-   - **Router**: [API router files]
-   - **Service Layer**: [Service files]
-   - **Model**: [Model definitions]
-   - **Collection**: [Database collections]
-
-   ## Layer Interactions
-   [Describe how components communicate]
-   ```
+   **CRITICAL**: Architecture map must be completed during implementation, not left as template
 
 7. **Verification and Summary:**
    - Confirm all 7 standardized files created

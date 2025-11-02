@@ -44,6 +44,18 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    - **Missing file alert**: List any missing required files
    - **Extra file warning**: List any unexpected files (should only be the 7 standard files)
    - **Structure status**: Report "✅ Complete (7/7 files)" or "⚠️ Incomplete (X/7 files)"
+   - **Architecture Map Completeness Check**: Validate `architecture-map.md` is properly filled out:
+     ```bash
+     # Check for incomplete template markers:
+     # - [TASK-NAME] should be replaced with actual task name
+     # - [bracketed placeholders] should be filled with real paths/methods
+     # - Completion checklist should have some items checked (- [x])
+     # - Key sections should have content beyond template text
+     ```
+     - **Template validation**: Check if placeholder text `[TASK-NAME]`, `[path/to/`, `[describe` still exists
+     - **Completion checklist**: Count checked items `- [x]` vs unchecked `- [ ]`
+     - **Content analysis**: Verify key sections have actual content, not just template text
+     - **Architecture status**: Report "✅ Complete" or "⚠️ Template" or "⚠️ Partial ([X]/[Y] checklist items)"
 
 **Phase 3: Create Handoff Instructions**
 4. **Create Resume Instruction File:**
@@ -67,6 +79,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 **Path:** file:[exact-path-to-todo-readme]
 **Status:** [Working on step X of Y - specific current focus]
 **Directory Structure:** [✅ Complete (7/7 files) or ⚠️ Incomplete (X/7 files) with missing files listed]
+**Architecture Map:** [✅ Complete or ⚠️ Template or ⚠️ Partial (X/Y checklist items) - details of what needs completion]
 
 ## WHAT YOU WERE WORKING ON
 [Clear description of the task in progress]

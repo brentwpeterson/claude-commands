@@ -68,7 +68,7 @@ Create standardized bug fix branch with automated documentation setup and task t
    - **progress.log** - Daily progress tracking and updates
    - **debug.log** - Debug attempts and troubleshooting sessions (using `/debug-attempt` command)
    - **notes.md** - Discoveries, blockers, insights, and additional context
-   - **architecture-map.md** - CB technical flow: Frontend → DataLayer → Router → Service Layer → Model → Collection
+   - **architecture-map.md** - Copy from `/todo/architecture-map-template.md` and customize for bug fix task
    - **user-documentation.md** - Public and private user documentation (API docs, guides, patch notes)
 
    **README.md Template Must Include Guidelines References:**
