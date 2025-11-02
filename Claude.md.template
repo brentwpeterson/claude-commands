@@ -1,0 +1,99 @@
+# Claude Code Project Template
+
+This is a template Claude.md file for use with the Claude Code development workflow. Copy this to `Claude.md` or `CLAUDE.md` in your project and customize it for your specific needs.
+
+## Project Overview
+
+<!-- Describe your project here -->
+- **Project Name**: [Your Project Name]
+- **Description**: [Brief description of what your project does]
+- **Development Environment**: [Docker/Local/etc.]
+- **Main Technologies**: [List key technologies]
+
+## Development Environment
+
+<!-- Customize based on your setup -->
+**Local Development:**
+- **Frontend**: http://localhost:3000
+- **Backend**: http://localhost:3001 (or your port)
+- **Database**: [Your database setup]
+
+## Critical Rules
+
+### Security Guidelines
+- **NEVER commit API keys, tokens, or secrets** - Use environment variables
+- **NEVER hardcode URLs** - Use relative paths for production compatibility
+- **NEVER hardcode user data** - Use dynamic user context
+
+### Development Standards
+- **Testing Required**: Always test locally before deployment
+- **Branch Strategy**: Use descriptive branch names (feature/, fix/, etc.)
+- **File Organization**: Keep project root clean, use proper directories
+
+## Commands Available
+
+**Project Management:**
+- `/project:create-branch [requirements-doc]` - Start new feature work
+- `/project:deploy-code` - Deploy for testing
+- `/claude-complete` - Complete branch with checklist
+
+**Development:**
+- `/help` - Get Claude Code help
+- `/compact` - Compact conversation if reaching context limit
+
+## Deployment
+
+**Deployment Rules:**
+- **ALWAYS test locally first** - No exceptions
+- **WAIT for user confirmation** before deploying
+- **Never deploy without explicit permission**
+
+**Deployment Process:**
+1. Make code changes
+2. Test thoroughly locally
+3. Ask user: "Ready to deploy?"
+4. Wait for explicit "yes" confirmation
+5. Create deployment tags/process
+
+## File Organization
+
+**Approved Directories:**
+- `/docs/` - Project documentation
+- `/tests/` - Test scripts and validation
+- `/src/` or `/app/` - Source code
+- `/.claude/` - Claude Code configuration (this directory)
+
+**Avoid:**
+- Random files in project root
+- Temporary files outside `/tmp/`
+- Hardcoded credentials or sensitive data
+
+## Testing
+
+**Test Credentials** (customize for your project):
+```
+# Example test users
+Admin: username=admin, password=YourTestPassword
+User: username=testuser, password=YourTestPassword
+API URL: http://localhost:YOUR_PORT
+```
+
+## Essential References
+
+<!-- Add links to your project's important documentation -->
+- [Setup Guide](./docs/setup.md)
+- [API Documentation](./docs/api.md)
+- [Deployment Guide](./docs/deployment.md)
+
+## Custom Instructions
+
+<!-- Add any project-specific Claude instructions here -->
+
+### Important Notes
+- [Add any critical project-specific information]
+- [Special deployment considerations]
+- [Team conventions and standards]
+
+---
+
+**Note**: This file (`Claude.md` or `CLAUDE.md`) should be gitignored if it contains sensitive project information. Use this template as a starting point and customize for your specific project needs.

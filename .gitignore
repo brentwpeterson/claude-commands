@@ -3,6 +3,10 @@
 # NEVER commit local settings - contains sensitive permissions and paths
 settings.local.json
 
+# Exclude project-specific Claude.md files - keep generic template only
+Claude.md
+CLAUDE.md
+
 # Exclude any real context files that might contain sensitive info
 branch-context/*-context.md
 !branch-context/feature-example-implementation-context.md
