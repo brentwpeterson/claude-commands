@@ -63,13 +63,23 @@ Create standardized bug fix branch with automated documentation setup and task t
    - **Generate Standardized 7-File Documentation Structure** (same as all task types)
 
 **Always Create These 7 Standardized Files:**
-   - **README.md** - Task overview, branch, current status
+   - **README.md** - Task overview, branch, current status, references to guidelines
    - **[branch-name]-plan.md** - Bug requirements + acceptance criteria + fix plan + testing strategy + completion checklist
    - **progress.log** - Daily progress tracking and updates
    - **debug.log** - Debug attempts and troubleshooting sessions (using `/debug-attempt` command)
    - **notes.md** - Discoveries, blockers, insights, and additional context
    - **architecture-map.md** - CB technical flow: Frontend → DataLayer → Router → Service Layer → Model → Collection
    - **user-documentation.md** - Public and private user documentation (API docs, guides, patch notes)
+
+   **README.md Template Must Include Guidelines References:**
+   ```markdown
+   ## 📚 **REQUIRED READING FOR CLAUDE**
+   **Before working on this task, READ THESE GUIDELINES:**
+   - `../../../todo-workflow-guidelines.md` - Session management and workflow rules
+   - `../../../technical-implementation-guidelines.md` - CB development standards and templates
+
+   **Critical reminder**: If you don't know what todo you're working on, ASK IMMEDIATELY.
+   ```
 
 **Bug-Specific Template Content for [branch-name]-plan.md:**
 ```markdown
