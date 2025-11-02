@@ -5,11 +5,36 @@ Claude Session Save - Create Resume Instructions + Preserve Work
 **🎯 PURPOSE:**
 Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where you left off
 
+**🚨 CRITICAL: NEVER ASSUME COMPLETION WITHOUT HUMAN CONFIRMATION 🚨**
+
+**⚠️ ABSOLUTE PROHIBITION: NEVER SAY THESE PHRASES:**
+- ❌ "Successfully completed"
+- ❌ "Task finished"
+- ❌ "Implementation complete"
+- ❌ "Work done"
+- ❌ "Ready for deployment"
+- ❌ "Feature complete"
+- ❌ Any variation suggesting work is finished
+
+**🛑 MANDATORY BEHAVIOR:**
+- **NEVER assume anything is done** - even if it appears to work
+- **NEVER mark tasks complete** without explicit user approval
+- **NEVER say "finished" or "completed"** - things may look done but haven't been tested
+- **ALWAYS wait for user confirmation** before marking anything as complete
+- **ASK EXPLICITLY**: "Is this task complete and ready to mark as done?"
+
 **🚨 COMPLETION APPROVAL RULES:**
 - **NEVER mark tasks as completed** without explicit user approval
 - **Always ask user**: "Is this task complete and ready to mark as done?"
 - **In context files**: Note "USER APPROVED: Yes" for any completed items
 - **TodoWrite with Acceptance Criteria**: All todos must include clear completion criteria
+
+**💀 WHY THIS IS CRITICAL:**
+- Code may appear to work but hasn't been tested
+- Integration points may have hidden issues
+- Edge cases may not have been considered
+- User requirements may not be fully met
+- Only the human can confirm true completion
 
 **📋 COMPLETE SAVE WORKFLOW:**
 
@@ -143,12 +168,21 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 **🚨 CRITICAL RULE**: NEVER mark tasks as completed until user explicitly approves
 
 ### Completion Trigger Protocol
-**BEFORE declaring any task complete, Claude MUST:**
+**🚫 CLAUDE CAN NEVER DECLARE TASKS COMPLETE - ONLY HUMANS CAN**
+
+**BEFORE asking about completion, Claude MUST:**
 1. **Check for Acceptance Criteria**: Does the todo have clear acceptance criteria?
 2. **If NO criteria exist**: STOP and ask user: "What are the acceptance criteria for this task?"
 3. **If criteria exist**: Verify each criteria point is met
-4. **Ask user**: "Task appears complete per acceptance criteria. Do you approve marking this as done?"
-5. **Wait for explicit approval**: User must confirm completion
+4. **🚨 NEVER DECLARE COMPLETION - ASK FOR USER APPROVAL**:
+   - **NEVER SAY**: "Task is complete" or "Implementation finished"
+   - **ALWAYS ASK**: "Based on the acceptance criteria, does this appear ready for you to mark as complete?"
+   - **WAIT FOR EXPLICIT CONFIRMATION**: User must say "yes", "complete", "done", or "approved"
+   - **IF UNCERTAIN**: Ask "Should I mark this as complete?" and wait for response
+5. **🔍 WHAT TO LOOK FOR IN USER RESPONSES**:
+   - **Completion approved**: "yes", "done", "complete", "mark it complete", "approved"
+   - **NOT completion**: "looks good", "almost there", "getting close", "seems right"
+   - **When in doubt**: Ask for clarification
 
 **Completion Requirements:**
 - **Completed Items**: Only mark as completed if user has said "this is done" or "approved"

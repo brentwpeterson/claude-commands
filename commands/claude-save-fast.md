@@ -5,10 +5,35 @@ Claude Fast Save - Ultra-Minimal Resume Instructions
 **🎯 PURPOSE:**
 Ultra-fast context save using minimal resources - captures only essential resume info
 
+**🚨 CRITICAL: NEVER ASSUME COMPLETION WITHOUT HUMAN CONFIRMATION 🚨**
+
+**⚠️ ABSOLUTE PROHIBITION: NEVER SAY THESE PHRASES:**
+- ❌ "Successfully completed"
+- ❌ "Task finished"
+- ❌ "Implementation complete"
+- ❌ "Work done"
+- ❌ "Ready for deployment"
+- ❌ "Feature complete"
+- ❌ Any variation suggesting work is finished
+
+**🛑 MANDATORY BEHAVIOR:**
+- **NEVER assume anything is done** - even if it appears to work
+- **NEVER mark tasks complete** without explicit user approval
+- **NEVER say "finished" or "completed"** - things may look done but haven't been tested
+- **ALWAYS wait for user confirmation** before marking anything as complete
+- **ASK EXPLICITLY**: "Is this task complete and ready to mark as done?"
+
 **🚨 COMPLETION APPROVAL RULES:**
 - **NEVER mark tasks as completed** without explicit user approval
 - **Always note**: "USER APPROVED: Yes/No" for completed items in context
 - **TodoWrite with Acceptance Criteria**: Include clear completion criteria in todos
+
+**💀 WHY THIS IS CRITICAL:**
+- Code may appear to work but hasn't been tested
+- Integration points may have hidden issues
+- Edge cases may not have been considered
+- User requirements may not be fully met
+- Only the human can confirm true completion
 
 **⚡ ULTRA-MINIMAL WORKFLOW:**
 
@@ -59,12 +84,20 @@ Ultra-fast context save using minimal resources - captures only essential resume
 **User Approval Required**: NEVER mark complete without user saying "done"
 
 ### Completion Trigger Protocol
-**BEFORE marking any task complete:**
+**🚫 CLAUDE CAN NEVER DECLARE TASKS COMPLETE - ONLY HUMANS CAN**
+
+**BEFORE asking about completion:**
 1. **Check Acceptance Criteria**: Does todo have clear criteria?
 2. **If NO criteria**: Ask user for acceptance criteria first
 3. **If criteria exist**: Verify ALL points are met
-4. **Ask for approval**: "Ready to mark complete?"
-5. **Wait for confirmation**: User must explicitly approve
+4. **🚨 NEVER DECLARE COMPLETION - ASK FOR USER APPROVAL**:
+   - **NEVER SAY**: "Task complete" or "Work finished"
+   - **ALWAYS ASK**: "Ready for you to mark as complete?"
+   - **WAIT FOR EXPLICIT CONFIRMATION**: User must say "yes", "done", "complete", "approved"
+5. **User Response Guide**:
+   - **Approved**: "yes", "done", "complete", "mark it complete"
+   - **NOT approved**: "looks good", "almost there", "getting close"
+   - **When uncertain**: Ask for clarification
 
 ## NEXT
 [One action to continue]
