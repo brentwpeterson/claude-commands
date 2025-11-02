@@ -57,6 +57,48 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
      - **Content analysis**: Verify key sections have actual content, not just template text
      - **Architecture status**: Report "✅ Complete" or "⚠️ Template" or "⚠️ Partial ([X]/[Y] checklist items)"
 
+   - **🚨 CRITICAL: Validate /update-architecture Has Been Run**:
+     - **Check for outdated architecture map**: Compare git changes vs architecture map content
+     - **Get current changes**: Run `git status --porcelain` and `git diff --name-only HEAD~1`
+     - **Validate architecture freshness**:
+       ```bash
+       # If git shows modified files BUT architecture-map.md still has:
+       # - Template placeholders like [TASK-NAME], [path/to/, [describe
+       # - Generic template text instead of actual file paths
+       # - Missing CB flow documentation for current changes
+       # = ARCHITECTURE MAP IS OUTDATED
+       ```
+     - **Outdated architecture map detection**:
+       - **Template markers present**: `[TASK-NAME]`, `[path/to/`, `[describe` still exist
+       - **Missing actual files**: Git shows changes but architecture map doesn't reference them
+       - **Generic content**: Architecture map has template text instead of real implementation details
+
+     - **🚫 SAVE BLOCKED - Require /update-architecture First**:
+       ```
+       ⚠️ ARCHITECTURE MAP OUTDATED - SAVE BLOCKED
+
+       Git shows file changes but architecture-map.md appears outdated:
+
+       Modified Files Detected:
+       - frontend/src/UserList.tsx
+       - backend/app/routers/users.py
+       - backend/app/services/user_service.py
+
+       But architecture-map.md still contains:
+       - Template placeholders: [TASK-NAME], [path/to/
+       - No reference to actual modified files
+       - Generic template content
+
+       🔧 REQUIRED ACTION:
+       Run `/update-architecture` first to document current changes
+       Then retry `/claude-save`
+
+       This ensures next Claude session has complete modification trail.
+       ```
+
+     - **Architecture validation passed**: Architecture map contains actual file paths and CB flow documentation
+     - **CRITICAL PURPOSE**: Ensures session handoffs include complete, current technical context
+
 **Phase 3: Create Handoff Instructions**
 4. **Create Resume Instruction File:**
    - Get current branch: `git branch --show-current`
@@ -79,14 +121,15 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 **Path:** file:[exact-path-to-todo-readme]
 **Status:** [Working on step X of Y - specific current focus]
 **Directory Structure:** [✅ Complete (7/7 files) or ⚠️ Incomplete (X/7 files) with missing files listed]
-**Architecture Map:** [✅ Complete or ⚠️ Template or ⚠️ Partial (X/Y checklist items) - details of what needs completion]
+**Architecture Map:** [✅ Complete and Current or ⚠️ Template or ⚠️ Partial (X/Y checklist items) or 🚫 OUTDATED - /update-architecture required]
 
 ## WHAT YOU WERE WORKING ON
 [Clear description of the task in progress]
 
 ## CURRENT STATE
 - **Last command executed:** [exact command]
-- **Files modified:** [list with status]
+- **Files modified:** [list with status and CB layer mapping]
+- **CB Flow Impact:** [trace: frontend-file → dataProvider → router → service → model → collection]
 - **Tests run:** [what was tested, results]
 - **Issues found:** [any blockers or problems]
 

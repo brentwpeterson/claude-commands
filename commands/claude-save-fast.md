@@ -25,6 +25,8 @@ Ultra-fast context save using minimal resources - captures only essential resume
      ```
    - **File count validation**: `ls -1 [todo-path] | wc -l` should return 7
    - **Structure status**: Report "✅ 7/7" or "⚠️ X/7 missing: [files]"
+   - **Quick architecture check**: Verify architecture-map.md doesn't have template placeholders if git shows changes
+   - **Architecture status**: "✅ Current" or "🚫 Outdated - run /update-architecture first"
    - Current TodoWrite state (if any)
 
 **Step 2: Create Minimal Instructions**
@@ -42,6 +44,7 @@ Ultra-fast context save using minimal resources - captures only essential resume
 ## TODO
 **Path:** file:[exact-path-to-todo-readme]
 **Files:** [✅ 7/7 or ⚠️ X/7 missing: files]
+**Architecture:** [✅ Current or 🚫 Outdated - run /update-architecture first]
 
 ## TASK
 [One line: what you were doing]
