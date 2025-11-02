@@ -59,98 +59,41 @@ Create standardized bug fix branch with automated documentation setup and task t
 
 4. **Create Bug Fix Documentation Structure:**
    - Create folder: `/todo/current/fixes/[branch-name]/`
-   - **COPY CORE README TEMPLATE:** Copy `/todo/README.md` into task folder
-   - **CUSTOMIZE README.md** with branch name and fix-specific file catalog:
+   - If `/todo/current/` doesn't exist, create the entire directory structure
+   - **Generate Standardized 7-File Documentation Structure** (same as all task types)
 
+**Always Create These 7 Standardized Files:**
+   - **README.md** - Task overview, branch, current status
+   - **[branch-name]-plan.md** - Bug requirements + acceptance criteria + fix plan + testing strategy + completion checklist
+   - **progress.log** - Daily progress tracking and updates
+   - **debug.log** - Debug attempts and troubleshooting sessions (using `/debug-attempt` command)
+   - **notes.md** - Discoveries, blockers, insights, and additional context
+   - **architecture-map.md** - CB technical flow: Frontend → DataLayer → Router → Service Layer → Model → Collection
+   - **user-documentation.md** - Public and private user documentation (API docs, guides, patch notes)
+
+**Bug-Specific Template Content for [branch-name]-plan.md:**
 ```markdown
-# [Bug Title] - Bug Fix Task
+# Bug Fix Plan: [TICKET-ID]
 
-**Branch:** fix/[branch-name]
-**Status:** IN PROGRESS
-**Created:** [current-date]
-**Last Resumed:** [current-date]
-**Category:** fixes
+## Requirements
+**Bug Summary:** [Brief description of the bug being fixed]
+**Ticket Source:** [Sentry/Support/GitHub/etc.]
+**Priority:** [High/Medium/Low]
+**Environment:** [Production/Development]
 
-## 🎯 **BUG OVERVIEW**
-[Brief description of the bug being fixed]
-
-## 📋 **CURRENT STATUS**
-[Investigation/In Progress/Testing/Ready for Deploy]
-
-## 📁 **FILES IN THIS BUG FIX**
-- [x] README.md - This file (task overview and status)
-- [ ] bug-report.md - Detailed bug analysis and reproduction steps
-- [ ] fix-plan.md - Investigation approach and solution strategy
-- [ ] progress.log - Chronological fix attempts and results
-
-## 🔄 **NEXT STEPS**
-1. [Next immediate action in fix process]
-2. [Following action]
-
-## ⚠️ **BUG DETAILS**
-- **Ticket ID:** [TICKET-ID]
-- **Source:** [Sentry/Support/GitHub/etc.]
-- **Environment:** [Production/Development]
-- **Priority:** [High/Medium/Low]
-
-## 🧪 **REPRODUCTION ENVIRONMENT**
-[How to reproduce this bug locally for testing]
-```
-
-   - **CREATE bug-report.md:**
-```markdown
-# Bug Report: [TICKET-ID]
-
-## Source Information
-- **System:** [Sentry/Support/GitHub]
-- **Ticket ID:** [FULL-ID]
-- **Date Reported:** [DATE]
-- **Priority:** [HIGH/MEDIUM/LOW]
-- **Environment:** [PRODUCTION/DEVELOPMENT]
-- **Affected Users:** [COUNT or LIST]
-
-## Issue Description
-[Detailed description from ticket or manual entry]
-
-## Error Details
-- **Error Message:** [FROM SYSTEM]
-- **Stack Trace:** [KEY LINES]
-- **Frequency:** [X occurrences in Y time]
-- **First Seen:** [DATE]
-- **Last Seen:** [DATE]
-
-## Reproduction Steps
-1. [Step by step to reproduce]
-2. [Expected vs actual behavior]
-
-## Impact Assessment
-- **User Impact:** [How users are affected]
-- **Business Impact:** [Revenue/functionality impact]
-- **Technical Debt:** [Code quality implications]
-```
-
-   - **CREATE fix-plan.md:**
-```markdown
-# Fix Plan: [TICKET-ID]
+## Acceptance Criteria
+- [ ] Bug is reproducible locally
+- [ ] Root cause identified and documented
+- [ ] Fix implemented and tested
+- [ ] Regression tests added
+- [ ] Production verification completed
+- [ ] No new bugs introduced
 
 ## Investigation Strategy
 - [ ] Reproduce bug locally
 - [ ] Identify root cause in code
 - [ ] Research similar past issues
 - [ ] Check related components
-
-## Solution Approach
-### Option 1: [Primary Solution]
-- **Description:** [How this would fix the issue]
-- **Pros:** [Benefits of this approach]
-- **Cons:** [Potential drawbacks]
-- **Effort:** [Time estimate]
-
-### Option 2: [Alternative Solution]
-- **Description:** [Alternative fix approach]
-- **Pros:** [Benefits]
-- **Cons:** [Drawbacks]
-- **Effort:** [Time estimate]
 
 ## Implementation Plan
 1. [Step 1 of implementation]
@@ -165,13 +108,13 @@ Create standardized bug fix branch with automated documentation setup and task t
 - [ ] Regression testing
 - [ ] Production verification plan
 
-## Risk Assessment
-- **Code Impact:** [Files/systems affected]
-- **Deployment Risk:** [Low/Medium/High]
-- **Rollback Plan:** [How to revert if issues]
+## Completion Checklist
+- [ ] Bug fixed and tested locally
+- [ ] All acceptance criteria met
+- [ ] Code reviewed and approved
+- [ ] Deployment ready
+- [ ] User documentation updated
 ```
-
-   - **CREATE progress.log:** Initialize with timestamp format for chronological tracking
 
 **Phase 3: Branch Creation**
 5. **Create Fix Branch:**

@@ -62,61 +62,83 @@ Create standardized development branch with automated documentation setup based 
 **Phase 3: Task Documentation Setup**
 4. **Create Task Folder Structure:**
    - Create folder: `/todo/current/[category]/[branch-name]/`
-   - **COPY CORE README TEMPLATE:** Copy `/todo/README.md` into task folder
-   - **CUSTOMIZE README.md** with branch name and category-specific file catalog
+   - If `/todo/current/` doesn't exist, create the entire directory structure
 
-5. **Generate Category-Specific Documentation:**
+5. **Generate Standardized 7-File Documentation Structure:**
+   **ALL CATEGORIES use the same standardized structure (7 files):**
 
-   **For FEATURES (5 files + technical diagram):**
-   - **README.md** - Task overview, branch, status (auto-populated)
-   - **requirements.md** - What needs to be built, success criteria
-   - **technical-diagram.md** - Architecture flow: frontend → datalayer → router → service → model → collection
-   - **implementation-plan.md** - Step-by-step build approach, phases
-   - **progress.log** - Chronological development progress
+   **Always Create These 7 Files:**
+   - **README.md** - Task overview, branch, current status
+   - **[branch-name]-plan.md** - Requirements + acceptance criteria + implementation plan + testing plan + completion checklist
+   - **progress.log** - Daily progress tracking and updates
+   - **debug.log** - Debug attempts and troubleshooting sessions (using `/debug-attempt` command)
+   - **notes.md** - Discoveries, blockers, insights, and additional context
+   - **architecture-map.md** - CB technical flow: Frontend → DataLayer → Router → Service Layer → Model → Collection
+   - **user-documentation.md** - Public and private user documentation (API docs, guides, installation, examples, internal docs)
 
-   **For INFRASTRUCTURE (5 files):**
-   - **README.md** - Task overview, branch, status (auto-populated)
-   - **requirements.md** - Infrastructure needs, system requirements
-   - **infrastructure-diagram.md** - System architecture, deployment flow
-   - **deployment-plan.md** - Deployment strategy, rollout phases
-   - **progress.log** - Chronological infrastructure progress
+   **File Templates Based on Category:**
+   - **Features**: Focus on user-facing functionality and feature requirements
+   - **Infrastructure**: Focus on system architecture and deployment considerations
+   - **Refactor**: Focus on code improvement and optimization
+   - **Debug**: Focus on issue investigation and problem resolution
+   - **Fixes**: Focus on bug resolution and testing validation
 
-   **For REFACTOR (4 files):**
-   - **README.md** - Task overview, branch, status (auto-populated)
-   - **refactor-plan.md** - Code analysis, refactoring strategy
-   - **code-analysis.md** - Current state analysis, improvement targets
-   - **progress.log** - Chronological refactoring progress
+**Phase 4: File Template Creation**
+6. **Initialize All 7 Files with Templates:**
 
-   **For DEBUG (4 files):**
-   - **README.md** - Task overview, branch, status (auto-populated)
-   - **debug-report.md** - Issue analysis, symptoms, investigation
-   - **investigation-plan.md** - Debug strategy, tools, approach
-   - **progress.log** - Chronological debug attempts and findings
+   **progress.log Template:**
+   ```
+   ##############################################################################
+   # [TASK-TYPE] PROGRESS LOG - [TASK-NAME]
+   ##############################################################################
+   [current-timestamp] - Branch created: [category]/[branch-name]
+   [current-timestamp] - Documentation structure set up (7 files)
+   [current-timestamp] - Ready to begin [category] work
 
-   **For FIXES (4 files):**
-   - Use `/create-bugfix` command instead - optimized for bug fix workflow
+   # Format for future entries:
+   # [timestamp] - [Action taken] - [Result/Progress]
+   ##############################################################################
+   ```
 
-**Phase 4: Final Setup and Verification**
-6. **Initialize progress.log:**
-   - Create `progress.log` with initial entry:
-```
-##############################################################################
-# [TASK-TYPE] PROGRESS LOG - [TASK-NAME]
-##############################################################################
-[current-timestamp] - Branch created: [category]/[branch-name]
-[current-timestamp] - Documentation structure set up
-[current-timestamp] - Ready to begin [category] work
+   **debug.log Template:**
+   ```
+   ##############################################################################
+   # DEBUG LOG - [TASK-NAME]
+   ##############################################################################
+   # INSTRUCTIONS FOR USE:
+   # - Use /debug-attempt [try-number] command to add structured entries
+   # - Each debug attempt = one attempt number
+   # - Format: Attempt #X | Date Time | What tested | Result | What was tried/learned
+   ##############################################################################
+   # SUMMARY OF ATTEMPTS:
+   # (Debug attempts will be added here by /debug-attempt command)
+   ##############################################################################
+   ```
 
-# Format for future entries:
-# [timestamp] - [Action taken] - [Result/Progress]
-##############################################################################
-```
+   **architecture-map.md Template:**
+   ```
+   # Architecture Map - [TASK-NAME]
+
+   ## CB Technical Flow
+   Frontend → DataLayer → Router → Service Layer → Model → Collection
+
+   ## Component Locations
+   - **Frontend**: [Component paths]
+   - **DataLayer**: [Data layer files]
+   - **Router**: [API router files]
+   - **Service Layer**: [Service files]
+   - **Model**: [Model definitions]
+   - **Collection**: [Database collections]
+
+   ## Layer Interactions
+   [Describe how components communicate]
+   ```
 
 7. **Verification and Summary:**
-   - Confirm all required files created for task category
+   - Confirm all 7 standardized files created
    - Display task folder location: `/todo/current/[category]/[branch-name]/`
    - Show branch name: `[category]/[branch-name]`
-   - List files created with their purposes
+   - List the 7 files created with their purposes
    - Ready for development work
 
 **🎯 USAGE EXAMPLES:**
@@ -126,35 +148,34 @@ Create standardized development branch with automated documentation setup based 
 /create-branch ideas/api-rate-limiting.md
 ```
 
-**📁 RESULT STRUCTURES BY CATEGORY:**
+**📁 STANDARDIZED RESULT STRUCTURE:**
 
-**Features:**
+**ALL CATEGORIES use the same 7-file structure:**
 ```
-/todo/current/features/[branch-name]/
-├── README.md                # Task overview with branch and status
-├── requirements.md          # What needs to be built
-├── technical-diagram.md     # Architecture: frontend → router → service → model
-├── implementation-plan.md   # Step-by-step build approach
-└── progress.log            # Development progress tracking
+/todo/current/[category]/[branch-name]/
+├── README.md                 # 📋 Task overview and current status
+├── [branch-name]-plan.md     # 📝 Requirements + acceptance criteria + implementation + testing + completion checklist
+├── progress.log              # 📊 Daily progress tracking and updates
+├── debug.log                 # 🐛 Debug attempts and troubleshooting sessions
+├── notes.md                  # 💡 Discoveries, blockers, insights
+├── architecture-map.md       # 🏗️ CB technical flow: Frontend → DataLayer → Router → Service Layer → Model → Collection
+└── user-documentation.md     # 📚 Public and private user documentation
 ```
 
-**Infrastructure:**
-```
-/todo/current/infrastructure/[branch-name]/
-├── README.md                # Task overview with branch and status
-├── requirements.md          # Infrastructure needs
-├── infrastructure-diagram.md # System architecture
-├── deployment-plan.md       # Deployment strategy
-└── progress.log            # Infrastructure progress
-```
+**Examples:**
+- `/todo/current/feature/user-authentication/`
+- `/todo/current/infrastructure/redis-deployment/`
+- `/todo/current/refactor/user-service-cleanup/`
+- `/todo/current/debug/login-timeout-issue/`
+- `/todo/current/fix/payment-processing-bug/`
 
 **✅ AUTOMATED ACTIONS:**
 1. Analyze task document and determine category
 2. Create standardized branch from clean master
-3. Copy and customize README.md template with category-specific file catalog
-4. Generate complete documentation structure for task type
-5. Initialize progress tracking
-6. Ready for immediate development work
+3. Create `/todo/current/[category]/[branch-name]/` directory structure (creates full path if needed)
+4. Generate standardized 7-file documentation structure for ALL task types
+5. Initialize all files with appropriate templates (progress.log, debug.log, architecture-map.md, etc.)
+6. Ready for immediate development work with complete documentation framework
 
 **🔄 BRANCH NAMING CONVENTION:**
 - Use kebab-case (hyphens, no spaces)
