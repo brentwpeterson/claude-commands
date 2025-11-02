@@ -5,6 +5,11 @@ Claude Fast Save - Ultra-Minimal Resume Instructions
 **🎯 PURPOSE:**
 Ultra-fast context save using minimal resources - captures only essential resume info
 
+**🚨 COMPLETION APPROVAL RULES:**
+- **NEVER mark tasks as completed** without explicit user approval
+- **Always note**: "USER APPROVED: Yes/No" for completed items in context
+- **TodoWrite with Acceptance Criteria**: Include clear completion criteria in todos
+
 **⚡ ULTRA-MINIMAL WORKFLOW:**
 
 **Step 1: Capture Essentials (No Analysis)**
@@ -33,7 +38,13 @@ Ultra-fast context save using minimal resources - captures only essential resume
 [One line: what you were doing]
 
 ## TODOS
-[Current TodoWrite state]
+[Current TodoWrite state with acceptance criteria]
+- ✅ COMPLETED: [task] (USER APPROVED: Yes/No)
+- 🔄 IN PROGRESS: [task]
+- ⏳ PENDING: [task]
+
+## COMPLETION STATUS
+**User Approval Required**: NEVER mark complete without user saying "done"
 
 ## NEXT
 [One action to continue]

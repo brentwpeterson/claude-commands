@@ -5,6 +5,12 @@ Claude Session Save - Create Resume Instructions + Preserve Work
 **🎯 PURPOSE:**
 Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where you left off
 
+**🚨 COMPLETION APPROVAL RULES:**
+- **NEVER mark tasks as completed** without explicit user approval
+- **Always ask user**: "Is this task complete and ready to mark as done?"
+- **In context files**: Note "USER APPROVED: Yes" for any completed items
+- **TodoWrite with Acceptance Criteria**: All todos must include clear completion criteria
+
 **📋 COMPLETE SAVE WORKFLOW:**
 
 **Phase 1: Work Preservation**
@@ -52,9 +58,15 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 
 ## TODO LIST STATE
 [Current TodoWrite items with exact status]
-- ✅ COMPLETED: [task]
+- ✅ COMPLETED: [task] (USER APPROVED: Yes/No)
 - 🔄 IN PROGRESS: [task]
 - ⏳ PENDING: [task]
+
+## COMPLETION APPROVAL STATUS
+**🚨 CRITICAL RULE**: NEVER mark tasks as completed until user explicitly approves
+- **Completed Items**: Only mark as completed if user has said "this is done" or "approved"
+- **Context Indicator**: Always note "USER APPROVED: Yes" for completed items
+- **Acceptance Criteria**: All todos should include clear acceptance criteria for completion
 
 ## NEXT ACTIONS (PRIORITY ORDER)
 1. **FIRST:** [exact command to run]
