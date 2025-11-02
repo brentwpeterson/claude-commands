@@ -1,8 +1,8 @@
-# /claude-violation-log
+# /violation-log
 
 **Purpose**: Log instances where Claude violated explicit instructions despite repeated reminders.
 
-**Usage**: `/claude-violation-log [violation-type] [description]`
+**Usage**: `/violation-log [violation-type] [description]`
 
 ## File Location & Structure
 
