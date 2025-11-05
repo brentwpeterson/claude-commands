@@ -1,28 +1,41 @@
-# CB Memory System - OpenMemory Integration
+# Memory System - OpenMemory Integration Template
 
-CB-Workspace integration with OpenMemory for intelligent context management across all CB projects.
+**🏗️ REAL-WORLD EXAMPLE from CB-Workspace**
+
+This template demonstrates OpenMemory integration for intelligent context management across multiple projects. All examples use the CB-Workspace ecosystem as a working reference - adapt the project names and structure to your own workspace.
 
 ## 🎯 Purpose
 
 Bridges the context gap between Claude Code sessions by providing:
-- **Semantic memory search** across all CB projects
+- **Semantic memory search** across all your projects
 - **Automatic context classification** (procedural, semantic, episodic, reflective)
 - **Cross-project pattern recognition** (Docker configs, API designs, etc.)
 - **Memory decay management** (old todos fade, important decisions persist)
 
-## 🏗️ Architecture
+## 📋 **Adapting This Template**
 
-**Multi-Project Memory Organization:**
+**Replace CB project names with yours:**
+- `cb-requestdesk` → `your-main-app`
+- `cb-shopify` → `your-integration-project`
+- `cb-wordpress` → `your-cms-project`
+- `astro-sites` → `your-frontend-project`
+- `jobs` → `your-automation-project`
+
+**The patterns and structure remain the same!**
+
+## 🏗️ Architecture Example
+
+**Multi-Project Memory Organization (CB-Workspace example):**
 ```
-CB-Workspace Memory Namespace (user_id: "cb-workspace")
+Your-Workspace Memory Namespace (user_id: "your-workspace")
 ├── Project Memories
-│   ├── project:cb-requestdesk (main hub)
-│   ├── project:cb-shopify (live integration)
-│   ├── project:cb-wordpress (production)
-│   ├── project:cb-magento (development)
-│   ├── project:cb-junogo (external)
-│   ├── project:astro-sites (deployment)
-│   └── project:jobs (automation)
+│   ├── project:cb-requestdesk (main hub) ← your-main-app
+│   ├── project:cb-shopify (live integration) ← your-integration
+│   ├── project:cb-wordpress (production) ← your-cms
+│   ├── project:cb-magento (development) ← your-new-project
+│   ├── project:cb-junogo (external) ← your-external-integration
+│   ├── project:astro-sites (deployment) ← your-frontend
+│   └── project:jobs (automation) ← your-scripts
 ├── Cross-Project Patterns
 │   ├── pattern:deployment (AWS, Docker, ECS)
 │   ├── pattern:api-design (REST, auth, webhooks)
@@ -32,6 +45,8 @@ CB-Workspace Memory Namespace (user_id: "cb-workspace")
     ├── problem:solution-pairs
     └── architecture:decisions
 ```
+
+**Adapt this structure to your projects - the tagging patterns are more important than the specific names!**
 
 ## 🛠️ Installation Status
 
@@ -66,12 +81,16 @@ cb-memory-system/
     └── backup/                 # Backup existing contexts
 ```
 
-## 🚀 Quick Start
+## 🚀 Quick Start (CB Examples)
 
-1. **Store a memory:**
+1. **Store a memory (adapt project names to yours):**
    ```bash
    ./scripts/store-memory.sh "Fixed Docker ARM64 issue in astro-sites deployment" \
      '["project:astro-sites", "problem:docker-arm64", "solution:platform-flag"]'
+
+   # Your version might be:
+   # ./scripts/store-memory.sh "Fixed Docker ARM64 issue in frontend deployment" \
+   #   '["project:my-frontend", "problem:docker-arm64", "solution:platform-flag"]'
    ```
 
 2. **Search memories:**

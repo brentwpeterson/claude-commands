@@ -1,25 +1,31 @@
-# CB-Workspace Overview
+# Your Workspace Overview
+
+**🏗️ TEMPLATE with CB-Workspace EXAMPLES**
+
+This template includes a complete OpenMemory integration. All examples show CB-Workspace usage - adapt the project names and paths to your workspace.
 
 ## 🤖 **INSTRUCTIONS FOR CLAUDE SESSIONS**
 
 ### 🧠 **OpenMemory System Usage** (HTTP API - NOT MCP)
 
-**CRITICAL**: CB-Workspace has an intelligent memory system. Use it proactively!
+**CRITICAL**: Your workspace has an intelligent memory system. Use it proactively!
 
 ### 🚀 **STEP 1: START THE MEMORY SERVER**
 
-**ALWAYS START WITH THIS:**
+**ALWAYS START WITH THIS (CB Example - adapt paths):**
 ```bash
 # 1. Check if server is already running
 curl -s http://localhost:8080/health 2>/dev/null || echo "Server not running"
 
-# 2. If server not running, start it:
-cd /Users/brent/scripts/OpenMemory/backend && npm run dev &
+# 2. If server not running, start it (adapt path to your OpenMemory installation):
+cd /path/to/your/OpenMemory/backend && npm run dev &
+# CB Example: cd /Users/brent/scripts/OpenMemory/backend && npm run dev &
 # Wait 5 seconds for startup, then verify:
 sleep 5 && curl -s http://localhost:8080/health
 
-# 3. Change to memory system directory for scripts
-cd /Users/brent/scripts/CB-Workspace/cb-memory-system
+# 3. Change to memory system directory for scripts (adapt to your workspace):
+cd /path/to/your/workspace/memory-system
+# CB Example: cd /Users/brent/scripts/CB-Workspace/memory-system
 ```
 
 **✅ Verify Server is Working:**
@@ -67,10 +73,11 @@ curl -s http://localhost:8080/health | jq '.'
 
 ### 🧪 **STEP 5: TEST THE SYSTEM (Verify Everything Works)**
 
-**Quick Test Command:**
+**Quick Test Command (adapt path to your workspace):**
 ```bash
 # Run the comprehensive test script
-cd /Users/brent/scripts/CB-Workspace/cb-memory-system
+cd /path/to/your/workspace/memory-system
+# CB Example: cd /Users/brent/scripts/CB-Workspace/memory-system
 ./test-memory-system.sh
 ```
 
