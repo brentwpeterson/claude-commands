@@ -1,0 +1,71 @@
+{
+  "session_start": {
+    "content": "Started work session on {project} - {date}. Focus: {main_objective}. Previous context: {context_reference}",
+    "tags": ["session:{date}", "project:{project}", "session-start"],
+    "metadata": {
+      "session_date": "{date}",
+      "project": "{project}",
+      "objective": "{main_objective}",
+      "estimated_duration": "{duration}",
+      "previous_context": "{context_reference}"
+    }
+  },
+  "problem_encountered": {
+    "content": "Encountered {problem_type} in {project}: {problem_description}. Error: {error_message}. Context: {context}",
+    "tags": ["project:{project}", "problem:{problem_type}", "debugging", "session:{date}"],
+    "metadata": {
+      "problem_type": "{problem_type}",
+      "error_message": "{error_message}",
+      "files_affected": ["{file_list}"],
+      "reproduction_steps": "{steps}",
+      "environment": "{environment}"
+    }
+  },
+  "solution_implemented": {
+    "content": "Solved {problem_type} in {project}: {solution_description}. Root cause: {root_cause}. Fix: {fix_details}",
+    "tags": ["project:{project}", "solution", "problem:{problem_type}", "session:{date}"],
+    "metadata": {
+      "solution_type": "{solution_type}",
+      "root_cause": "{root_cause}",
+      "fix_details": "{fix_details}",
+      "files_modified": ["{modified_files}"],
+      "testing_done": "{testing_approach}"
+    }
+  },
+  "architecture_decision": {
+    "content": "Architecture decision for {project}: {decision_summary}. Considered alternatives: {alternatives}. Chose {chosen_option} because {reasoning}",
+    "tags": ["project:{project}", "architecture:decision", "design", "session:{date}"],
+    "metadata": {
+      "decision_type": "{decision_type}",
+      "alternatives_considered": ["{alternatives}"],
+      "chosen_option": "{chosen_option}",
+      "reasoning": "{reasoning}",
+      "impact_scope": "{scope}",
+      "review_date": "{review_date}"
+    }
+  },
+  "deployment_success": {
+    "content": "Successfully deployed {project} {version} to {environment}. Changes: {change_summary}. Performance: {performance_metrics}",
+    "tags": ["project:{project}", "deployment", "success", "session:{date}", "version:{version}"],
+    "metadata": {
+      "version": "{version}",
+      "environment": "{environment}",
+      "deployment_time": "{deployment_time}",
+      "changes_included": ["{changes}"],
+      "performance_metrics": "{metrics}",
+      "rollback_plan": "{rollback_plan}"
+    }
+  },
+  "session_end": {
+    "content": "Completed work session on {project} - {date}. Accomplished: {accomplishments}. Next steps: {next_steps}. Blockers: {blockers}",
+    "tags": ["session:{date}", "project:{project}", "session-end", "completed"],
+    "metadata": {
+      "session_duration": "{duration}",
+      "accomplishments": ["{accomplishments}"],
+      "next_steps": ["{next_steps}"],
+      "blockers": ["{blockers}"],
+      "files_modified": ["{modified_files}"],
+      "knowledge_gained": "{knowledge}"
+    }
+  }
+}

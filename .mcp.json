@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "openmemory": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "tsx",
+        "/Users/brent/scripts/OpenMemory/backend/src/ai/mcp.ts"
+      ],
+      "cwd": "/Users/brent/scripts/OpenMemory/backend",
+      "env": {
+        "OM_API_KEY": "fGqS8XZNFZnjzONJu5bOrBH+nCioPsnP3SZvWLbODXw=",
+        "OM_PORT": "8080",
+        "OM_TIER": "smart",
+        "OM_METADATA_BACKEND": "sqlite",
+        "OM_DB_PATH": "./data/cb-workspace-memory.sqlite",
+        "OM_VECTOR_BACKEND": "sqlite",
+        "OM_EMBEDDINGS": "synthetic",
+        "OM_LG_NAMESPACE": "cb-workspace",
+        "OM_MODE": "standard",
+        "OM_MIN_SCORE": "0.3",
+        "OM_DECAY_LAMBDA": "0.02",
+        "OM_DECAY_INTERVAL_MINUTES": "10",
+        "OM_USE_SUMMARY_ONLY": "true",
+        "OM_SUMMARY_MAX_LENGTH": "300"
+      }
+    }
+  }
+}

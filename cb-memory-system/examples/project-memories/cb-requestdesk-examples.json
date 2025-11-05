@@ -1,0 +1,33 @@
+[
+  {
+    "content": "Implemented JWT authentication system for cb-requestdesk API endpoints. Uses HS256 algorithm with 24-hour expiration. Tokens include user role, company_id, and permissions. Middleware validates tokens on protected routes and extracts user context.",
+    "tags": ["project:cb-requestdesk", "pattern:authentication", "api-design", "jwt", "security"],
+    "metadata": {
+      "implementation_date": "2025-10-15",
+      "files_modified": ["middleware/auth.js", "routes/api.js", "models/user.js"],
+      "token_expiry": "24h",
+      "algorithm": "HS256",
+      "security_level": "production"
+    }
+  },
+  {
+    "content": "Fixed memory leak in ticket processing queue by implementing proper cleanup of event listeners and database connections. Reduced memory usage from 2GB to 500MB under load. Used WeakMap for temporary object storage.",
+    "tags": ["project:cb-requestdesk", "problem:memory-leak", "solution", "performance", "debugging"],
+    "metadata": {
+      "fix_date": "2025-11-01",
+      "memory_reduction": "75%",
+      "affected_files": ["services/ticketQueue.js", "db/connections.js"],
+      "testing": "load_tested_1000_concurrent"
+    }
+  },
+  {
+    "content": "Database migration strategy for cb-requestdesk: Use Mongoose migrations with transaction support. Always backup before migration. Test on staging with production data dump. Rollback plan includes schema versioning.",
+    "tags": ["project:cb-requestdesk", "pattern:database", "migration", "procedure", "best-practice"],
+    "metadata": {
+      "migration_tool": "mongoose-migrate",
+      "backup_strategy": "mongodump",
+      "rollback_time": "< 5 minutes",
+      "testing_approach": "staging_with_prod_data"
+    }
+  }
+]
