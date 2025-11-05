@@ -213,9 +213,38 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    - Stage context files: `git add ../.claude/branch-context/`
    - Commit with: "Save resume instructions for session restart"
 
-6. **END BY SHOWING CONTEXT FILE PATH:**
+**Phase 5: OpenMemory Integration (Automatic with Fallback)**
+6. **Store Session Summary to OpenMemory:**
+   - **Check OpenMemory server availability:**
+     ```bash
+     curl -s http://localhost:8080/health 2>/dev/null
+     ```
+
+   - **If server available (automatic):**
+     ```bash
+     cd /Users/brent/scripts/CB-Workspace/cb-memory-system
+     ./scripts/store-memory.sh "Session saved for [project-name] on [branch-name]. Work: [brief-summary]" \
+       '["session:YYYY-MM-DD", "project:[project-name]", "branch:[branch-name]", "context-save"]' \
+       '{"todo_status": "[todo-structure-status]", "files_changed": [count], "architecture_status": "[architecture-status]"}'
+     ```
+
+   - **If server not available (fallback):**
+     ```
+     ⚠️ OpenMemory server not running - using file-based context only
+     💡 Start server: cd /Users/brent/scripts/OpenMemory/backend && npm run dev
+     ✅ Session still saved to context file successfully
+     ```
+
+   - **Session Summary Format for Memory:**
+     - **Content**: "Session saved for [project] on [branch]. [What was accomplished]. [Current focus]. [Next priority]."
+     - **Tags**: `["session:YYYY-MM-DD", "project:[name]", "branch:[name]", "context-save"]`
+     - **Metadata**: `{"todo_status": "7/7", "files_changed": 3, "architecture_status": "current"}`
+
+7. **END BY SHOWING CONTEXT FILE PATH:**
    - **⚠️ CRITICAL**: If todo path doesn't exist, STOP and ask user to clarify
    - Display: "📁 Resume instructions saved to: `.claude/branch-context/[branch-name]-context.md`"
+   - **If OpenMemory worked**: "🧠 + Session stored to intelligent memory system"
+   - **If OpenMemory failed**: "⚠️ (OpenMemory unavailable - file-based only)"
 
 **🎯 KEY CHANGES:**
 - **Creates INSTRUCTION FILE** instead of status report

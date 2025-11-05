@@ -41,3 +41,4 @@ local/*.local.*
 *.tmp
 *.temp
 *~
+!branch-context/master-context.md
