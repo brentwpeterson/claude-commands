@@ -83,7 +83,24 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
      - **Architecture status**: Report "✅ Complete" or "⚠️ Template" or "⚠️ Partial ([X]/[Y] checklist items)"
 
    - **🚨 CRITICAL: Validate /update-architecture Has Been Run**:
-     - **Check for outdated architecture map**: Compare git changes vs architecture map content
+     - **Check for external project exclusions first**:
+       ```bash
+       # Skip architecture validation for external projects:
+       current_dir=$(basename "$PWD")
+       case "$current_dir" in
+         "cb-shopify"|"cb-junogo"|"astro-sites")
+           echo "✅ External project detected ($current_dir) - Gadget/external documentation used"
+           echo "⚠️ Skipping CB architecture map validation"
+           # Set architecture status and skip validation
+           architecture_status="✅ External (Gadget/external docs)"
+           ;;
+         *)
+           # Continue with normal architecture validation for CB projects
+           echo "🔍 CB project detected - validating architecture map..."
+           ;;
+       esac
+       ```
+     - **Check for outdated architecture map** (if not external project): Compare git changes vs architecture map content
      - **Get current changes**: Run `git status --porcelain` and `git diff --name-only HEAD~1`
      - **Validate architecture freshness**:
        ```bash
@@ -98,7 +115,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
        - **Missing actual files**: Git shows changes but architecture map doesn't reference them
        - **Generic content**: Architecture map has template text instead of real implementation details
 
-     - **🚫 SAVE BLOCKED - Require /update-architecture First**:
+     - **🚫 SAVE BLOCKED - Require /update-architecture First** (CB projects only):
        ```
        ⚠️ ARCHITECTURE MAP OUTDATED - SAVE BLOCKED
 
@@ -119,6 +136,9 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
        Then retry `/claude-save`
 
        This ensures next Claude session has complete modification trail.
+
+       ⚠️ NOTE: External projects (cb-shopify, cb-junogo, astro-sites) skip this validation
+       as they use Gadget or external documentation systems.
        ```
 
      - **Architecture validation passed**: Architecture map contains actual file paths and CB flow documentation
