@@ -82,67 +82,9 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
      - **Content analysis**: Verify key sections have actual content, not just template text
      - **Architecture status**: Report "✅ Complete" or "⚠️ Template" or "⚠️ Partial ([X]/[Y] checklist items)"
 
-   - **🚨 CRITICAL: Validate /update-architecture Has Been Run**:
-     - **Check for external project exclusions first**:
-       ```bash
-       # Skip architecture validation for external projects:
-       current_dir=$(basename "$PWD")
-       case "$current_dir" in
-         "cb-shopify"|"cb-junogo"|"astro-sites")
-           echo "✅ External project detected ($current_dir) - Gadget/external documentation used"
-           echo "⚠️ Skipping CB architecture map validation"
-           # Set architecture status and skip validation
-           architecture_status="✅ External (Gadget/external docs)"
-           ;;
-         *)
-           # Continue with normal architecture validation for CB projects
-           echo "🔍 CB project detected - validating architecture map..."
-           ;;
-       esac
-       ```
-     - **Check for outdated architecture map** (if not external project): Compare git changes vs architecture map content
-     - **Get current changes**: Run `git status --porcelain` and `git diff --name-only HEAD~1`
-     - **Validate architecture freshness**:
-       ```bash
-       # If git shows modified files BUT architecture-map.md still has:
-       # - Template placeholders like [TASK-NAME], [path/to/, [describe
-       # - Generic template text instead of actual file paths
-       # - Missing CB flow documentation for current changes
-       # = ARCHITECTURE MAP IS OUTDATED
-       ```
-     - **Outdated architecture map detection**:
-       - **Template markers present**: `[TASK-NAME]`, `[path/to/`, `[describe` still exist
-       - **Missing actual files**: Git shows changes but architecture map doesn't reference them
-       - **Generic content**: Architecture map has template text instead of real implementation details
-
-     - **🚫 SAVE BLOCKED - Require /update-architecture First** (CB projects only):
-       ```
-       ⚠️ ARCHITECTURE MAP OUTDATED - SAVE BLOCKED
-
-       Git shows file changes but architecture-map.md appears outdated:
-
-       Modified Files Detected:
-       - frontend/src/UserList.tsx
-       - backend/app/routers/users.py
-       - backend/app/services/user_service.py
-
-       But architecture-map.md still contains:
-       - Template placeholders: [TASK-NAME], [path/to/
-       - No reference to actual modified files
-       - Generic template content
-
-       🔧 REQUIRED ACTION:
-       Run `/update-architecture` first to document current changes
-       Then retry `/claude-save`
-
-       This ensures next Claude session has complete modification trail.
-
-       ⚠️ NOTE: External projects (cb-shopify, cb-junogo, astro-sites) skip this validation
-       as they use Gadget or external documentation systems.
-       ```
-
-     - **Architecture validation passed**: Architecture map contains actual file paths and CB flow documentation
-     - **CRITICAL PURPOSE**: Ensures session handoffs include complete, current technical context
+   - **Quick Architecture Status** (for context only):
+     - Note if project is external (cb-shopify, cb-junogo, astro-sites) or CB internal
+     - Simple status check - don't validate completeness during save
 
 **Phase 3: Create Handoff Instructions**
 4. **Create Resume Instruction File:**
@@ -165,8 +107,8 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 ## CURRENT TODO FILE
 **Path:** file:[exact-path-to-todo-readme]
 **Status:** [Working on step X of Y - specific current focus]
-**Directory Structure:** [✅ Complete (7/7 files) or ⚠️ Incomplete (X/7 files) with missing files listed]
-**Architecture Map:** [✅ Complete and Current or ⚠️ Template or ⚠️ Partial (X/Y checklist items) or 🚫 OUTDATED - /update-architecture required]
+**Directory Structure:** [✅ Complete (7/7 files) or ⚠️ Incomplete (X/7 files)]
+**Architecture Map:** [Project type and basic status - full validation on resume]
 
 ## WHAT YOU WERE WORKING ON
 [Clear description of the task in progress]

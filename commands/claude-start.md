@@ -79,6 +79,11 @@ Read the instruction file created by `/claude-save` or `/claude-save-fast` and f
 8. **Verify expected state:** Confirm git status, processes, etc. match expectations
    - **Docker containers check:** Use `docker ps` to verify containers are running
    - **If containers not found:** ASK USER immediately - do not troubleshoot Docker issues
+8.5. **Architecture Validation (CB Projects Only):** Validate architecture map is current
+   - **Skip for external projects:** cb-shopify, cb-junogo, astro-sites (use Gadget/external docs)
+   - **For CB projects:** Check if architecture-map.md needs updating
+   - **If outdated:** Recommend running `/update-architecture` to document changes
+   - **If current:** Proceed with session resume
 9. **Restore TodoWrite:** Set up todos exactly as documented in instruction file
 
 **Step 4: Present Status and Wait**
