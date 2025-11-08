@@ -25,77 +25,75 @@ Read the instruction file created by `/claude-save` or `/claude-save-fast` and f
 1. **Change to project directory:** `cd [project]`
 2. **Get current branch:** `git branch --show-current`
 
-**Step 2: Find and Read Instructions**
-3. **Locate context file:** `.claude/branch-context/[branch-name]-context.md`
-4. **Read instruction file:** Load the complete handoff document
-5. **Parse instructions:** Extract setup steps, current state, todos, next actions
-6. **Todo directory inventory check:** Verify todo directory has exactly 7 files:
+**Step 2: Query OpenMemory FIRST (Primary Context Source)**
+3. **Check OpenMemory server availability:**
    ```bash
-   # Expected 7 files exactly:
-   # 1. README.md  2. [branch-name]-plan.md  3. progress.log
-   # 4. debug.log  5. notes.md  6. architecture-map.md  7. user-documentation.md
+   curl -s http://localhost:8080/health 2>/dev/null
    ```
-   - **File count validation**: `ls -1 [todo-path] | wc -l` should return 7
-   - **Missing file alert**: Report any missing required files
-   - **Extra file warning**: Report any unexpected files
-   - **Structure status**: "✅ Complete (7/7 files)" or "⚠️ Incomplete (X/7 files, missing: [files])"
 
-**Step 2.5: OpenMemory Context Retrieval (Automatic with Fallback)**
-6.5. **Query OpenMemory for Relevant Context:**
-   - **Check OpenMemory server availability:**
-     ```bash
-     curl -s http://localhost:8080/health 2>/dev/null
-     ```
-
-   - **If server available (automatic):**
+4. **Query OpenMemory for Context (Primary):**
+   - **If server available - Query for recent work:**
      ```bash
      cd /Users/brent/scripts/CB-Workspace/cb-memory-system
 
      # Query for project-specific recent work
      ./scripts/query-memory.sh "project:[project-name] recent work" 5
 
+     # Query for current branch work
+     ./scripts/query-memory.sh "project:[project-name] branch:[branch-name]" 3
+
      # Query for similar problems/patterns
-     ./scripts/query-memory.sh "[current-task-keywords]" 5
-
-     # Query for cross-project patterns if relevant
-     ./scripts/query-memory.sh "[technology/architecture] patterns" 3
+     ./scripts/query-memory.sh "[current-branch-keywords]" 5
      ```
 
-   - **If server not available (fallback):**
+   - **If OpenMemory has recent context:**
+     - **Use memory as primary source** for session restoration
+     - **Extract todo information** from memory results
+     - **Identify current focus** from recent memories
+     - **Skip file-based search** unless needed for verification
+
+   - **If OpenMemory has no relevant context:**
+     - Continue to file-based fallback search
+
+   - **If server not available:**
      ```
-     ⚠️ OpenMemory server not running - using file-based context only
+     ⚠️ OpenMemory server not running - falling back to file-based context
      💡 Start server: cd /Users/brent/scripts/OpenMemory/backend && npm run dev
-     ✅ Continuing with context file instructions
      ```
 
-   - **Memory Integration:**
-     - **Surface relevant memories** alongside file-based context
-     - **Cross-reference patterns** from other projects
-     - **Highlight solutions** to similar problems
-     - **Note**: Memory results supplement, don't replace, the instruction file
+**Step 3: File-Based Context Fallback (If Needed)**
+5. **IF no OpenMemory context found, locate context file:** `.claude/branch-context/[branch-name]-context.md`
+6. **Read instruction file:** Load the handoff document if it exists
+7. **Parse instructions:** Extract setup steps, current state, todos, next actions
+8. **Todo directory inventory check:** Look for todo directory structure:
+   ```bash
+   # Expected 7 files exactly:
+   # 1. README.md  2. [branch-name]-plan.md  3. progress.log
+   # 4. debug.log  5. notes.md  6. architecture-map.md  7. user-documentation.md
+   ```
 
-**Step 3: Execute Setup Instructions**
-7. **Follow IMMEDIATE SETUP section:** Execute each command listed
-8. **Verify expected state:** Confirm git status, processes, etc. match expectations
+**Step 4: Execute Setup Instructions**
+9. **Follow setup from context source:** Execute commands from OpenMemory or file-based instructions
+10. **Verify expected state:** Confirm git status, processes, etc. match expectations
    - **Docker containers check:** Use `docker ps` to verify containers are running
    - **If containers not found:** ASK USER immediately - do not troubleshoot Docker issues
-8.5. **Architecture Validation (CB Projects Only):** Validate architecture map is current
+11. **Architecture Validation (CB Projects Only):** Validate architecture map is current
    - **Skip for external projects:** cb-shopify, cb-junogo, astro-sites (use Gadget/external docs)
    - **For CB projects:** Check if architecture-map.md needs updating
    - **If outdated:** Recommend running `/update-architecture` to document changes
    - **If current:** Proceed with session resume
-9. **Restore TodoWrite:** Set up todos exactly as documented in instruction file
+12. **Restore TodoWrite:** Set up todos from OpenMemory context or instruction file
 
-**Step 4: Present Status and Wait**
-10. **Show resume summary:** Display what was restored and current state (including todo inventory results)
-11. **Present OpenMemory insights (if available):** Surface relevant memories and cross-project patterns
-12. **Present next actions:** Show the priority actions from instruction file
-13. **Ask for direction:** "I've restored your session. Which task should I work on first?"
+**Step 5: Present Status and Wait**
+13. **Show resume summary:** Display what was restored and current state
+14. **Present OpenMemory insights:** Surface relevant memories and cross-project patterns
+15. **Present next actions:** Show priority actions from memory or instruction file
+16. **Ask for direction:** "I've restored your session. Which task should I work on first?"
 
 **🎯 KEY PRINCIPLES:**
-- **Follow the instructions exactly** as written in the context file
-- **Don't improvise** - the previous Claude documented everything needed
-- **Verify state matches expectations** from the instruction file
+- **OpenMemory first** - Use intelligent memory as primary context source
+- **File-based fallback** - Only use context files when memory has no relevant info
+- **Follow context exactly** - Don't improvise, use documented instructions
 - **Ask user for guidance** after restoring the session
 
 **📄 INSTRUCTION FILE FORMAT:**
@@ -123,16 +121,18 @@ The context file contains everything needed to resume:
 ```
 
 **🔄 EXPECTED WORKFLOW:**
-1. Previous session: `/claude-save <project>` → Shows path to instruction file
-2. Current session: `/claude-start <project>` → Reads instruction file and follows it
-3. Result: **Perfect resume** exactly where previous Claude left off
+1. Work on project: OpenMemory automatically captures context during development
+2. Save session: `/claude-save <project>` → Stores to memory + file backup
+3. Start session: `/claude-start <project>` → Queries OpenMemory first, file fallback if needed
+4. Result: **Perfect resume** with intelligent context from memory system
 
 **✅ SUCCESS CRITERIA:**
-- Context file found and read successfully
-- All setup commands executed as instructed
-- TodoWrite restored to exact previous state
-- User presented with next actions and asked for direction
-- **Zero information loss** between sessions
+- OpenMemory queried first for intelligent context
+- Relevant memories retrieved and presented to user
+- Setup commands executed from memory or file context
+- TodoWrite restored from memory or instruction file
+- User presented with memory insights and next actions
+- **Zero information loss** with intelligent context bridging
 
 **🚨 CRITICAL: NO AUTOMATIC ACTIONS**
 - **READ ONLY**: Follow instructions but don't execute work automatically
