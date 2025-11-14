@@ -48,6 +48,19 @@ Claude Session Close - Standardized Handoff System
 1. **IMMEDIATE Context Preservation (BEFORE ANY SCANS):**
    - Get current branch name: `git branch --show-current`
    - Get current working directory: `pwd`
+   - **Verify README.md Branch Reference** if todo directory exists:
+     ```bash
+     CURRENT_BRANCH=$(git branch --show-current)
+     # Find todo directory for current branch
+     TODO_README=$(find todo/current -name "README.md" -path "*$(echo $CURRENT_BRANCH | sed 's|.*/||')*" 2>/dev/null | head -1)
+     if [ -n "$TODO_README" ]; then
+       if ! grep -q "**Branch:** $CURRENT_BRANCH" "$TODO_README"; then
+         echo "⚠️ README.md shows incorrect branch - updating before session close..."
+         sed -i.bak "s/\*\*Branch:\*\* .*/\*\*Branch:\*\* $CURRENT_BRANCH/" "$TODO_README"
+         echo "✅ Updated README.md to show current branch: $CURRENT_BRANCH"
+       fi
+     fi
+     ```
    - **IMMEDIATELY save branch context** to prevent loss during compacting
    - Create/update context file: `.claude/branch-context/[type]-[branch-name]-context.md`
    - Include comprehensive session summary with timestamp

@@ -63,7 +63,7 @@ Create standardized bug fix branch with automated documentation setup and task t
    - **Generate Standardized 7-File Documentation Structure** (same as all task types)
 
 **Always Create These 7 Standardized Files:**
-   - **README.md** - Task overview, branch, current status, references to guidelines
+   - **README.md** - Task overview, branch, current status, references to guidelines **[MUST show actual branch name]**
    - **[branch-name]-plan.md** - Bug requirements + acceptance criteria + fix plan + testing strategy + completion checklist
    - **progress.log** - Daily progress tracking and updates
    - **debug.log** - Debug attempts and troubleshooting sessions (using `/debug-attempt` command)
@@ -71,8 +71,15 @@ Create standardized bug fix branch with automated documentation setup and task t
    - **architecture-map.md** - Copy from `/todo/architecture-map-template.md` and customize for bug fix task
    - **user-documentation.md** - Public and private user documentation (API docs, guides, patch notes)
 
-   **README.md Template Must Include Guidelines References:**
+   **README.md Template Must Include Actual Branch Name and Guidelines References:**
    ```markdown
+   # Bug Fix: [TICKET-ID] - [Brief Description]
+
+   **Branch:** [actual-branch-name]
+   **Status:** IN PROGRESS
+   **Created:** [current-date]
+   **Category:** fix
+
    ## 📚 **REQUIRED READING FOR CLAUDE**
    **Before working on this task, READ THESE GUIDELINES:**
    - `../../../todo-workflow-guidelines.md` - Session management and workflow rules
@@ -80,6 +87,8 @@ Create standardized bug fix branch with automated documentation setup and task t
 
    **Critical reminder**: If you don't know what todo you're working on, ASK IMMEDIATELY.
    ```
+
+   **CRITICAL INSTRUCTION**: Replace `[actual-branch-name]` with the real git branch name created (e.g., `fix/sentry-9-partnership-tickets-query` NOT placeholder text)
 
 **Bug-Specific Template Content for [branch-name]-plan.md:**
 ```markdown
@@ -170,13 +179,18 @@ Create standardized bug fix branch with automated documentation setup and task t
 ```
 
 7. **Verification and Summary:**
-   - Confirm all 4 files created:
-     - ✅ README.md (customized with branch name and bug details)
-     - ✅ bug-report.md (populated with ticket information)
-     - ✅ fix-plan.md (ready for investigation planning)
-     - ✅ progress.log (initialized with setup log)
+   - Confirm all 7 standardized files created
+   - **VERIFY README.md shows actual branch name** (not placeholder)
    - Display task folder location: `/todo/current/fixes/[branch-name]/`
    - Show branch name: `fix/[branch-name]`
+   - List the 7 files created with their purposes
+   - Ready for bug investigation work
+
+   **EXAMPLE README.md Verification:**
+   ```markdown
+   **Branch:** fix/sentry-9-partnership-tickets-query  ✅ CORRECT
+   **Branch:** [actual-branch-name]                     ❌ WRONG - still placeholder
+   ```
 
 **🎯 USAGE EXAMPLES:**
 ```bash
@@ -188,10 +202,16 @@ Create standardized bug fix branch with automated documentation setup and task t
 **✅ AUTOMATED ACTIONS:**
 1. Parse ticket ID and validate source
 2. Create standardized fix branch from clean master
-3. Copy and customize README.md template with bug-specific file catalog
-4. Generate complete documentation structure (4 files)
-5. Initialize progress tracking
-6. Ready for immediate investigation work
+3. Create `/todo/current/fixes/[branch-name]/` directory structure
+4. Generate standardized 7-file documentation structure for ALL bugfix tasks
+5. Initialize all files with appropriate templates (progress.log, debug.log, architecture-map.md, etc.)
+6. **POPULATE README.md with ACTUAL git branch name** (not placeholders)
+7. Ready for immediate bug investigation work with complete documentation framework
+
+**🐛 BRANCH NAME REQUIREMENTS:**
+- README.md MUST show real branch name: `**Branch:** fix/sentry-9-partnership-tickets-query`
+- NEVER leave placeholders: `**Branch:** [actual-branch-name]` ❌
+- Verify branch name is correctly populated in final step
 
 **🔄 POST-FIX WORKFLOW:**
 1. Work on fix using the documentation structure
@@ -213,6 +233,7 @@ Create standardized bug fix branch with automated documentation setup and task t
 **🚨 CRITICAL SUCCESS FACTORS:**
 - ✅ Always ask for clarification on ambiguous ticket IDs
 - ✅ Start from clean master branch (handle uncommitted changes safely)
-- ✅ Copy README.md template and customize with branch name
-- ✅ Create all 4 required files with proper templates
+- ✅ Copy README.md template and customize with **ACTUAL branch name**
+- ✅ Create all 7 standardized files with proper templates
+- ✅ **Verify README.md shows real git branch name** (not placeholders)
 - ✅ Initialize progress.log for tracking investigation

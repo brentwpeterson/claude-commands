@@ -45,6 +45,19 @@ Systematically complete a branch by verifying all work is done, merging to maste
 3. **Analyze Current Branch:**
    - Detect current branch name and type (feature/fix/enhancement/etc.)
    - Find corresponding task folder in `/todo/current/[branch-type]/`
+   - **Verify README.md Branch Reference** in task folder:
+     ```bash
+     CURRENT_BRANCH=$(git branch --show-current)
+     TASK_FOLDER=$(find todo/current -type d -name "*$(echo $CURRENT_BRANCH | sed 's|.*/||')*" 2>/dev/null | head -1)
+
+     if [ -n "$TASK_FOLDER" ] && [ -f "$TASK_FOLDER/README.md" ]; then
+       if ! grep -q "**Branch:** $CURRENT_BRANCH" "$TASK_FOLDER/README.md"; then
+         echo "⚠️ README.md shows incorrect branch - updating before completion..."
+         sed -i.bak "s/\*\*Branch:\*\* .*/\*\*Branch:\*\* $CURRENT_BRANCH/" "$TASK_FOLDER/README.md"
+         echo "✅ Updated README.md to show current branch: $CURRENT_BRANCH"
+       fi
+     fi
+     ```
    - Verify branch is fully merged to master or ready to merge
    - Check for any uncommitted changes
 

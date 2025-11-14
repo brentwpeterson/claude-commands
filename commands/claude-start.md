@@ -25,44 +25,40 @@ Read the instruction file created by `/claude-save` or `/claude-save-fast` and f
 1. **Change to project directory:** `cd [project]`
 2. **Get current branch:** `git branch --show-current`
 
-**Step 2: Query OpenMemory FIRST (Primary Context Source)**
-3. **Check OpenMemory server availability:**
-   ```bash
-   curl -s http://localhost:8080/health 2>/dev/null
-   ```
+**Step 2: Query Official MCP Memory Server FIRST (Primary Context Source)**
+3. **Check Official MCP Memory Server availability:**
+   Try to use `mcp__memory__read_graph` tool to test connectivity
 
-4. **Query OpenMemory for Context (Primary):**
-   - **If server available - Query for recent work:**
-     ```bash
-     cd /Users/brent/scripts/CB-Workspace/cb-memory-system
-
-     # Query for project-specific recent work
-     ./scripts/query-memory.sh "project:[project-name] recent work" 5
+4. **Query Official MCP Memory Server for Context (Primary):**
+   - **If MCP available - Query for recent work:**
+     ```
+     # Query for project-specific session data
+     Use mcp__memory__search_nodes with: "project [project-name] session"
 
      # Query for current branch work
-     ./scripts/query-memory.sh "project:[project-name] branch:[branch-name]" 3
+     Use mcp__memory__search_nodes with: "[project-name] [branch-name]"
 
-     # Query for similar problems/patterns
-     ./scripts/query-memory.sh "[current-branch-keywords]" 5
+     # Query for similar patterns across projects
+     Use mcp__memory__search_nodes with: "[current-branch-keywords]"
      ```
 
-   - **If OpenMemory has recent context:**
-     - **Use memory as primary source** for session restoration
-     - **Extract todo information** from memory results
-     - **Identify current focus** from recent memories
+   - **If MCP has recent context:**
+     - **Use knowledge graph as primary source** for session restoration
+     - **Extract todo information** from session entities
+     - **Identify current focus** from recent session observations
      - **Skip file-based search** unless needed for verification
 
-   - **If OpenMemory has no relevant context:**
+   - **If MCP has no relevant context:**
      - Continue to file-based fallback search
 
-   - **If server not available:**
+   - **If MCP not available:**
      ```
-     ⚠️ OpenMemory server not running - falling back to file-based context
-     💡 Start server: cd /Users/brent/scripts/OpenMemory/backend && npm run dev
+     ⚠️ Official MCP Memory Server not available - falling back to file-based context
+     💡 MCP should be configured in .mcp.json with @modelcontextprotocol/server-memory
      ```
 
 **Step 3: File-Based Context Fallback (If Needed)**
-5. **IF no OpenMemory context found, locate context file:** `.claude/branch-context/[branch-name]-context.md`
+5. **IF no MCP context found, locate context file:** `.claude/branch-context/[branch-name]-context.md`
 6. **Read instruction file:** Load the handoff document if it exists
 7. **Parse instructions:** Extract setup steps, current state, todos, next actions
 8. **Todo directory inventory check:** Look for todo directory structure:
@@ -77,22 +73,37 @@ Read the instruction file created by `/claude-save` or `/claude-save-fast` and f
 10. **Verify expected state:** Confirm git status, processes, etc. match expectations
    - **Docker containers check:** Use `docker ps` to verify containers are running
    - **If containers not found:** ASK USER immediately - do not troubleshoot Docker issues
-11. **Architecture Validation (CB Projects Only):** Validate architecture map is current
+11. **Verify README.md Branch Reference:** If todo directory found, check README.md shows correct branch
+   ```bash
+   # Get current branch
+   CURRENT_BRANCH=$(git branch --show-current)
+
+   # Check if README.md shows correct branch
+   if [ -f "todo/current/[category]/[task]/README.md" ]; then
+     if ! grep -q "**Branch:** $CURRENT_BRANCH" "todo/current/[category]/[task]/README.md"; then
+       echo "⚠️ README.md shows incorrect branch name - needs update"
+       # Update the branch line in README.md
+       sed -i.bak "s/\*\*Branch:\*\* .*/\*\*Branch:\*\* $CURRENT_BRANCH/" "todo/current/[category]/[task]/README.md"
+       echo "✅ Updated README.md to show current branch: $CURRENT_BRANCH"
+     fi
+   fi
+   ```
+12. **Architecture Validation (CB Projects Only):** Validate architecture map is current
    - **Skip for external projects:** cb-shopify, cb-junogo, astro-sites (use Gadget/external docs)
    - **For CB projects:** Check if architecture-map.md needs updating
    - **If outdated:** Recommend running `/update-architecture` to document changes
    - **If current:** Proceed with session resume
-12. **Restore TodoWrite:** Set up todos from OpenMemory context or instruction file
+13. **Restore TodoWrite:** Set up todos from MCP memory context or instruction file
 
 **Step 5: Present Status and Wait**
-13. **Show resume summary:** Display what was restored and current state
-14. **Present OpenMemory insights:** Surface relevant memories and cross-project patterns
-15. **Present next actions:** Show priority actions from memory or instruction file
-16. **Ask for direction:** "I've restored your session. Which task should I work on first?"
+14. **Show resume summary:** Display what was restored and current state
+15. **Present MCP memory insights:** Surface relevant session entities and cross-project patterns
+16. **Present next actions:** Show priority actions from memory or instruction file
+17. **Ask for direction:** "I've restored your session. Which task should I work on first?"
 
 **🎯 KEY PRINCIPLES:**
-- **OpenMemory first** - Use intelligent memory as primary context source
-- **File-based fallback** - Only use context files when memory has no relevant info
+- **Official MCP first** - Use knowledge graph memory as primary context source
+- **File-based fallback** - Only use context files when MCP has no relevant info
 - **Follow context exactly** - Don't improvise, use documented instructions
 - **Ask user for guidance** after restoring the session
 
@@ -121,18 +132,18 @@ The context file contains everything needed to resume:
 ```
 
 **🔄 EXPECTED WORKFLOW:**
-1. Work on project: OpenMemory automatically captures context during development
-2. Save session: `/claude-save <project>` → Stores to memory + file backup
-3. Start session: `/claude-start <project>` → Queries OpenMemory first, file fallback if needed
-4. Result: **Perfect resume** with intelligent context from memory system
+1. Work on project: Official MCP memory server automatically captures context during development
+2. Save session: `/claude-save <project>` → Stores to MCP memory + file backup
+3. Start session: `/claude-start <project>` → Queries MCP memory first, file fallback if needed
+4. Result: **Perfect resume** with knowledge graph context from official MCP
 
 **✅ SUCCESS CRITERIA:**
-- OpenMemory queried first for intelligent context
-- Relevant memories retrieved and presented to user
-- Setup commands executed from memory or file context
-- TodoWrite restored from memory or instruction file
-- User presented with memory insights and next actions
-- **Zero information loss** with intelligent context bridging
+- Official MCP Memory Server queried first for intelligent context
+- Relevant session entities retrieved and presented to user
+- Setup commands executed from MCP memory or file context
+- TodoWrite restored from MCP memory or instruction file
+- User presented with knowledge graph insights and next actions
+- **Zero information loss** with multi-window safe context bridging
 
 **🚨 CRITICAL: NO AUTOMATIC ACTIONS**
 - **READ ONLY**: Follow instructions but don't execute work automatically

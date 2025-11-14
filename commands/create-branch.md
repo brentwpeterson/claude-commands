@@ -94,6 +94,9 @@ Create standardized development branch with automated documentation setup based 
 **Created:** [current-date]
 **Category:** [category]
 
+**IMPORTANT**: When ready to implement, run `/create-branch todo/current/[category]/[task-name]/README.md`
+which will create the actual git branch and update this README with the real branch name.
+
 ## 📚 **REQUIRED READING FOR CLAUDE**
 **Before working on this task, READ THESE GUIDELINES:**
 - `../../../todo-workflow-guidelines.md` - Session management and workflow rules
@@ -137,6 +140,9 @@ Create standardized development branch with automated documentation setup based 
 **Status:** PLANNING
 **Created:** [current-date]
 **Category:** [category]
+
+**IMPORTANT**: When ready to implement, run `/create-branch todo/current/[category]/[task-name]/README.md`
+which will create the actual git branch and update this README with the real branch name.
 
 ## 📚 **REQUIRED READING FOR CLAUDE**
 - `../../../todo-workflow-guidelines.md` - Session management and workflow rules
@@ -205,6 +211,9 @@ Create standardized development branch with automated documentation setup based 
 **Status:** PLANNING
 **Created:** [current-date]
 **Category:** fix
+
+**IMPORTANT**: When ready to implement, run `/create-branch todo/current/fix/[bug-id]/README.md`
+which will create the actual git branch and update this README with the real branch name.
 
 ## 📚 **REQUIRED READING FOR CLAUDE**
 - `../../../todo-workflow-guidelines.md` - Session management and workflow rules
@@ -510,6 +519,7 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
    - If `/todo/current/` doesn't exist, create the entire directory structure
 
 5. **Generate Standardized 7-File Documentation Structure:**
+   **CRITICAL: Populate README.md with ACTUAL branch name, not placeholders**
    **ALL CATEGORIES use the same standardized structure (7 files):**
 
    **Always Create These 7 Files:**
@@ -521,8 +531,15 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
    - **architecture-map.md** - CB technical flow: Frontend → DataLayer → Router → Service Layer → Model → Collection
    - **user-documentation.md** - Public and private user documentation (API docs, guides, installation, examples, internal docs)
 
-   **README.md Template Must Include Guidelines References:**
+   **README.md Template Must Include Actual Branch Name and Guidelines References:**
    ```markdown
+   # [Task Name from Document]
+
+   **Branch:** [actual-branch-name]
+   **Status:** IN PROGRESS
+   **Created:** [current-date]
+   **Category:** [category]
+
    ## 📚 **REQUIRED READING FOR CLAUDE**
    **Before working on this task, READ THESE GUIDELINES:**
    - `../../../todo-workflow-guidelines.md` - Session management and workflow rules
@@ -530,6 +547,8 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
 
    **Critical reminder**: If you don't know what todo you're working on, ASK IMMEDIATELY.
    ```
+
+   **CRITICAL INSTRUCTION**: Replace `[actual-branch-name]` with the real git branch name created (e.g., `feature/user-authentication` NOT placeholder text)
 
    **File Templates Based on Category:**
    - **Features**: Focus on user-facing functionality and feature requirements
@@ -540,6 +559,13 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
 
 **Phase 4: File Template Creation**
 6. **Initialize All 7 Files with Templates:**
+
+   **CRITICAL: Update README.md Branch Information**
+   - If README.md already exists (from planning mode), **UPDATE the branch line**:
+     - Change from: `**Branch:** [Not created yet - planning phase]`
+     - Change to: `**Branch:** [actual-branch-name]` (e.g., `feature/user-authentication`)
+     - Update status from `PLANNING` to `IN PROGRESS`
+   - If creating new README.md, populate with actual branch name from start
 
    **progress.log Template:**
    ```
@@ -580,10 +606,17 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
 
 7. **Verification and Summary:**
    - Confirm all 7 standardized files created
+   - **VERIFY README.md shows actual branch name** (not placeholder)
    - Display task folder location: `/todo/current/[category]/[branch-name]/`
    - Show branch name: `[category]/[branch-name]`
    - List the 7 files created with their purposes
    - Ready for development work
+
+   **EXAMPLE README.md Verification:**
+   ```markdown
+   **Branch:** feature/user-authentication  ✅ CORRECT
+   **Branch:** [actual-branch-name]         ❌ WRONG - still placeholder
+   ```
 
 **🎯 USAGE EXAMPLES:**
 
@@ -787,7 +820,14 @@ todo/current/
 3. Create `/todo/current/[category]/[branch-name]/` directory structure (creates full path if needed)
 4. Generate standardized 7-file documentation structure for ALL task types
 5. Initialize all files with appropriate templates (progress.log, debug.log, architecture-map.md, etc.)
-6. Ready for immediate development work with complete documentation framework
+6. **POPULATE README.md with ACTUAL git branch name** (not placeholders)
+7. Ready for immediate development work with complete documentation framework
+
+**🌿 BRANCH NAME REQUIREMENTS:**
+- README.md MUST show real branch name: `**Branch:** feature/user-authentication`
+- NEVER leave placeholders: `**Branch:** [actual-branch-name]` ❌
+- Update planning mode READMEs when transitioning to implementation
+- Verify branch name is correctly populated in final step
 
 **🔄 BRANCH NAMING CONVENTION:**
 - Use kebab-case (hyphens, no spaces)

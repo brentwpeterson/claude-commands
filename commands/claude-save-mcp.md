@@ -1,9 +1,9 @@
-Claude Session Save - Create Resume Instructions + Preserve Work
+Claude Session Save with MCP Verification - Create Resume Instructions + Preserve Work
 
-**USAGE:** `/claude-save <keyword>` - Save work + create handoff instructions for next Claude session
+**USAGE:** `/claude-save-mcp <project>` - Verify MCP + Save work + create handoff instructions for next Claude session
 
 **🎯 PURPOSE:**
-Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where you left off
+Verify OpenMemory MCP server is working, then create comprehensive INSTRUCTION FILE for next Claude to resume exactly where you left off
 
 **🚨 CRITICAL: NEVER ASSUME COMPLETION WITHOUT HUMAN CONFIRMATION 🚨**
 
@@ -38,20 +38,48 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 
 **📋 COMPLETE SAVE WORKFLOW:**
 
+**Phase 0: MCP Verification (NEW)**
+1. **Test Official Anthropic MCP Memory Server:**
+   - **Test MCP connectivity:** Use `mcp__memory__read_graph` tool to verify connection
+   - **Expected result:** Should return knowledge graph (even if empty) without errors
+   - **If MCP fails:**
+     ```
+     ❌ Official Anthropic MCP Memory Server Connection Failed!
+
+     🔧 Troubleshooting Steps:
+     1. Check Claude Code MCP configuration in .mcp.json
+     2. Verify official memory server is configured: @modelcontextprotocol/server-memory
+     3. Restart Claude Code to reload MCP connections
+     4. Check memory file exists: /Users/brent/scripts/CB-Workspace/.claude/cb-workspace-memory.json
+
+     ⏸️ STOPPING SAVE - Fix official MCP first, then retry /claude-save-mcp
+     ```
+   - **If MCP succeeds:**
+     ```
+     ✅ Official Anthropic MCP Memory Server Connected Successfully!
+     🧠 Knowledge graph storage ready - multi-window safe
+     📋 Proceeding with official MCP save workflow...
+     ```
+
+2. **Test Memory Operations:**
+   - **Create test entity:** Use `mcp__memory__create_entities` to store test data
+   - **Query test data:** Use `mcp__memory__search_nodes` to verify retrieval works
+   - **Report status:** "🧠 Official MCP fully operational - knowledge graph storage/retrieval confirmed"
+
 **Phase 1: Work Preservation**
-1. **Check Development Status:**
+3. **Check Development Status:**
    - Run `git status` to capture exact file states
    - Analyze changes to understand what work was completed
    - Ensure no sensitive files (.env, keys, etc.) are included
 
-2. **Commit Development Work:**
+4. **Commit Development Work:**
    - Stage all relevant development files: `git add [relevant-files]`
    - Create descriptive commit message based on changes
    - Format: `git commit -m "[Description of work completed] 🤖 Generated with Claude Code"`
    - **IMPORTANT**: Commit actual development work FIRST before context
 
 **Phase 2: Todo Directory Inventory Check**
-3. **Verify Todo Directory Structure:**
+5. **Verify Todo Directory Structure:**
    - **MANDATORY: Get current todo path** - Ask user if not obvious
    - **Check todo directory exists**: Verify `todo/current/[category]/[task-name]/` path
    - **Verify README.md Branch Reference**: Ensure README.md shows current git branch:
@@ -98,22 +126,28 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
      - Simple status check - don't validate completeness during save
 
 **Phase 3: Create Handoff Instructions**
-4. **Create Resume Instruction File:**
+6. **Create Resume Instruction File:**
    - Get current branch: `git branch --show-current`
    - Get working directory: `pwd`
    - Include todo inventory results in context
    - Check running processes: `docker ps`, `lsof -i :3000`, etc.
-   - Create: `.claude/branch-context/[keyword]-context.md`
+   - Create: `.claude/branch-context/[branch-name]-context.md`
    - **Format as INSTRUCTIONS TO CLAUDE**, not status report:
 
 ```markdown
 # Resume Instructions for Claude
 
 ## IMMEDIATE SETUP
-1. **Change directory:** `cd [exact-working-directory]`
-2. **Verify git status:** `git status` (expect: [list files])
-3. **Check processes:** `docker ps` (expect: [containers running])
-4. **Verify branch:** `git branch --show-current` (should be: [branch])
+1. **Verify MCP first:** Run `/claude-save-mcp` initial MCP test or use `mcp__memory__read_graph` tool
+2. **Change directory:** `cd [exact-working-directory]`
+3. **Verify git status:** `git status` (expect: [list files])
+4. **Check processes:** `docker ps` (expect: [containers running])
+5. **Verify branch:** `git branch --show-current` (should be: [branch])
+
+## MCP STATUS
+**Official Anthropic MCP Memory Server:** ✅ Verified working during save
+**Memory Storage:** ✅ Session stored in knowledge graph format
+**MCP Tools Available:** Create entities/relations, Search nodes, Read graph
 
 ## CURRENT TODO FILE
 **Path:** file:[exact-path-to-todo-readme]
@@ -177,64 +211,82 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 [Any important details, gotchas, or background]
 ```
 
-4. **Update CLAUDE.md Header (Optional):**
+7. **Update CLAUDE.md Header (Optional):**
    - Add brief status to project CLAUDE.md if needed
    - Keep minimal - main instructions are in context file
 
 **Phase 4: Context Commit + Display Path**
-5. **Commit Instructions:**
+8. **Commit Instructions:**
    - Stage context files: `git add ../.claude/branch-context/`
    - Commit with: "Save resume instructions for session restart"
 
-**Phase 5: Official MCP Memory Integration (Automatic with Fallback)**
-6. **Store Session Summary to Official Anthropic MCP Memory Server:**
-   - **Check official MCP memory server availability:**
-     Try to use `mcp__memory__read_graph` tool to test connectivity
+**Phase 5: Official MCP-Only Memory Storage**
+9. **Store Session Summary to Official Anthropic MCP Memory Server:**
+   - **🚨 NO FALLBACKS - OFFICIAL MCP REQUIRED:**
+     - This command ONLY works with official Anthropic MCP
+     - If MCP failed in Phase 0, this command should have stopped
+     - No file-based context, no HTTP API fallback
 
-   - **If MCP available (automatic):**
+   - **Use official MCP tools for storage:**
      Use `mcp__memory__create_entities` tool with:
      ```
      entities: [
        {
-         "name": "Session-YYYY-MM-DD-[keyword]",
+         "name": "Session-YYYY-MM-DD-[project]-[branch]",
          "entityType": "session",
          "observations": [
-           "Session saved for [keyword] work",
-           "Branch: [current-branch]",
-           "Work: [brief-summary]",
-           "Todo status: [todo-structure-status]",
-           "Files changed: [count]",
-           "Architecture status: [architecture-status]"
+           "Session saved for [project] on [branch]",
+           "[What was accomplished]",
+           "[Current focus]",
+           "[Next priority]"
          ]
        }
      ]
      ```
 
-   - **If MCP not available (fallback):**
+   - **Query verification:**
+     Use `mcp__memory__search_nodes` with: "Session-YYYY-MM-DD project [name]" to verify storage
+
+   - **Success confirmation:**
      ```
-     ⚠️ Official MCP Memory Server not available - using file-based context only
-     💡 MCP should be configured in .mcp.json with @modelcontextprotocol/server-memory
-     ✅ Session still saved to context file successfully
+     ✅ Session stored to Official Anthropic MCP Memory Server ONLY
+     🧠 Knowledge graph updated with session entity
+     🔍 Searchable via MCP tools: mcp__memory__search_nodes
+     ℹ️ Multi-window safe - no SQLite locking issues
      ```
 
-   - **Session Entity Format for Memory:**
-     - **Name**: "Session-YYYY-MM-DD-[keyword]"
-     - **Type**: "session"
-     - **Observations**: Current state, accomplishments, next steps
+10. **END BY SHOWING CONTEXT FILE PATH:**
+    - **⚠️ CRITICAL**: If todo path doesn't exist, STOP and ask user to clarify
+    - Display: "📁 Resume instructions saved to: `.claude/branch-context/[branch-name]-context.md`"
+    - **MCP Status**: "🧠 ✅ Session stored EXCLUSIVELY to Official Anthropic MCP Memory Server"
+    - **Multi-Window Safe**: "⚡ Knowledge graph storage - no SQLite locking issues"
 
-7. **END BY SHOWING CONTEXT FILE PATH:**
-   - **⚠️ CRITICAL**: If todo path doesn't exist, STOP and ask user to clarify
-   - Display: "📁 Resume instructions saved to: `.claude/branch-context/[keyword]-context.md`"
-   - **If MCP worked**: "🧠 + Session stored to official MCP memory server"
-   - **If MCP failed**: "⚠️ (Official MCP unavailable - file-based only)"
+**🎯 KEY DIFFERENCES FROM /claude-save:**
+- **🔍 Pre-flight MCP verification** - tests MCP connectivity before any save operations
+- **🧠 MCP-ONLY storage** - NO fallbacks to file-based context, MCP is required
+- **🛡️ Fail-fast approach** - stops immediately if MCP doesn't work
+- **⚡ Guaranteed intelligent memory** - ensures OpenMemory storage or fails completely
+- **📋 Enhanced resume instructions** - includes MCP verification in resume steps
 
-**🎯 KEY CHANGES:**
-- **Creates INSTRUCTION FILE** instead of status report
-- **Ends with context file path** for next session
-- **Includes everything needed** for immediate resume
-- **Ready for `/claude-start` to read and execute**
+**📊 COMMAND COMPARISON:**
+
+| Command | MCP Required | Fallback Strategy | Use Case |
+|---------|--------------|-------------------|----------|
+| `/claude-save` | Optional | File-based context always works | General saves, MCP uncertainty |
+| `/claude-save-mcp` | **REQUIRED** | **NO FALLBACKS** - MCP or fail | Guaranteed intelligent memory |
 
 **🔄 EXPECTED WORKFLOW:**
-1. `/claude-save <project>` → Creates instruction file, shows path
+1. `/claude-save-mcp <project>` → Tests MCP first, fails if broken, stores ONLY to MCP memory
 2. `/clear new` → Clear current session
-3. `/claude-start <project>` → Reads instruction file and resumes
+3. `/claude-start <project>` → Reads instruction file, verifies MCP, and resumes with intelligent context
+
+**🚀 WHEN TO USE /claude-save-mcp:**
+- **Session start verification**: Run early to ensure MCP works before heavy development
+- **Critical projects**: When intelligent cross-project memory is essential
+- **Pre-context-limit saves**: Before token limits when you need guaranteed memory handoff
+- **Quality assurance**: When you want to ensure memory system is operational
+
+**🚀 WHEN TO USE /claude-save (regular):**
+- **MCP uncertainty**: When you're not sure if MCP is working
+- **Backup scenarios**: When you want file-based context as primary/fallback
+- **Simple projects**: When basic context files are sufficient

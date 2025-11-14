@@ -166,8 +166,16 @@ Resume work on a specific branch in a workspace project with smart conflict reso
    if [ -n "$TASK_FOLDER" ]; then
      echo "📁 Found task documentation: $TASK_FOLDER"
 
-     # Display README if available
+     # Update README.md to show correct branch
      if [ -f "$TASK_FOLDER/README.md" ]; then
+       # Verify README shows current branch
+       if ! grep -q "**Branch:** $TARGET_BRANCH" "$TASK_FOLDER/README.md"; then
+         echo "⚠️ README.md shows incorrect branch name - updating..."
+         sed -i.bak "s/\*\*Branch:\*\* .*/\*\*Branch:\*\* $TARGET_BRANCH/" "$TASK_FOLDER/README.md"
+         echo "✅ Updated README.md to show current branch: $TARGET_BRANCH"
+       fi
+
+       # Display README
        echo ""
        echo "📋 WORK CONTEXT:"
        echo "==============="

@@ -139,7 +139,24 @@ This command provides intelligent branch switching that:
      - TODO: Add rate limiting
      ```
 
-8. **Security Scan New Branch**
+8. **Update README.md Branch Reference**
+   - Find todo directory associated with target branch
+   - Update README.md to show current branch name:
+   ```bash
+   # Get current branch (should be target branch now)
+   CURRENT_BRANCH=$(git branch --show-current)
+
+   # Find todo directory for this branch
+   TODO_DIR=$(find todo/current -type d -name "*${CURRENT_BRANCH##*/}*" -o -name "*$(echo ${CURRENT_BRANCH} | sed 's|.*/||')*" 2>/dev/null | head -1)
+
+   if [ -n "$TODO_DIR" ] && [ -f "$TODO_DIR/README.md" ]; then
+     # Update branch reference in README.md
+     sed -i.bak "s/\*\*Branch:\*\* .*/\*\*Branch:\*\* $CURRENT_BRANCH/" "$TODO_DIR/README.md"
+     echo "✅ Updated README.md to show current branch: $CURRENT_BRANCH"
+   fi
+   ```
+
+9. **Security Scan New Branch**
    ```
    🔒 SECURITY SCAN: features/api-integration
    [████████████████████] 100% - Scanning for security issues
@@ -148,12 +165,12 @@ This command provides intelligent branch switching that:
    ⚠️ 1 warning: Hardcoded localhost URL in config.py:45
    ```
 
-9. **Update TodoWrite**
-   - Clear current todos (they belong to previous branch)
-   - Load todos from branch context if available
-   - Or start fresh if new branch
+10. **Update TodoWrite**
+    - Clear current todos (they belong to previous branch)
+    - Load todos from branch context if available
+    - Or start fresh if new branch
 
-10. **Apply Stashed Changes (if applicable)**
+11. **Apply Stashed Changes (if applicable)**
     ```bash
     # If stash was created:
     git stash pop
@@ -161,7 +178,7 @@ This command provides intelligent branch switching that:
     - Handle any merge conflicts if they occur
 
 ### Phase 5: Summary & Next Steps
-11. **Present Switch Summary**
+12. **Present Switch Summary**
     ```
     ✅ SUCCESSFULLY SWITCHED TO: features/api-integration
 
