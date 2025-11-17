@@ -189,7 +189,8 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 **Phase 5: Official MCP Memory Integration (Automatic with Fallback)**
 6. **Store Session Summary to Official Anthropic MCP Memory Server:**
    - **Check official MCP memory server availability:**
-     Try to use `mcp__memory__read_graph` tool to test connectivity
+     Try to use `mcp__memory__search_nodes` with a simple query to test connectivity
+     **⚠️ NEVER use `mcp__memory__read_graph` - it returns massive token dumps (~14k+)**
 
    - **If MCP available (automatic):**
      Use `mcp__memory__create_entities` tool with:
@@ -227,6 +228,14 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    - Display: "📁 Resume instructions saved to: `.claude/branch-context/[keyword]-context.md`"
    - **If MCP worked**: "🧠 + Session stored to official MCP memory server"
    - **If MCP failed**: "⚠️ (Official MCP unavailable - file-based only)"
+
+**🧠 OFFICIAL MCP MEMORY SERVER BEST PRACTICES:**
+- **✅ USE**: `mcp__memory__search_nodes` for targeted queries - efficient and focused
+- **❌ AVOID**: `mcp__memory__read_graph` - returns massive token dumps (~14k+) that fill context quickly
+- **Search Examples**: "Session-2025-11-17-keyword", "project-name recent", "authentication issues"
+- **Entity Naming**: Use "Session-YYYY-MM-DD-[keyword]" format for consistency
+- **Observations**: Keep concise (1-2 sentences each) to prevent token bloat
+- **Benefits**: Cross-session continuity, pattern discovery, intelligent context bridging
 
 **🎯 KEY CHANGES:**
 - **Creates INSTRUCTION FILE** instead of status report

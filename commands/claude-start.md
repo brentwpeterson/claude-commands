@@ -27,19 +27,23 @@ Read the instruction file created by `/claude-save` or `/claude-save-fast` and f
 
 **Step 2: Query Official MCP Memory Server FIRST (Primary Context Source)**
 3. **Check Official MCP Memory Server availability:**
-   Try to use `mcp__memory__read_graph` tool to test connectivity
+   Try to use `mcp__memory__search_nodes` with a simple test query to verify connectivity
+   **⚠️ NEVER use `mcp__memory__read_graph` - it returns massive token dumps (~14k+) that fill context**
 
 4. **Query Official MCP Memory Server for Context (Primary):**
-   - **If MCP available - Query for recent work:**
+   - **If MCP available - Query for recent work using TARGETED searches:**
      ```
      # Query for project-specific session data
-     Use mcp__memory__search_nodes with: "project [project-name] session"
+     Use mcp__memory__search_nodes with: "Session project-name recent"
+
+     # Query for specific session by date
+     Use mcp__memory__search_nodes with: "Session-2025-11-17 project-name"
 
      # Query for current branch work
-     Use mcp__memory__search_nodes with: "[project-name] [branch-name]"
+     Use mcp__memory__search_nodes with: "project-name branch-name"
 
      # Query for similar patterns across projects
-     Use mcp__memory__search_nodes with: "[current-branch-keywords]"
+     Use mcp__memory__search_nodes with: "current-task-keywords"
      ```
 
    - **If MCP has recent context:**
@@ -154,3 +158,15 @@ The context file contains everything needed to resume:
 **📋 COMMUNICATION REMINDER**: Do not use repetitive agreement phrases like "You're absolutely right!" - violations go to the violation log. Use brief acknowledgment then focus on the actual work.
 
 **🐳 DOCKER ENVIRONMENT REMINDER**: Only look for Docker containers (`docker ps`). Do not troubleshoot missing containers - ASK USER immediately for guidance on starting the development environment.
+
+**🧠 OFFICIAL MCP MEMORY SERVER BEST PRACTICES:**
+- **✅ USE**: `mcp__memory__search_nodes` for targeted queries - efficient and focused
+- **❌ AVOID**: `mcp__memory__read_graph` - returns massive token dumps (~14k+) that fill context quickly
+- **Targeted Search Examples**:
+  - "Session-2025-11-17-keyword" (specific session)
+  - "project-name recent" (recent work on project)
+  - "authentication issues" (topic-based search)
+  - "branch-name debugging" (branch-specific work)
+- **Context Efficiency**: Targeted searches return clean, relevant results vs full graph dump
+- **Multi-Window Safe**: Knowledge graph approach prevents SQLite locking issues
+- **Benefits**: Cross-session continuity, pattern discovery, intelligent context bridging
