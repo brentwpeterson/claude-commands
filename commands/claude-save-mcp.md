@@ -40,8 +40,9 @@ Verify OpenMemory MCP server is working, then create comprehensive INSTRUCTION F
 
 **Phase 0: MCP Verification (NEW)**
 1. **Test Official Anthropic MCP Memory Server:**
-   - **Test MCP connectivity:** Use `mcp__memory__read_graph` tool to verify connection
-   - **Expected result:** Should return knowledge graph (even if empty) without errors
+   - **Test MCP connectivity:** Use `mcp__memory__search_nodes` with simple query to verify connection
+   - **⚠️ NEVER use `mcp__memory__read_graph` - it returns massive token dumps (~14k+)**
+   - **Expected result:** Should return search results (even if empty) without errors
    - **If MCP fails:**
      ```
      ❌ Official Anthropic MCP Memory Server Connection Failed!
@@ -138,7 +139,7 @@ Verify OpenMemory MCP server is working, then create comprehensive INSTRUCTION F
 # Resume Instructions for Claude
 
 ## IMMEDIATE SETUP
-1. **Verify MCP first:** Run `/claude-save-mcp` initial MCP test or use `mcp__memory__read_graph` tool
+1. **Verify MCP first:** Run `/claude-save-mcp` initial MCP test or use `mcp__memory__search_nodes` tool with simple query
 2. **Change directory:** `cd [exact-working-directory]`
 3. **Verify git status:** `git status` (expect: [list files])
 4. **Check processes:** `docker ps` (expect: [containers running])
@@ -290,3 +291,12 @@ Verify OpenMemory MCP server is working, then create comprehensive INSTRUCTION F
 - **MCP uncertainty**: When you're not sure if MCP is working
 - **Backup scenarios**: When you want file-based context as primary/fallback
 - **Simple projects**: When basic context files are sufficient
+
+**🧠 OFFICIAL MCP MEMORY SERVER BEST PRACTICES:**
+- **✅ USE**: `mcp__memory__search_nodes` for targeted queries - efficient and focused
+- **❌ AVOID**: `mcp__memory__read_graph` - returns massive token dumps (~14k+) that fill context quickly
+- **Search Examples**: "Session-2025-11-17-keyword", "project-name recent", "authentication issues"
+- **Entity Naming**: Use "Session-YYYY-MM-DD-[keyword]" format for consistency
+- **Observations**: Keep concise (1-2 sentences each) to prevent token bloat
+- **Benefits**: Cross-session continuity, pattern discovery, intelligent context bridging
+- **Multi-Window Safe**: Knowledge graph approach prevents SQLite locking issues
