@@ -1,6 +1,8 @@
 Claude Session Save - Create Resume Instructions + Preserve Work
 
-**USAGE:** `/claude-save <keyword>` - Save work + create handoff instructions for next Claude session
+**USAGE:**
+- `/claude-save <keyword>` - Full comprehensive save with validation
+- `/claude-save <keyword> --quick` - Fast save with minimal context usage (skips validation)
 
 **🎯 PURPOSE:**
 Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where you left off
@@ -51,7 +53,17 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    - **IMPORTANT**: Commit actual development work FIRST before context
 
 **Phase 2: Todo Directory Inventory Check**
-3. **Verify Todo Directory Structure:**
+3. **Todo Directory Detection:**
+
+   **🚀 QUICK MODE (--quick flag):**
+   ```bash
+   # Minimal todo detection with single command
+   TODO_PATH=$(find . -path "*/todo/current/*" -name "README.md" | head -1)
+   FILE_COUNT=$(dirname "$TODO_PATH" | xargs ls -1 | wc -l 2>/dev/null || echo "0")
+   echo "Todo: ${TODO_PATH:-'None found'} (${FILE_COUNT} files)"
+   ```
+
+   **📋 FULL MODE (default):**
    - **MANDATORY: Get current todo path** - Ask user if not obvious
    - **Check todo directory exists**: Verify `todo/current/[category]/[task-name]/` path
    - **Verify README.md Branch Reference**: Ensure README.md shows current git branch:
@@ -99,6 +111,39 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 
 **Phase 3: Create Handoff Instructions**
 4. **Create Resume Instruction File:**
+
+   **🚀 QUICK MODE (--quick flag):**
+   ```bash
+   # Single efficient context creation
+   BRANCH=$(git branch --show-current)
+   KEYWORD=${1:-$(echo $BRANCH | sed 's/\//-/g')}
+   TODO_PATH=$(find . -path "*/todo/current/*" -name "README.md" | head -1)
+
+   cat > .claude/branch-context/${KEYWORD}-context.md << EOF
+   # Resume Instructions for Claude
+
+   ## IMMEDIATE SETUP
+   1. **Directory:** \`cd $(pwd)\`
+   2. **Branch:** \`git checkout $BRANCH\`
+   3. **Status:** $(git status --porcelain | wc -l) files changed
+
+   ## CURRENT TODO
+   **Path:** ${TODO_PATH:-"No todo found"}
+   **Status:** [Current work focus]
+
+   ## WORKING ON
+   [Brief description of current task]
+
+   ## NEXT ACTIONS
+   1. **FIRST:** [Next command to run]
+   2. **THEN:** [Follow-up action]
+
+   ## NOTES
+   [Important context]
+   EOF
+   ```
+
+   **📋 FULL MODE (default):**
    - Get current branch: `git branch --show-current`
    - Get working directory: `pwd`
    - Include todo inventory results in context
@@ -247,3 +292,28 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 1. `/claude-save <project>` → Creates instruction file, shows path
 2. `/clear new` → Clear current session
 3. `/claude-start <project>` → Reads instruction file and resumes
+
+**⚡ CONTEXT OPTIMIZATION:**
+
+**When to use each mode:**
+- **`/claude-save keyword --quick`** → Fast saves (2-3% context usage)
+- **`/claude-save keyword`** → Comprehensive saves (8-13% context usage)
+- **`/claude-save-lean keyword`** → Ultra-minimal saves (1-2% context usage)
+
+**Context Usage Comparison:**
+- **Full mode**: Comprehensive validation, detailed context (~13% context)
+- **Quick mode**: Essential validation, template context (~3% context)
+- **Lean command**: Minimal template, manual completion (~1% context)
+
+**Quick mode skips:**
+- ❌ Detailed todo directory validation
+- ❌ Architecture map completeness checking
+- ❌ Multiple file update operations
+- ❌ Verbose bash command outputs
+- ❌ Complex MCP memory operations
+
+**Quick mode includes:**
+- ✅ Git commit with changes
+- ✅ Basic todo detection
+- ✅ Essential context template
+- ✅ Branch and directory capture
