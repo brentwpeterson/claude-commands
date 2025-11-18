@@ -298,12 +298,10 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 **When to use each mode:**
 - **`/claude-save keyword --quick`** → Fast saves (2-3% context usage)
 - **`/claude-save keyword`** → Comprehensive saves (8-13% context usage)
-- **`/claude-save-lean keyword`** → Ultra-minimal saves (1-2% context usage)
 
 **Context Usage Comparison:**
 - **Full mode**: Comprehensive validation, detailed context (~13% context)
 - **Quick mode**: Essential validation, template context (~3% context)
-- **Lean command**: Minimal template, manual completion (~1% context)
 
 **Quick mode skips:**
 - ❌ Detailed todo directory validation
