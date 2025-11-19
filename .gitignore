@@ -12,6 +12,12 @@ branch-context/*-context.md
 !branch-context/feature-example-implementation-context.md
 !branch-context/README.md
 
+# CRITICAL: Exclude JSON memory files - may contain sensitive credentials
+*.json
+!settings.example.json
+!settings.no-mcp.json
+!package*.json
+
 # Exclude real security scans
 security-scans/*.md
 !security-scans/README.md
