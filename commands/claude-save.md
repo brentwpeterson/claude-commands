@@ -22,6 +22,14 @@ Claude Session Save - Create Resume Instructions + Preserve Work
 - If project name not in mapping, ASK USER for the correct path
 - NEVER guess or assume directory locations
 
+**🗂️ CRITICAL PATH DEFINITION:**
+```
+WORKSPACE_ROOT = /Users/brent/scripts/CB-Workspace
+CONTEXT_DIR    = /Users/brent/scripts/CB-Workspace/.claude/branch-context/
+CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[branch-name]-context.md
+```
+**⚠️ ALWAYS use absolute paths. The `.claude/` directory is at WORKSPACE ROOT, NOT inside individual project directories.**
+
 **🎯 PURPOSE:**
 Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where you left off
 
@@ -137,7 +145,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    KEYWORD=${1:-$(echo $BRANCH | sed 's/\//-/g')}
    TODO_PATH=$(find . -path "*/todo/current/*" -name "README.md" | head -1)
 
-   cat > .claude/branch-context/${KEYWORD}-context.md << EOF
+   cat > /Users/brent/scripts/CB-Workspace/.claude/branch-context/${KEYWORD}-context.md << EOF
    # Resume Instructions for Claude
 
    ## IMMEDIATE SETUP
@@ -166,7 +174,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    - Get working directory: `pwd`
    - Include todo inventory results in context
    - Check running processes: `docker ps`, `lsof -i :3000`, etc.
-   - Create: `.claude/branch-context/[keyword]-context.md`
+   - Create: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[keyword]-context.md`
    - **Format as INSTRUCTIONS TO CLAUDE**, not status report:
 
 ```markdown
@@ -246,7 +254,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 
 **Phase 4: Context Commit + Display Path**
 5. **Commit Instructions:**
-   - Stage context files: `git add ../.claude/branch-context/`
+   - Stage context files: `git add /Users/brent/scripts/CB-Workspace/.claude/branch-context/`
    - Commit with: "Save resume instructions for session restart"
 
 **Phase 5: Official MCP Memory Integration (Automatic with Fallback)**
@@ -288,7 +296,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 
 7. **END BY SHOWING CONTEXT FILE PATH:**
    - **⚠️ CRITICAL**: If todo path doesn't exist, STOP and ask user to clarify
-   - Display: "📁 Resume instructions saved to: `.claude/branch-context/[keyword]-context.md`"
+   - Display: "📁 Resume instructions saved to: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[keyword]-context.md`"
    - **If MCP worked**: "🧠 + Session stored to official MCP memory server"
    - **If MCP failed**: "⚠️ (Official MCP unavailable - file-based only)"
 

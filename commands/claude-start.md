@@ -31,8 +31,16 @@ Claude Session Start - Read Resume Instructions and Execute
 **🎯 PURPOSE:**
 Read the instruction file created by `/claude-save` or `/claude-save-fast` and follow those exact instructions
 
+**🗂️ CRITICAL PATH DEFINITION:**
+```
+WORKSPACE_ROOT = /Users/brent/scripts/CB-Workspace
+CONTEXT_DIR    = /Users/brent/scripts/CB-Workspace/.claude/branch-context/
+CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[branch-name]-context.md
+```
+**⚠️ ALWAYS use absolute paths. The `.claude/` directory is at WORKSPACE ROOT, NOT inside individual project directories.**
+
 **⚡ SIMPLE WORKFLOW:**
-1. **Find instruction file:** `.claude/branch-context/[current-branch]-context.md`
+1. **Find instruction file:** `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[current-branch]-context.md`
 2. **Read instructions:** Load the handoff document
 3. **Follow instructions:** Execute exactly what the previous Claude documented
 4. **Ask for direction:** Present status and wait for user guidance
@@ -83,7 +91,7 @@ Read the instruction file created by `/claude-save` or `/claude-save-fast` and f
      ```
 
 **Step 3: File-Based Context Fallback (If Needed)**
-5. **IF no MCP context found, locate context file:** `.claude/branch-context/[branch-name]-context.md`
+5. **IF no MCP context found, locate context file:** `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[branch-name]-context.md`
 6. **Read instruction file:** Load the handoff document if it exists
 7. **Parse instructions:** Extract setup steps, current state, todos, next actions
 8. **Todo directory inventory check:** Look for todo directory structure:
