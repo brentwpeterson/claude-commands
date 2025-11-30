@@ -1,8 +1,26 @@
 Claude Session Save - Create Resume Instructions + Preserve Work
 
 **USAGE:**
-- `/claude-save <keyword>` - Full comprehensive save with validation
-- `/claude-save <keyword> --quick` - Fast save with minimal context usage (skips validation)
+- `/claude-save <project>` - Full comprehensive save with validation
+- `/claude-save <project> --quick` - Fast save with minimal context usage (skips validation)
+
+**🗂️ PROJECT-TO-DIRECTORY MAPPING:**
+```
+| Project Name   | Directory Path                                          |
+|----------------|--------------------------------------------------------|
+| requestdesk    | /Users/brent/scripts/CB-Workspace/cb-requestdesk       |
+| astro-sites    | /Users/brent/scripts/CB-Workspace/astro-sites          |
+| shopify        | /Users/brent/scripts/CB-Workspace/cb-shopify           |
+| wordpress      | /Users/brent/scripts/CB-Workspace/cb-wordpress         |
+| magento        | /Users/brent/scripts/CB-Workspace/cb-magento           |
+| junogo         | /Users/brent/scripts/CB-Workspace/cb-junogo            |
+| memory-system  | /Users/brent/scripts/CB-Workspace/cb-memory-system     |
+| jobs           | /Users/brent/scripts/CB-Workspace/jobs                 |
+```
+
+**🚨 CRITICAL: Always use this mapping to resolve project names to full paths!**
+- If project name not in mapping, ASK USER for the correct path
+- NEVER guess or assume directory locations
 
 **🎯 PURPOSE:**
 Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where you left off
