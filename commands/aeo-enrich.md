@@ -2,9 +2,22 @@
 
 Enrich Astro pages with Answer Engine Optimization (AEO) and Generative Engine Optimization (GEO) ready schemas, Q&A pairs, and comprehensive meta tags.
 
-**Usage:** `/aeo-enrich <page-path>`
+**Usage:** `/aeo-enrich <page-url>`
 
-**Example:** `/aeo-enrich requestdesk-ai/src/pages/about.astro`
+**Examples:**
+- `/aeo-enrich /about`
+- `/aeo-enrich https://requestdesk.ai/about`
+- `/aeo-enrich requestdesk.ai/privacy`
+
+---
+
+## Schema Location: Inline JSON-LD in `<head>`
+
+This command adds schemas as **inline JSON-LD script tags** directly in each page's `<head>` section. This is:
+- Google's officially recommended approach
+- Most direct and debuggable
+- Works perfectly with Astro's static output
+- Easy to validate with testing tools
 
 ---
 
@@ -12,9 +25,40 @@ Enrich Astro pages with Answer Engine Optimization (AEO) and Generative Engine O
 
 When this command is run, follow this comprehensive workflow:
 
+### Phase 0: URL to File Resolution
+
+**Resolve the URL argument to the actual Astro file:**
+
+| URL Format | Resolution |
+|------------|------------|
+| `/about` | Find in astro-sites project: `*/src/pages/about.astro` |
+| `https://requestdesk.ai/about` | → `requestdesk-ai/src/pages/about.astro` |
+| `https://contentbasis.io/services` | → `contentbasis-io/src/pages/services.astro` |
+| `requestdesk.ai/privacy` | → `requestdesk-ai/src/pages/privacy.astro` |
+
+**Domain to directory mapping:**
+```
+requestdesk.ai     → requestdesk-ai/
+contentbasis.io    → contentbasis-io/
+contentbasis.ai    → contentbasis-ai/
+magentoasters.com  → magento-masters-com/
+```
+
+**URL to file path conversion:**
+1. Extract domain (or use requestdesk-ai as default if just `/path`)
+2. Map domain to project directory
+3. Convert URL path to file: `/about` → `src/pages/about.astro`
+4. Handle index: `/` → `src/pages/index.astro`
+
+**If file not found:**
+- List available pages in that project
+- Ask user to confirm correct page
+
+---
+
 ### Phase 1: Page Analysis
 
-1. **Read the target page** specified in the argument
+1. **Read the target page** using the resolved file path
 2. **Identify page type** by analyzing content:
    - **Article/Blog**: Educational content, how-tos, guides
    - **About/Company**: Organization info, team, mission
@@ -315,9 +359,11 @@ This command implements these optimization strategies:
 
 ## Arguments
 
-- `<page-path>` (required): Relative path to the .astro page file
-  - Example: `requestdesk-ai/src/pages/about.astro`
-  - Example: `contentbasis-io/src/pages/services.astro`
+- `<page-url>` (required): URL or path of the page to enrich
+  - `/about` - Path only (defaults to requestdesk.ai)
+  - `https://requestdesk.ai/about` - Full URL
+  - `requestdesk.ai/privacy` - Domain + path
+  - `contentbasis.io/services` - Different site
 
 ---
 
