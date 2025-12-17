@@ -3,6 +3,75 @@ Claude Session Save - Create Resume Instructions + Preserve Work
 **USAGE:**
 - `/claude-save <project>` - Full comprehensive save with validation
 - `/claude-save <project> --quick` - Fast save with minimal context usage (skips validation)
+- `/claude-save <project> <X%>` - Context-aware save (e.g., `/claude-save requestdesk 9%`)
+
+**🚨 CONTEXT-AWARE SAVE MODES (CRITICAL - READ FIRST):**
+
+| Context % | Mode | Behavior |
+|-----------|------|----------|
+| **>15%** | FULL | All tasks: git ops, context files, memory, verbose summaries |
+| **8-15%** | QUICK | Essential only: brief context, minimal git output, skip verbose ops |
+| **<8%** | EMERGENCY | JUST save context - NO git reads, NO tests, pure context dump |
+
+**⚡ EMERGENCY MODE (<8% context) - IMMEDIATE ACTION:**
+
+When context % is passed and is <8%, SKIP ALL OTHER INSTRUCTIONS and do ONLY this:
+
+1. **DO NOT run any bash commands except ONE:**
+   ```bash
+   git branch --show-current
+   ```
+
+2. **Write emergency context file IMMEDIATELY from conversation memory:**
+   - What branch we're on (from the one command above)
+   - What we were working on (from YOUR memory of this conversation)
+   - What's left to do (from YOUR memory of pending todos)
+   - Key files modified (from YOUR memory, NOT git diff)
+   - Any critical state (tokens, IDs, test results from memory)
+
+3. **Use this minimal template:**
+   ```markdown
+   # EMERGENCY CONTEXT SAVE - [DATE]
+
+   ## CRITICAL: LOW CONTEXT SAVE
+   This save was triggered with <8% context remaining. Minimal validation performed.
+
+   ## BRANCH
+   [branch-name]
+
+   ## DIRECTORY
+   [project directory from conversation context]
+
+   ## WHAT WE WERE DOING
+   [From conversation memory - what task was in progress]
+
+   ## PENDING TODOS
+   [From conversation memory - what's still pending]
+
+   ## KEY FILES MODIFIED THIS SESSION
+   [From conversation memory - files you remember editing/creating]
+
+   ## CRITICAL STATE TO PRESERVE
+   [Any tokens, IDs, test results, error messages from conversation]
+
+   ## NEXT STEPS
+   [What should happen next when resuming]
+   ```
+
+4. **Write the file and STOP:**
+   - Path: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[project]-emergency-context.md`
+   - DO NOT commit (saves context tokens)
+   - DO NOT run MCP memory operations
+   - DO NOT validate anything
+   - Just output: "🚨 Emergency context saved to: [path]"
+
+**WHY EMERGENCY MODE EXISTS:**
+- Auto-compact can trigger mid-save causing context loss
+- At <8%, there's not enough tokens left for full save operations
+- Preserving SOME context is better than losing everything
+- Next session can restore and do proper cleanup
+
+---
 
 **🗂️ PROJECT-TO-DIRECTORY MAPPING:**
 ```
@@ -144,6 +213,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    BRANCH=$(git branch --show-current)
    KEYWORD=${1:-$(echo $BRANCH | sed 's/\//-/g')}
    TODO_PATH=$(find . -path "*/todo/current/*" -name "README.md" | head -1)
+   LAST_COMMIT=$(git log --oneline -1)
 
    cat > /Users/brent/scripts/CB-Workspace/.claude/branch-context/${KEYWORD}-context.md << EOF
    # Resume Instructions for Claude
@@ -151,7 +221,8 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    ## IMMEDIATE SETUP
    1. **Directory:** \`cd $(pwd)\`
    2. **Branch:** \`git checkout $BRANCH\`
-   3. **Status:** $(git status --porcelain | wc -l) files changed
+   3. **Last Commit:** \`$LAST_COMMIT\`
+   4. **Status:** $(git status --porcelain | wc -l) files changed
 
    ## CURRENT TODO
    **Path:** ${TODO_PATH:-"No todo found"}
@@ -171,6 +242,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 
    **📋 FULL MODE (default):**
    - Get current branch: `git branch --show-current`
+   - Get last commit: `git log --oneline -1`
    - Get working directory: `pwd`
    - Include todo inventory results in context
    - Check running processes: `docker ps`, `lsof -i :3000`, etc.
@@ -185,6 +257,11 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 2. **Verify git status:** `git status` (expect: [list files])
 3. **Check processes:** `docker ps` (expect: [containers running])
 4. **Verify branch:** `git branch --show-current` (should be: [branch])
+
+## SESSION METADATA
+**Last Commit:** `[hash] [message]`
+**MCP Entity:** `[project]-[branch-short-name]`
+**Saved:** [YYYY-MM-DD HH:MM]
 
 ## CURRENT TODO FILE
 **Path:** file:[exact-path-to-todo-readme]
@@ -322,14 +399,18 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 **⚡ CONTEXT OPTIMIZATION:**
 
 **When to use each mode:**
-- **`/claude-save keyword --quick`** → Fast saves (2-3% context usage)
-- **`/claude-save keyword`** → Comprehensive saves (8-13% context usage)
+- **`/claude-save keyword`** → Full saves when context >15% (~8-13% context usage)
+- **`/claude-save keyword --quick`** OR **`/claude-save keyword 12%`** → Quick saves 8-15% (~2-3% context usage)
+- **`/claude-save keyword 5%`** → Emergency saves <8% (~1% context usage, memory-only)
 
 **Context Usage Comparison:**
-- **Full mode**: Comprehensive validation, detailed context (~13% context)
-- **Quick mode**: Essential validation, template context (~3% context)
+| Mode | Context Used | When to Use |
+|------|-------------|-------------|
+| **Full** | ~8-13% | >15% remaining, normal end of session |
+| **Quick** | ~2-3% | 8-15% remaining, or when --quick flag passed |
+| **Emergency** | ~1% | <8% remaining, critical save before context loss |
 
-**Quick mode skips:**
+**Quick mode (8-15% or --quick) skips:**
 - ❌ Detailed todo directory validation
 - ❌ Architecture map completeness checking
 - ❌ Multiple file update operations
@@ -341,3 +422,16 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 - ✅ Basic todo detection
 - ✅ Essential context template
 - ✅ Branch and directory capture
+
+**Emergency mode (<8%) skips EVERYTHING except:**
+- ✅ One git command (branch name)
+- ✅ Writing context from conversation memory
+- ✅ That's it - pure survival mode
+
+**🎯 PERCENTAGE PARSING:**
+When a percentage is passed (e.g., "9%", "15%", "3%"):
+1. Extract the number: `9%` → `9`
+2. Apply threshold:
+   - `< 8` → Emergency mode
+   - `8-15` → Quick mode (same as --quick)
+   - `> 15` → Full mode (default behavior)
