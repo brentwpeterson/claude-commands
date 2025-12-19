@@ -71,6 +71,21 @@ routers/v2/tickets/           # CORRECT - modular structure
 
 See `architecture/backend.md` for full modular router pattern.
 
+### 6. Read Guidelines Before Implementing
+**ALWAYS read these documents in cb-requestdesk/todo/ before starting any work:**
+
+| Document | Purpose |
+|----------|---------|
+| `todo-workflow-guidelines.md` | Session management, 7-file structure, save commands |
+| `technical-implementation-guidelines.md` | CB dev standards, templates, checklists |
+| `architecture-map-template.md` | CB flow mapping template |
+| `README.md` | TODO task template structure |
+
+**CB Architecture Flow (memorize this):**
+```
+Frontend → DataLayer → Router → Service Layer → Model → Collection
+```
+
 ---
 
 ## Purpose
