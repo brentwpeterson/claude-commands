@@ -1,10 +1,11 @@
 # /claude-switch Command
 
-**Purpose**: Smart branch switching with context preservation, security validation, and automatic sync with master.
+**Purpose**: Smart branch switching with context preservation, MCP memory storage, security validation, and automatic sync with master.
 
 ## Usage
 ```
 /claude-switch <branch-name>
+/claude-switch master              # Switch to master for new feature work
 ```
 
 ## Examples
@@ -16,17 +17,36 @@
 
 ## What This Command Does
 
-**🔄 SMART BRANCH SWITCHING WITH CONTEXT**
+**🔄 SMART BRANCH SWITCHING WITH CONTEXT & MCP MEMORY**
 
 This command provides intelligent branch switching that:
-- Preserves current branch context before switching
+- **Saves current context to MCP memory** (knowledge graph storage)
+- Preserves current branch context to file before switching
 - Validates target branch exists (offers to create if not)
 - Checks for uncommitted changes and handles appropriately
 - Syncs target branch with master if behind
-- Loads target branch context after switching
+- **Loads target branch context from MCP memory**
+- Loads target branch context file after switching
+- **Lists available MCP servers for the branch**
 - Performs security scan on the target branch
 
 ## Detailed Workflow
+
+### Phase 0: MCP Server Validation
+0. **Verify MCP Servers Available**
+   ```bash
+   # Check workspace MCP configuration
+   cat /Users/brent/scripts/CB-Workspace/.mcp.json
+   ```
+
+   - Display available MCP servers:
+     ```
+     🔌 MCP SERVERS AVAILABLE:
+     ✅ memory - @modelcontextprotocol/server-memory (knowledge graph)
+        Storage: /Users/brent/scripts/CB-Workspace/.claude/cb-workspace-memory.json
+
+     MCP servers will be used for context persistence across branch switches.
+     ```
 
 ### Phase 1: Pre-Switch Validation
 1. **Check Current State**
@@ -54,7 +74,7 @@ This command provides intelligent branch switching that:
    - Quick scan for any security issues to document
    - Add findings to branch context if any exist
 
-3. **Save Current Branch Context**
+3. **Save Current Branch Context (File + MCP Memory)**
    - Use same logic as `/claude-save` command
    - Create/update: `.claude/branch-context/[branch-name]-context.md`
    - Include:
@@ -62,6 +82,22 @@ This command provides intelligent branch switching that:
      - Security findings
      - Any in-progress tasks from TodoWrite
      - Recovery instructions with exact file paths
+
+   - **Store to MCP Memory** (knowledge graph):
+     ```
+     # Use mcp__memory__create_entities to store session context
+     Entity Name: "Session-[DATE]-[BRANCH]-switch-out"
+     Entity Type: "branch_context"
+     Observations:
+       - "Branch: [current-branch]"
+       - "Project: [detected-project-name]"
+       - "Status: [work-status-summary]"
+       - "Todo Directory: [path-to-todo]"
+       - "Last Commit: [commit-hash] - [commit-message]"
+       - "Uncommitted Changes: [yes/no]"
+       - "MCP Servers: memory (knowledge graph)"
+       - "Switch Reason: Switching to [target-branch]"
+     ```
 
 ### Phase 2: Branch Validation & Creation
 4. **Check Target Branch**
@@ -122,7 +158,21 @@ This command provides intelligent branch switching that:
      ```
 
 ### Phase 4: Post-Switch Setup
-7. **Load Target Branch Context**
+7. **Load Target Branch Context (MCP Memory + File)**
+
+   - **Query MCP Memory first** for recent context:
+     ```
+     # Use mcp__memory__search_nodes to find branch context
+     Query: "[target-branch-name]" or "project:[project-name]"
+
+     If found, display:
+     🧠 MCP MEMORY CONTEXT FOUND:
+     - Entity: Session-2025-12-19-feature-api-integration
+     - Last saved: [timestamp]
+     - Status: [work-status]
+     - Key observations loaded
+     ```
+
    - Check for `.claude/branch-context/[branch-name]-context.md`
    - If exists, display summary:
      ```
@@ -137,6 +187,16 @@ This command provides intelligent branch switching that:
      - Added user CRUD endpoints
      - Implemented authentication middleware
      - TODO: Add rate limiting
+     ```
+
+   - **Display MCP Servers for this branch**:
+     ```
+     🔌 MCP SERVERS AVAILABLE FOR THIS BRANCH:
+     ✅ memory - Knowledge graph storage (active)
+        - Use mcp__memory__* tools for context operations
+        - Storage: cb-workspace-memory.json
+
+     💡 TIP: Use mcp__memory__search_nodes to find related work
      ```
 
 8. **Update README.md Branch Reference**
@@ -190,6 +250,14 @@ This command provides intelligent branch switching that:
 
     🔒 Security Status: Clean
 
+    🧠 MCP Memory:
+    - Context saved from: enhancement/shopify-rag-product-sync
+    - Context loaded for: features/api-integration
+    - Entity: Session-2025-12-19-feature-api-integration
+
+    🔌 MCP Servers Active:
+    - memory (knowledge graph) ✅
+
     📋 Loaded Context:
     - Todo Directory: /todo/current/features/api-integration/
     - Previous work: Implementing API integration
@@ -205,6 +273,18 @@ When switching to master, offer to:
 - Pull latest changes from origin/master
 - Clean up merged branches
 - Show deployment status
+- **Offer next steps for new work:**
+  ```
+  🏠 SWITCHED TO MASTER
+
+  What would you like to do next?
+  [N] Start new feature branch (/create-branch)
+  [B] Create bugfix branch (/create-bugfix)
+  [A] Audit existing branches (/project:audit-branches)
+  [S] Stay on master
+
+  Choice [N/b/a/s]: _
+  ```
 
 ### Switching from Dirty State
 If the working directory has changes:
@@ -261,10 +341,53 @@ Continue with local branch state? [Y/n]: _
 - Document any security debt in branch context
 - Warn if switching away from branch with security issues
 
+## MCP Memory Integration
+
+### Available MCP Tools
+When working with branch context, these MCP tools are available:
+
+| Tool | Purpose |
+|------|---------|
+| `mcp__memory__create_entities` | Store new session/branch context |
+| `mcp__memory__search_nodes` | Find previous work on branch/project |
+| `mcp__memory__add_observations` | Add notes to existing context |
+| `mcp__memory__read_graph` | View all stored context |
+
+### Entity Naming Convention
+- **Session context**: `Session-YYYY-MM-DD-[branch-name]-[action]`
+- **Branch context**: `Branch-[project]-[branch-name]`
+- **Project context**: `Project-[project-name]-[topic]`
+
+### Example MCP Memory Storage
+```javascript
+// Stored on switch-out from enhancement/shopify-rag-product-sync
+{
+  "name": "Session-2025-12-19-shopify-rag-switch-out",
+  "entityType": "branch_context",
+  "observations": [
+    "Branch: enhancement/shopify-rag-product-sync",
+    "Project: cb-requestdesk",
+    "Status: iter-2 deployed, awaiting production testing",
+    "Todo: /todo/current/enhancement/shopify-rag-product-sync/",
+    "Last commit: bfa73ecb - Prepare iter-2 deployment",
+    "MCP Servers: memory (knowledge graph)",
+    "Deployment tags: matrix-v0.33.8-shopify-rag-iter-1, matrix-v0.33.8-shopify-rag-iter-2"
+  ]
+}
+```
+
+### Querying Previous Context
+To find context when returning to a branch:
+```
+mcp__memory__search_nodes with query: "shopify-rag" or "cb-requestdesk"
+```
+
 ## Success Criteria
 
 ✅ Smooth branch switching with zero data loss
-✅ Context preserved and restored accurately  
+✅ Context preserved and restored accurately
+✅ **MCP memory stores context for cross-session persistence**
+✅ **MCP servers listed and validated**
 ✅ Security validated on both source and target branches
 ✅ Master sync handled intelligently
 ✅ Uncommitted changes handled safely
