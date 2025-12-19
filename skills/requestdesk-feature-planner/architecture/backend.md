@@ -38,7 +38,95 @@ backend/app/
     └── permissions.py      # Role-based access
 ```
 
-## Router Pattern
+## 🚨 FILE SIZE LIMITS - CRITICAL
+
+**Target: < 300 lines per file. Never keep adding to existing files.**
+
+Current problem files (DO NOT make these worse):
+- `llm.py` - 2,447 lines ❌
+- `config.py` - 2,217 lines ❌
+- `brand_personas.py` - 2,138 lines ❌
+
+**When a file approaches 300 lines → Convert to modular structure**
+
+## Modular Router Pattern (PREFERRED)
+
+For any router with multiple features, use the v2/tickets pattern:
+
+```
+routers/v2/{resource}/
+├── __init__.py           # Router composition only (< 100 lines)
+├── core/
+│   ├── __init__.py
+│   ├── create.py         # POST endpoints
+│   ├── read.py           # GET endpoints
+│   ├── update.py         # PUT/PATCH endpoints
+│   ├── delete.py         # DELETE endpoints
+│   └── status.py         # Status transitions
+├── features/
+│   ├── __init__.py
+│   ├── assignment.py     # Feature-specific endpoints
+│   ├── archive.py
+│   └── followers.py
+├── notifications/
+│   ├── __init__.py
+│   └── status_notifications.py
+└── utils/
+    ├── __init__.py
+    ├── validators.py     # Input validation
+    ├── permissions.py    # Access control
+    └── helpers.py        # Shared utilities
+```
+
+### Main `__init__.py` (Router Composition)
+
+```python
+"""
+Resource Router Assembly
+Max 100 lines - Only router composition, no business logic
+"""
+from fastapi import APIRouter
+from .core import create, read, update, delete
+from .features import assignment, archive
+
+router = APIRouter(prefix="/resource", tags=["resource"])
+
+# Include core CRUD routers
+router.include_router(create.router)
+router.include_router(read.router)
+router.include_router(update.router)
+router.include_router(delete.router)
+
+# Include feature routers
+router.include_router(assignment.router)
+router.include_router(archive.router)
+
+__all__ = ["router"]
+```
+
+### Feature Module Example
+
+```python
+# features/assignment.py
+from fastapi import APIRouter, Depends
+from app.utils.auth import get_current_user
+
+router = APIRouter()
+
+@router.post("/{id}/assign")
+async def assign_resource(
+    id: str,
+    user_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Assign resource to a user"""
+    # Implementation
+    pass
+```
+
+## Simple Router Pattern (Small Resources Only)
+
+Only use for resources with < 300 lines total:
 
 ```python
 from fastapi import APIRouter, Depends, HTTPException

@@ -33,6 +33,44 @@ All new UI must use Tailwind CSS + Catalyst UI Kit. See `architecture/frontend.m
 ### 4. Use Service Layer Pattern
 Business logic goes in services, not routers. See `architecture/backend.md`.
 
+### 5. NO Large Files - Use Modular Structure
+**Files should be < 300 lines. NEVER keep adding to existing files.**
+
+When a router/service grows, split it into a modular directory:
+
+```
+routers/v2/tickets/           # CORRECT - modular structure
+├── __init__.py               # 69 lines - just imports & composition
+├── core/
+│   ├── create.py             # 396 lines
+│   ├── read.py               # 536 lines
+│   ├── update.py             # 342 lines
+│   └── delete.py             # 115 lines
+├── features/
+│   ├── assignment.py         # 298 lines
+│   ├── followers.py          # 285 lines
+│   └── archive.py            # 192 lines
+├── notifications/
+│   └── status_notifications.py
+└── utils/
+    ├── validators.py
+    ├── permissions.py
+    └── helpers.py
+```
+
+**vs WRONG approach** (current problem files):
+- `llm.py` - 2,447 lines ❌
+- `config.py` - 2,217 lines ❌
+- `brand_personas.py` - 2,138 lines ❌
+
+**When adding new functionality:**
+1. Check file size first - if > 300 lines, create modular structure
+2. New features go in `features/` subdirectory
+3. Shared logic goes in `utils/`
+4. Main `__init__.py` only does router composition
+
+See `architecture/backend.md` for full modular router pattern.
+
 ---
 
 ## Purpose
