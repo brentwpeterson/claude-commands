@@ -17,10 +17,20 @@ This has caused 5+ hour debugging sessions when:
 
 See `architecture/database.md` for full details.
 
-### 2. NO MUI Components
+### 2. NO Collection Without a Model
+**ALWAYS create Pydantic models before/alongside collections.**
+
+Every collection needs:
+- `{Feature}Create` - Input validation
+- `{Feature}Update` - Partial updates
+- `{Feature}Response` - API output
+
+See `architecture/database.md` for full pattern.
+
+### 3. NO MUI Components
 All new UI must use Tailwind CSS + Catalyst UI Kit. See `architecture/frontend.md`.
 
-### 3. Use Service Layer Pattern
+### 4. Use Service Layer Pattern
 Business logic goes in services, not routers. See `architecture/backend.md`.
 
 ---

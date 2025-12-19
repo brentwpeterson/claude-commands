@@ -306,8 +306,48 @@ docker exec cbtextapp-backend-1 python -m app.migrations.migration_manager --run
 
 ## Key Principles
 
-1. **No Foreign Keys** - MongoDB doesn't enforce; validate in application
-2. **Denormalize When Needed** - Embed related data for read performance
-3. **String IDs** - Store ObjectIds as strings in reference fields
-4. **Company Isolation** - Every document has `company_id`
-5. **Soft Deletes** - Use `is_deleted` flag, don't actually delete
+1. **No Collection Without a Model** - ALWAYS create Pydantic models before/with collections
+2. **No Foreign Keys** - MongoDB doesn't enforce; validate in application
+3. **Denormalize When Needed** - Embed related data for read performance
+4. **String IDs** - Store ObjectIds as strings in reference fields
+5. **Company Isolation** - Every document has `company_id`
+6. **Soft Deletes** - Use `is_deleted` flag, don't actually delete
+
+### Model-First Development
+
+**NEVER create a collection without corresponding Pydantic models.**
+
+```python
+# backend/app/models/my_feature.py
+
+class MyFeatureCreate(BaseModel):
+    """Input model for creating new documents"""
+    name: str
+    description: Optional[str] = None
+    company_id: str  # REQUIRED
+
+class MyFeatureUpdate(BaseModel):
+    """Input model for updates (all fields optional)"""
+    name: Optional[str] = None
+    description: Optional[str] = None
+
+class MyFeatureResponse(BaseModel):
+    """Output model for API responses"""
+    id: str
+    name: str
+    description: Optional[str]
+    company_id: str
+    created_at: datetime
+    updated_at: datetime
+
+class MyFeatureInDB(MyFeatureResponse):
+    """Internal model matching MongoDB document structure"""
+    pass
+```
+
+**Why models matter:**
+- Validates all incoming data automatically
+- Documents the expected schema
+- Provides IDE autocomplete and type checking
+- Prevents schema drift between code and database
+- Makes API documentation automatic (OpenAPI/Swagger)

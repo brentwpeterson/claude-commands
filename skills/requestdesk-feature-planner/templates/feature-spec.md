@@ -130,6 +130,12 @@ db.[collection].createIndex({ "company_id": 1 })
 // Add other indexes as needed
 ```
 
+#### Models Required (BEFORE creating collection)
+- [ ] **Create model file**: `backend/app/models/{feature_name}.py`
+- [ ] **Define schemas**: `{Feature}Create`, `{Feature}Update`, `{Feature}Response`
+- [ ] **Include company_id**: Required for multi-tenant isolation
+- [ ] **Add timestamps**: `created_at`, `updated_at` in response model
+
 #### Migration Required
 - [ ] **Migration file created**: `backend/app/migrations/versions/v{VERSION}_{description}.py`
 - [ ] **Migration tested locally**: `docker exec cbtextapp-backend-1 python -m app.migrations.migration_manager --run`
