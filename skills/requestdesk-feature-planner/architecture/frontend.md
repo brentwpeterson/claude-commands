@@ -57,11 +57,20 @@ import { Card, Typography, Button } from '@mui/material';
 
 ## Catalyst UI Components
 
-Located at: `frontend/src/components/tailwind-ui/catalyst-ui-kit/typescript/`
+**Location**: `frontend/src/components/tailwind-ui/catalyst-ui-kit/typescript/`
+**Documentation**: https://catalyst.tailwindui.com/docs
+**Built by**: Tailwind CSS team (part of Tailwind Plus)
 
-Available components:
+**Dependencies** (already installed):
+- `@headlessui/react` - Accessible UI primitives
+- `framer-motion` - Animations
+- `clsx` - Conditional classnames
+- `tailwindcss` v4.0+
+
+**Available components**:
 - `Button` - Primary, secondary, outline variants
 - `Input` - Form inputs with labels
+- `Field`, `FieldGroup`, `Label` - Form field wrappers
 - `Select` - Dropdowns
 - `Dialog` - Modal dialogs
 - `Table` - Basic tables

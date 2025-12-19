@@ -7,8 +7,8 @@
 │                        FRONTEND (React)                          │
 │  localhost:3001 / app.requestdesk.ai                            │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐               │
-│  │ React Admin │ │  TanStack   │ │  Tailwind   │               │
-│  │   + MUI     │ │   Table     │ │  Catalyst   │               │
+│  │  Tailwind   │ │ Catalyst UI │ │  TanStack   │               │
+│  │    CSS      │ │ + HeadlessUI│ │   Table     │               │
 │  └─────────────┘ └─────────────┘ └─────────────┘               │
 └─────────────────────────────────────────────────────────────────┘
                               │
