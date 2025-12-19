@@ -1,5 +1,30 @@
 # RequestDesk Feature Planner Skill
 
+## 🚨 CRITICAL RULES - READ FIRST 🚨
+
+### 1. NEVER Directly Modify the Database
+**ALL database changes MUST go through migrations. NO EXCEPTIONS.**
+
+This has caused 5+ hour debugging sessions when:
+- Claude added data directly to local MongoDB
+- Production failed because data didn't exist
+- Nobody documented what was added
+
+**If a feature needs data:**
+1. Create a migration file in `backend/app/migrations/versions/`
+2. Migration runs on ALL environments automatically
+3. Document what data is being added
+
+See `architecture/database.md` for full details.
+
+### 2. NO MUI Components
+All new UI must use Tailwind CSS + Catalyst UI Kit. See `architecture/frontend.md`.
+
+### 3. Use Service Layer Pattern
+Business logic goes in services, not routers. See `architecture/backend.md`.
+
+---
+
 ## Purpose
 Help plan features and enhancements for RequestDesk.ai by understanding the existing architecture, identifying reusable components, and generating implementation specs that Claude Code can execute.
 

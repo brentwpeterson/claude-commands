@@ -1,5 +1,63 @@
 # Database Architecture (MongoDB 8)
 
+## 🚨 CRITICAL: NEVER DIRECTLY MODIFY THE DATABASE 🚨
+
+**THIS HAS CAUSED 5+ HOUR DEBUGGING SESSIONS - READ THIS FIRST**
+
+### The Rule
+**ALL database changes MUST go through the migration system. NO EXCEPTIONS.**
+
+### What Claude Did Wrong (Real Example)
+1. Claude added data directly to local MongoDB
+2. Claude did not create a migration
+3. Claude did not document what was added
+4. Production deployment failed because data didn't exist
+5. 5 hours spent debugging before discovering the direct insert
+
+### What Claude MUST Do Instead
+1. **Create a migration file** in `backend/app/migrations/versions/`
+2. **Use the migration to insert data** - migrations run on ALL environments
+3. **Document what data is being added** in the migration docstring
+4. **Test the migration locally** before deployment
+
+### ❌ NEVER DO THIS
+```python
+# WRONG - Direct database modification
+db.my_collection.insert_one({"name": "test data"})
+
+# WRONG - Running mongosh commands
+mongosh requestdesk_prod --eval 'db.config.insertOne({...})'
+
+# WRONG - Adding data in a router/service
+async def create_something():
+    db.settings.insert_one({"key": "value"})  # NO!
+```
+
+### ✅ ALWAYS DO THIS
+```python
+# CORRECT - Create a migration file: v0_33_9_add_initial_settings.py
+class Migration(BaseMigration):
+    version = "0.33.9"
+    description = "Add initial settings data"
+
+    async def upgrade(self, db):
+        # This runs on ALL environments (local, staging, production)
+        await db.settings.insert_one({
+            "key": "value",
+            "created_by": "migration"
+        })
+```
+
+### Migration Location
+`backend/app/migrations/versions/v{VERSION}_{description}.py`
+
+### Run Migrations
+```bash
+docker exec cbtextapp-backend-1 python -m app.migrations.migration_manager --run
+```
+
+---
+
 ## Connection
 
 - **Local**: `mongodb://localhost:27017/requestdesk_prod`

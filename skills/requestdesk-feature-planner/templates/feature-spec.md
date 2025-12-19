@@ -98,6 +98,20 @@ class ResourceResponse(BaseModel):
 
 ### Database Changes
 
+#### 🚨 CRITICAL: USE MIGRATIONS FOR ALL DATA CHANGES 🚨
+
+**NEVER directly modify the database. ALL changes go through migrations.**
+
+This has caused 5+ hour debugging sessions when:
+- Data was added directly to local MongoDB
+- Production failed because data didn't exist
+- Nobody documented what was added
+
+**If this feature needs initial data, seed data, or configuration:**
+1. Create a migration file in `backend/app/migrations/versions/`
+2. Migration runs on ALL environments automatically
+3. Document what data is being added
+
 #### New Collection (if needed)
 ```javascript
 {
@@ -116,9 +130,11 @@ db.[collection].createIndex({ "company_id": 1 })
 // Add other indexes as needed
 ```
 
-#### Migration (if needed)
-- Version: `0.XX.X`
-- Location: `backend/app/migrations/versions/`
+#### Migration Required
+- [ ] **Migration file created**: `backend/app/migrations/versions/v{VERSION}_{description}.py`
+- [ ] **Migration tested locally**: `docker exec cbtextapp-backend-1 python -m app.migrations.migration_manager --run`
+- [ ] **Migration documented**: Clear description of what data is added/modified
+- [ ] **No direct DB inserts**: All data changes in migration file only
 
 ---
 
