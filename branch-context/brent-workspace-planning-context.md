@@ -6,124 +6,81 @@
 3. **Run:** `/brent-start` to load daily operating system
 
 ## SESSION METADATA
-**Last Commit:** `2f2f635 Add MASTER-COMMITMENTS.md - comprehensive Q1 2026 planning brain dump`
-**Saved:** December 31, 2025
+**Last Commit:** `0264537 Add SMS idea capture plan - Twilio to RequestDesk integration`
+**Saved:** January 1, 2026
 
 ## WHAT WE ACCOMPLISHED THIS SESSION
 
-### Workspace Setup
-- Renamed `brent-writing` → `brent-workspace`
-- Created `Dashboard/` folder for operational files
-- Moved: QUARTERLY-ROCKS.md, WEEKLY-SCORECARD.md, CONTENT-TODO.md, INTEGRATION-SETUP.md, Q1-2026-PLANNING.md
-- Connected to GitHub: `brentwpeterson/brent-workspace`
-- Updated all command paths in `.claude/commands/`
+### Dec 31 - Brain Dump & Time Tracking
+- Created `/brent-finish` command for day closeout with todo review
+- Updated `/brent-start` with time tracking + daily non-negotiables
+- Created `WORK-LOG.md` for tracking hours
+- Added blocker chain framework to MASTER-COMMITMENTS.md
+- Added daily non-negotiables: Clear HubSpot tasks, Review CC CSS
+- Added MiMS fundraising (weekly video until June 21)
+- Added SMS idea capture plan to idea-stash
+- Logged Dec 31: 11.5 hours (4:15 AM - 3:49 PM)
 
-### Brain Dump - MASTER-COMMITMENTS.md Created
-Comprehensive inventory captured in `Dashboard/MASTER-COMMITMENTS.md`:
+### Jan 1 - HubSpot Task Triage
+- Cleared 23+ stale HubSpot tasks (most were Fireflies auto-generated from May 2025)
+- Established pattern: tasks older than 6 months with no context get closed
+- Kept 7 actionable tasks for follow-up
 
-**Content Creation (Recurring):**
-- Tuesdays with Claude (Medium, Tue) - want 2 weeks ahead
-- LinkedIn Newsletter (LinkedIn, Wed) - plan full quarter
-- Content Cucumber Blog (Daily, AI-assisted via RequestDesk API)
-- Help Videos (2/week)
-- Derivative posts (LinkedIn/BlueSky/Twitter via Vista Social - no extra work)
+### Jan 1 - Partner Email Sequence (IN PROGRESS)
+- Researched Mia Murphy / Tontine.ai (price optimization for Shopify brands)
+- Drafted 5-email sequence `SEQ-PARTNER-001` for partner outreach
+- Template designed to be reusable
+- **NOT YET SAVED TO FILE** - emails drafted in conversation only
 
-**Marketing/Sales - Revenue Focus:**
-- HubSpot Services campaign - 🔴 TOP PRIORITY
-- Case Studies campaign - best seller
-- Content Flywheel campaign
-- 3 Lead Magnets (White Papers) due March 31:
-  1. LLM Product Visibility (2 weeks - URGENT)
-  2. Content Workflow Optimization (Feb)
-  3. How to Write Case Studies (Mar)
+## DRAFT EMAIL SEQUENCE (SEQ-PARTNER-001)
 
-**Partner Marketing:**
-- 🔴 IMMEDIATE Monday Jan 6: Re-engage VTEX (have 2 outlines ready) + BigCommerce (contracted work)
-- Shopware (very important), Evrig (Magento partner - ramp to Mar 22)
-- Adobe, HubSpot, ButterCMS, Contentful
-- Themes: Content, Commerce, Marketing, Branding, AI Workflows
+**Prospect:** Mia Murphy, Co-Founder & CRO at Tontine.ai
+**Company:** Price optimization platform for Shopify/Shopify+ (Steve Madden, FashionNova, K-Swiss)
+**Angle:** RequestDesk partnership - co-marketing + integration listing
+**Cadence:** 7-7-7-14-14 days (relaxed)
 
-**Events Q1 2026:**
-| Event | Date | Days Away | Action |
-|-------|------|-----------|--------|
-| MM26FL Workshop | Feb 4 | 35 | FINISH content + promote (video ready, tell Susan) |
-| eTail Palm Springs | Feb 23-26 | 54 | Podcasting |
-| Shoptalk Spring | Mar 24-26 | 83 | Media partner |
+**Email 1:** Partnership intro (highly personalized for Mia)
+**Email 2:** Value add (template - share relevant resource)
+**Email 3:** Social proof (template - case study example)
+**Email 4:** Direct ask (template - 15 min meeting)
+**Email 5:** Breakup (template - closing the loop)
 
-**Running Commerce Vertical (HIGH PRIORITY):**
-- Podcast launched, guests booked, 50 leads in sequence
-- Need: CC landing page, RequestDesk integrations section, Talk Commerce section
+**User feedback:** User stopped me from creating HubSpot custom properties (sequence_code, sequence_step, partnership_interest) - HubSpot already handles sequence tracking natively. Don't over-engineer.
 
-**Product Work:**
-- Magento Extension (2x/week with Evrig)
-- RequestDesk Integrations (1 new every 2 weeks)
-- Shopify App Promo (goal: 20 free trials)
+## REMAINING HUBSPOT TASKS TO ACTION
 
-**Talk Commerce Website:**
-- Remove Google Adsense
-- Update theme
-- Add Running Commerce section
-- Add Events section
+7 tasks kept for follow-up:
+1. Reply with case studies to Mia Murphy
+2. Follow up with Scott Wueschinski (Content workflow)
+3. Follow up with Matthew Eickman (entrepreneur brain)
+4. Create demo for Hair Pro brand
+5. Follow up with Ken Shenkman (So many things)
+6. Follow up with Denis Dyli (Case Studies Partnership)
+7. Follow up with Rebecca Brocton (2 more months in CST)
 
-**Brand/Domain:**
-- Shut down contentbasis.io → redirect to CC
-- Launch ContentBasis.ai (AI-forward, separate brand)
+## TODO LIST STATE
+- 🔄 IN PROGRESS: Continue building brain dump list
+- ⏳ PENDING: Tell Susan about MM26FL promo video campaign
+- ⏳ PENDING: Start LLM Product Visibility white paper (2 weeks urgent)
+- ⏳ PENDING: Jan 2: Full Q1 planning day
+- ⏳ PENDING: Jan 6: Re-engage VTEX + BigCommerce
 
-**Q2+ Horizon:**
-- Ecommerce dev services launch (April)
-- Adobe Summit run event idea
-- Joint podcast with Scott Ohsman (Sept, Nashville)
-
-**Personal:**
-- Wedding Anniversary: March 27 - nice dinner with Susan
-
-**Resources/Team:**
-| Who | Handles |
-|-----|---------|
-| Susan | Execution of anything |
-| Writers | Blog posts, articles, white papers |
-| Evrig (credit) | Magento + WordPress dev |
-| Claude/AI | Drafts, planning, API work |
-
-**Susan Action Items:**
-- [ ] MM26FL promo video → run campaign
-
-### Integrations Confirmed
-- HubSpot MCP: Connected
-- RequestDesk API: 3 brand commands (`/brand-brent`, `/brand-cucumber`, `/brand-requestdesk`)
-- Memory MCP: Working
-- Vista Social: Ready for scheduling
-
-## NEXT ACTIONS (Friday Jan 3 Planning Day)
-
-### Immediate (Before Friday)
-1. Tell Susan about MM26FL promo video campaign
-2. Start LLM Product Visibility white paper (daily work)
-
-### Friday Jan 3 - Full Q1 Planning
-1. Review MASTER-COMMITMENTS.md
-2. Prioritize ruthlessly - what's realistic?
-3. Assign tasks: What goes to Susan? Writers? Evrig?
-4. Set up 2-week sprint structure
-5. Define Sprint 1 goals
-
-### Monday Jan 6
-- Re-engage VTEX (2 outlines ready → blog posts)
-- Re-engage BigCommerce (contracted work)
+## NEXT ACTIONS (PRIORITY ORDER)
+1. **SAVE EMAIL SEQUENCE:** Write SEQ-PARTNER-001 to a template file
+2. **UPDATE MIA'S TASK:** Mark original task complete, create new sequence tasks
+3. **SEND EMAIL 1:** Personalized email to Mia Murphy
+4. **JAN 2 PLANNING:** Full Q1 prioritization with MASTER-COMMITMENTS.md
 
 ## KEY FILES
 - **Dashboard:** `ob-notes/Brent Notes/Dashboard/`
-- **MASTER-COMMITMENTS.md:** Full brain dump
-- **Idea Stash:** `ob-notes/Brent Notes/idea-stash/` (Monday review)
-- **MM26FL Workshop Doc:** https://docs.google.com/document/d/1xNxw4OVENIQyuLSUKwnhxafSJhlVd0TkcUH87AiPd2k/
+- **MASTER-COMMITMENTS.md:** Brain dump + blocker chains
+- **WORK-LOG.md:** Time tracking
+- **idea-stash/sms-idea-capture-plan.md:** Twilio integration plan
 
-## COMMANDS UPDATED
-- `/brent-start` - paths updated for brent-workspace + Dashboard
-- `/daily-content` - paths updated
-- `/brand-brent`, `/brand-cucumber`, `/brand-requestdesk` - all working
+## COMMANDS AVAILABLE
+- `/brent-start` - Daily operating system with time tracking
+- `/brent-finish` - Day closeout with todo review
+- `/brand-brent` - Load personal brand persona for content
 
-## CONTEXT NOTES
-- "Brent decides → Susan executes → Writers create → Evrig builds"
-- Evrig restriction until Mar 22 (Content in Commerce focus)
-- Mar 22+ free to sell whatever
-- Don't let perfect block progress - sell with existing pages, improve while selling
+## LESSON LEARNED
+Don't over-engineer HubSpot integrations. HubSpot tracks sequences natively. Focus on writing good emails, not building infrastructure.
