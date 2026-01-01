@@ -42,8 +42,67 @@ CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[branc
 **⚡ SIMPLE WORKFLOW:**
 1. **Find instruction file:** `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[current-branch]-context.md`
 2. **Read instructions:** Load the handoff document
-3. **Follow instructions:** Execute exactly what the previous Claude documented
-4. **Ask for direction:** Present status and wait for user guidance
+3. **Check for emergency flag:** If file contains "EMERGENCY CONTEXT SAVE", trigger deep recovery
+4. **Follow instructions:** Execute exactly what the previous Claude documented
+5. **Ask for direction:** Present status and wait for user guidance
+
+**🚨 EMERGENCY CONTEXT RECOVERY MODE:**
+When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", the previous session ran out of context and saved minimal information. **YOU MUST gather context from ALL available sources:**
+
+1. **Announce Emergency Mode:**
+   ```
+   ⚠️ EMERGENCY CONTEXT DETECTED - Running deep context recovery...
+   ```
+
+2. **Query MCP Memory EXTENSIVELY (multiple searches):**
+   ```
+   # Search by project name
+   mcp__memory__search_nodes: "cb-[project-name] session"
+
+   # Search by branch name
+   mcp__memory__search_nodes: "[branch-name]"
+
+   # Search by recent sessions
+   mcp__memory__search_nodes: "Session-2025 [project-name]"
+
+   # Search for todos/pending work
+   mcp__memory__search_nodes: "[project-name] todo pending"
+
+   # Search for feature keywords from emergency file
+   mcp__memory__search_nodes: "[keywords from WHAT WE WERE DOING section]"
+   ```
+
+3. **Read ALL related context files:**
+   ```bash
+   # List all context files for this project
+   ls -la /Users/brent/scripts/CB-Workspace/.claude/branch-context/*[project-name]*.md
+
+   # Read each one to gather full history
+   ```
+
+4. **Check for todo directories:**
+   ```bash
+   # Look for todo structure in project
+   find [project-path]/todo -name "*.md" -type f 2>/dev/null
+
+   # Read plan files if they exist
+   cat [project-path]/todo/current/**/README.md
+   cat [project-path]/todo/current/**/*-plan.md
+   ```
+
+5. **Cross-reference and merge:**
+   - Combine information from ALL sources
+   - MCP memory takes precedence for todo status
+   - File-based context fills in details
+   - Present COMPLETE picture to user
+
+6. **Warn user about potential gaps:**
+   ```
+   ⚠️ Emergency recovery complete. Please verify this todo list is accurate:
+   [merged todo list from all sources]
+
+   If anything is missing, please correct me.
+   ```
 
 **📋 EXECUTION STEPS:**
 
@@ -90,11 +149,19 @@ CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[branc
      💡 MCP should be configured in .mcp.json with @modelcontextprotocol/server-memory
      ```
 
-**Step 3: File-Based Context Fallback (If Needed)**
-5. **IF no MCP context found, locate context file:** `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[branch-name]-context.md`
+**Step 3: File-Based Context & Emergency Detection**
+5. **Locate context file:** `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[branch-name]-context.md`
 6. **Read instruction file:** Load the handoff document if it exists
-7. **Parse instructions:** Extract setup steps, current state, todos, next actions
-8. **Todo directory inventory check:** Look for todo directory structure:
+7. **🚨 CHECK FOR EMERGENCY FLAG:**
+   - If file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE":
+     - **STOP normal flow** and execute **EMERGENCY CONTEXT RECOVERY MODE** (see above)
+     - Query MCP memory extensively with multiple searches
+     - Read ALL related context files for the project
+     - Check todo directories
+     - Merge all sources before continuing
+   - If NOT an emergency file, continue normal flow
+8. **Parse instructions:** Extract setup steps, current state, todos, next actions
+9. **Todo directory inventory check:** Look for todo directory structure:
    ```bash
    # Expected 7 files exactly:
    # 1. README.md  2. [branch-name]-plan.md  3. progress.log
@@ -102,11 +169,11 @@ CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[branc
    ```
 
 **Step 4: Execute Setup Instructions**
-9. **Follow setup from context source:** Execute commands from OpenMemory or file-based instructions
-10. **Verify expected state:** Confirm git status, processes, etc. match expectations
+10. **Follow setup from context source:** Execute commands from OpenMemory or file-based instructions
+11. **Verify expected state:** Confirm git status, processes, etc. match expectations
    - **Docker containers check:** Use `docker ps` to verify containers are running
    - **If containers not found:** ASK USER immediately - do not troubleshoot Docker issues
-11. **Verify README.md Branch Reference:** If todo directory found, check README.md shows correct branch
+12. **Verify README.md Branch Reference:** If todo directory found, check README.md shows correct branch
    ```bash
    # Get current branch
    CURRENT_BRANCH=$(git branch --show-current)
@@ -121,18 +188,18 @@ CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[branc
      fi
    fi
    ```
-12. **Architecture Validation (CB Projects Only):** Validate architecture map is current
+13. **Architecture Validation (CB Projects Only):** Validate architecture map is current
    - **Skip for external projects:** cb-shopify, cb-junogo, astro-sites (use Gadget/external docs)
    - **For CB projects:** Check if architecture-map.md needs updating
    - **If outdated:** Recommend running `/update-architecture` to document changes
    - **If current:** Proceed with session resume
-13. **Restore TodoWrite:** Set up todos from MCP memory context or instruction file
+14. **Restore TodoWrite:** Set up todos from MCP memory context or instruction file
 
 **Step 5: Present Status and Wait**
-14. **Show resume summary:** Display what was restored and current state
-15. **Present MCP memory insights:** Surface relevant session entities and cross-project patterns
-16. **Present next actions:** Show priority actions from memory or instruction file
-17. **Ask for direction:** "I've restored your session. Which task should I work on first?"
+15. **Show resume summary:** Display what was restored and current state
+16. **Present MCP memory insights:** Surface relevant session entities and cross-project patterns
+17. **Present next actions:** Show priority actions from memory or instruction file
+18. **Ask for direction:** "I've restored your session. Which task should I work on first?"
 
 **🎯 KEY PRINCIPLES:**
 - **Official MCP first** - Use knowledge graph memory as primary context source

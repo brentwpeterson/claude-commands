@@ -167,13 +167,23 @@ Generate/update comprehensive meta tags:
 <meta property="og:title" content="[title]" />
 <meta property="og:description" content="[description]" />
 <meta property="og:image" content="[image URL]" />
+<meta property="og:image:alt" content="[descriptive alt text for image]" />
+<meta property="og:site_name" content="RequestDesk" />
+<meta property="og:locale" content="en_US" />
+
+<!-- Article-specific (REQUIRED for og:type="article") -->
+<meta property="article:author" content="RequestDesk" />
+<meta property="article:published_time" content="[YYYY-MM-DDTHH:MM:SSZ]" />
+<meta property="article:modified_time" content="[YYYY-MM-DDTHH:MM:SSZ]" />
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content="[full URL]" />
-<meta property="twitter:title" content="[title]" />
-<meta property="twitter:description" content="[description]" />
-<meta property="twitter:image" content="[image URL]" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@requestdesk" />
+<meta name="twitter:creator" content="@requestdesk" />
+<meta name="twitter:title" content="[title]" />
+<meta name="twitter:description" content="[description]" />
+<meta name="twitter:image" content="[image URL]" />
+<meta name="twitter:image:alt" content="[descriptive alt text for image]" />
 
 <!-- AEO-Specific -->
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
@@ -331,6 +341,60 @@ After implementation, provide:
 2. Deploy and submit to Google Search Console
 3. Monitor rich results in Search Console
 ```
+
+---
+
+### Phase 8: Automated Validation
+
+After implementation, run automated validation using structured-data-testing-tool:
+
+**Run validation command:**
+```bash
+npx structured-data-testing-tool --url [deployed-url] -p Google -p Twitter -p Facebook
+```
+
+**For local testing (if site is running locally):**
+```bash
+npx structured-data-testing-tool --url http://localhost:[port]/[path] -p Google -p Twitter -p Facebook
+```
+
+**Expected output analysis:**
+```
+## Automated Validation Results
+
+**URL Tested:** [url]
+
+### Twitter Validation
+- ✅/❌ card type
+- ✅/❌ title
+- ✅/❌ description
+- ✅/❌ image url
+- ✅/❌ site username (@requestdesk)
+- ✅/❌ creator username
+- ✅/❌ image alt text
+
+### Facebook/Open Graph Validation
+- ✅/❌ page title
+- ✅/❌ page type
+- ✅/❌ url
+- ✅/❌ image url
+- ✅/❌ description
+- ✅/❌ site name
+- ✅/❌ locale
+- ✅/❌ image alt text
+
+### Statistics
+- Metatags found: [count]
+- Schemas in JSON-LD: [count]
+- Pass rate: [percentage]
+```
+
+**If validation fails:**
+1. Review failed tests
+2. Add missing meta tags
+3. Re-run validation until 100% pass
+
+**Target: 100% pass rate on all presets before deployment**
 
 ---
 

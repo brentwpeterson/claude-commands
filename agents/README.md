@@ -39,6 +39,81 @@ This directory contains specialized agents for different types of development wo
 - Testing strategy and validation
 - Documentation requirements
 
+---
+
+## Project Agents
+
+Project agents define **WHERE** Claude can work and project-specific rules. They prevent cross-project contamination and ensure correct deployment mechanisms.
+
+### 🛒 [cb-shopify Agent](./project-cb-shopify.md)
+**Project**: Gadget Platform Shopify App
+**Directory**: `cb-shopify/`
+
+**Key Rules:**
+- Uses Gadget direct sync (`ggt dev`), NOT git deployment
+- Production deploy via Gadget web UI only
+- Public endpoints in `api/routes/public/`
+- Uses `x-requestdesk-api-key` authentication
+
+### 📋 [cb-requestdesk Agent](./project-cb-requestdesk.md)
+**Project**: Main RequestDesk Application (FastAPI + React)
+**Directory**: `cb-requestdesk/`
+
+**Key Rules:**
+- Docker-only development (never install locally)
+- MongoDB via Atlas/local install (NOT Docker)
+- AWS deploys require `--platform linux/amd64`
+- No hardcoded URLs, IDs, usernames, or secrets
+
+### 📝 [cb-wordpress Agent](./project-cb-wordpress.md)
+**Project**: WordPress Plugin (RequestDesk Connector)
+**Directory**: `cb-wordpress/`
+
+**Key Rules:**
+- Directory name ALWAYS `requestdesk-connector/` (never version-named)
+- LocalWP for development (not Docker)
+- MANDATORY local testing before production
+- Keep version history for rollback
+
+### 🌐 [astro-sites Agent](./project-astro-sites.md)
+**Project**: Multi-Site Marketing Container
+**Directory**: `astro-sites/`
+
+**Key Rules:**
+- Contains multiple sites (requestdesk-ai, contentbasis-io, etc.)
+- Docker multi-site with nginx routing
+- AWS deploys require `--platform linux/amd64`
+- Deploy via git tags
+
+---
+
+## Agent Types
+
+| Type | Purpose | Examples |
+|------|---------|----------|
+| **Task Agents** | HOW to do work | Debugging, Feature |
+| **Project Agents** | WHERE to work | cb-shopify, cb-requestdesk |
+
+**Use both together:** Project agent defines boundaries, task agent defines methodology.
+
+---
+
+## Cross-Project Handoffs
+
+When work spans multiple projects:
+
+1. **Each project has its own Claude instance**
+2. **Create handoff documents** in `.claude/cross-project-handoffs/`
+3. **Never commit to other projects** - let their agent handle it
+
+```
+.claude/cross-project-handoffs/
+├── shopify-to-requestdesk-2025-12-18.md
+└── requestdesk-to-wordpress-2025-12-15.md
+```
+
+---
+
 ## How to Use the Agents
 
 ### Method 1: Reference During Development

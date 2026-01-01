@@ -1,8 +1,20 @@
-Deploy current project branch to production using tag-based deployment system
+Deploy current project branch to production using tag-based deployment system with iteration support
 
-**Usage**: `/deploy-project [project-name]`
+**Usage**:
+- `/deploy-project [project-name]` - Deploy iteration (auto-increments iter-1, iter-2, etc.)
+- `/deploy-project --mark-tested [iter-N]` - Mark iteration as production tested
+- `/deploy-project --final` - Final deployment (requires all iterations tested)
 
-**Purpose**: Deploy specified project to production (project auto-detected from current directory if not specified)
+**Purpose**: Deploy specified project to production with phased iteration tracking (project auto-detected from current directory if not specified)
+
+**🔄 ITERATION DEPLOYMENT SYSTEM:**
+Supports phased deployments where features are released incrementally and tested before final release.
+
+| Flag | Purpose | Example |
+|------|---------|---------|
+| (none) | Deploy next iteration | `matrix-v0.32.0-shopify-rag-iter-1` |
+| `--mark-tested iter-1` | Mark iteration as production tested | Updates tracking file |
+| `--final` | Complete deployment after all tested | `matrix-v0.32.0-shopify-rag-complete` |
 
 **🗂️ DIRECTORY HANDLING:**
 **CRITICAL**: This command works from any directory in the workspace. It will:
@@ -34,27 +46,136 @@ Deploy current project branch to production using tag-based deployment system
    - Verify VERSION file exists: `ls VERSION` (should show VERSION file)
    - Store current branch BEFORE any operations: `ORIGINAL_BRANCH=$(git branch --show-current)`
 
-**🚨 CRITICAL: Pre-Deployment Git Status Check**
-1. **Mandatory Git Status Validation:**
+**🔄 Phase 0.5: Iteration Mode Detection**
+
+**ITERATION TRACKING FILE:** `todo/current/[category]/[task]/deployment-iterations.md`
+
+1. **Detect Command Mode:**
+   - **`--mark-tested [iter-N]`** → Jump to MARK TESTED MODE (below)
+   - **`--final`** → Jump to FINAL DEPLOYMENT MODE (below)
+   - **No flags** → Continue with ITERATION DEPLOYMENT MODE
+
+2. **Find/Create Iteration Tracking File:**
+   - Locate todo folder matching current branch in `todo/current/`
+   - Check for existing `deployment-iterations.md`
+   - **If exists:** Read current iteration state
+   - **If not exists:** Create with template (see below)
+
+3. **Determine Next Iteration Number:**
+   - Parse `deployment-iterations.md` for existing iterations
+   - Find highest iteration number
+   - Next iteration = highest + 1 (or 1 if none exist)
+
+---
+
+**📋 MARK TESTED MODE** (`--mark-tested [iter-N]`)
+
+When invoked with `--mark-tested iter-1` (or any iteration):
+
+1. **Locate iteration tracking file** in todo folder
+2. **Find the specified iteration row** in the table
+3. **Update the "Prod Tested" column:**
+   - Change from `⏳ pending` to `✅ [TODAY'S DATE]`
+4. **Show confirmation:**
+   ```
+   ✅ Marked iter-1 as production tested
+
+   Current Iteration Status:
+   | Iteration | Deployed | Prod Tested |
+   |-----------|----------|-------------|
+   | iter-1    | 2025-12-18 | ✅ 2025-12-19 |
+   | iter-2    | 2025-12-19 | ⏳ pending |
+
+   Next: Deploy more iterations or run --final when all tested
+   ```
+5. **EXIT** - Do not proceed with deployment
+
+---
+
+**🏁 FINAL DEPLOYMENT MODE** (`--final`)
+
+When invoked with `--final`:
+
+1. **Locate iteration tracking file** in todo folder
+2. **Safety Check - ALL iterations must be tested:**
+   ```
+   🔍 Checking iteration status...
+
+   | Iteration | Deployed | Prod Tested |
+   |-----------|----------|-------------|
+   | iter-1    | 2025-12-18 | ✅ 2025-12-18 |
+   | iter-2    | 2025-12-19 | ⏳ pending    | ← BLOCKS FINAL
+   ```
+
+   **If ANY iteration has `⏳ pending` in Prod Tested:**
+   ```
+   🚫 FINAL DEPLOYMENT BLOCKED
+
+   The following iterations have not been production tested:
+   - iter-2 (deployed 2025-12-19)
+
+   To proceed:
+   1. Test iter-2 in production
+   2. Run: /deploy-project --mark-tested iter-2
+   3. Then run: /deploy-project --final
+   ```
+   **EXIT** - Do not proceed
+
+3. **If ALL iterations tested:**
+   - Create clean final tag: `matrix-v[VERSION]-[task-name]-complete`
+   - Generate changelog entry summarizing ALL iterations
+   - Update iteration tracking file with "FINAL DEPLOYMENT" entry
+   - Continue with standard deployment process (merge to master, push tag)
+
+4. **After successful final deployment:**
+   - Show summary of all iterations included
+   - Remind user to run `/claude-complete` to archive todo
+
+---
+
+**📄 ITERATION TRACKING FILE TEMPLATE:**
+
+When creating new `deployment-iterations.md`:
+```markdown
+# Deployment Iterations
+
+## Feature: [task-name from folder]
+## Branch: [current branch name]
+## Started: [TODAY'S DATE]
+
+| Iteration | Tag | Deployed | Prod Tested | Notes |
+|-----------|-----|----------|-------------|-------|
+| (iterations will be added here) |
+
+## Iteration Details
+
+### iter-1
+- **Scope:** [To be filled on deployment]
+- **Key Changes:** [To be filled on deployment]
+
+## Final Deployment
+- [ ] All iterations deployed
+- [ ] All iterations production tested
+- [ ] Final tag created
+- [ ] Todo archived
+```
+
+---
+
+**🚨 CRITICAL: Pre-Deployment Auto-Commit**
+1. **Automatic Commit of All Changes:**
    - Check git status: `git status --porcelain`
    - **IF ANY UNCOMMITTED FILES FOUND:**
+
+     **🔧 AUTO-COMMIT - NO QUESTIONS ASKED:**
+     ```bash
+     git add -A && git commit -m "[descriptive message of changes]"
      ```
-     ❌ DEPLOYMENT BLOCKED - UNCOMMITTED FILES DETECTED
-
-     The following files have uncommitted changes:
-     [list files from git status]
-
-     🚨 CRITICAL: ALL files must be committed before deployment
-
-     Actions required:
-     1. Review changes: git diff
-     2. Stage files: git add [files]
-     3. Commit changes: git commit -m "[description]"
-     4. Re-run deployment after committing
-
-     DEPLOYMENT CANNOT PROCEED until all files are committed.
-     ```
-     **STOP DEPLOYMENT IMMEDIATELY**
+     - **NEVER ask the user** if they want to commit
+     - **NEVER block deployment** for uncommitted files
+     - **ALWAYS commit automatically** with a descriptive message
+     - Generate commit message based on what files changed
+     - Continue immediately with deployment after committing
 
    - **IF CLEAN:** Continue with deployment process
 
@@ -83,7 +204,20 @@ Deploy current project branch to production using tag-based deployment system
    - Add deployment timestamp and version tag
    - Note any edge cases or areas that need specific testing attention
 
-2. **Update Technical Documentation:**
+2. **Update Iteration Tracking (if iteration deployment):**
+   - Add new row to `deployment-iterations.md` table:
+     ```
+     | iter-[N] | matrix-v[VERSION]-[task]-iter-[N] | [TODAY] | ⏳ pending | [Brief scope description] |
+     ```
+   - Add iteration details section:
+     ```markdown
+     ### iter-[N]
+     - **Scope:** [What this iteration includes]
+     - **Key Changes:** [Files/features modified]
+     - **Testing Focus:** [What to verify in production]
+     ```
+
+3. **Update Technical Documentation:**
    - Update relevant files in `documentation/docs/technical/` for internal team reference
    - Document any technical changes, API updates, configuration changes
    - Add troubleshooting notes if applicable
@@ -198,6 +332,15 @@ Deploy current project branch to production using tag-based deployment system
      - `matrix-v0.26.4-global-terms`
      - `matrix-v0.26.4-content-fix`
      - `matrix-v0.26.4-ui-improvements`
+
+   **🔄 ITERATION DEPLOYMENT (Phased Releases):**
+   - **Pattern:** `matrix-v[VERSION]-[task-name]-iter-[N]`
+   - **Use for:** Phased feature releases that need production testing between iterations
+   - **Examples:**
+     - `matrix-v0.32.0-shopify-rag-iter-1` (products sync)
+     - `matrix-v0.32.0-shopify-rag-iter-2` (collections sync)
+     - `matrix-v0.32.0-shopify-rag-iter-3` (blog articles)
+   - **Final:** `matrix-v0.32.0-shopify-rag-complete` (after all iterations tested)
    
    **⚡ MATRIX FRESH BUILD (When Cache Issues Suspected):**
    - **Pattern:** `matrix-v[VERSION]-fresh-[description]`
@@ -226,6 +369,8 @@ Deploy current project branch to production using tag-based deployment system
      - `hotfix-v0.26.4-critical-auth-bug`
    
    **📋 TAG SELECTION LOGIC:**
+   - **Iteration deployment** → `matrix-v[VERSION]-[task]-iter-[N]` (🔄 Phased release)
+   - **Final deployment** → `matrix-v[VERSION]-[task]-complete` (✅ All iterations tested)
    - **Frontend only** → `frontend-v[VERSION]-[description]` (⚡ ~15 min)
    - **Backend only** → `backend-v[VERSION]-[description]` (⚡ ~20 min)
    - **Normal deployment** → `matrix-v[VERSION]-[description]` (⚡ ~25 min)
@@ -313,7 +458,23 @@ When `/deploy-code` triggers conversation compaction due to context limits, deta
 - **Previous system:** ~50+ minutes 🐌
 
 **🎯 RECOMMENDED WORKFLOW:**
+
+**Standard Deployments:**
 1. **Regular deployments** → Use `matrix-v[VERSION]-[description]`
-2. **Infrastructure changes** → Use `matrix-v[VERSION]-fresh-[description]` 
+2. **Infrastructure changes** → Use `matrix-v[VERSION]-fresh-[description]`
 3. **Emergency fixes** → Use `hotfix-v[VERSION]-[description]`
 4. **Matrix issues** → Fallback to `app-v[VERSION]-[description]`
+
+**Phased/Iteration Deployments:**
+1. **Deploy iteration** → `/deploy-project` (creates iter-1, iter-2, etc.)
+2. **Test in production** → Verify the iteration works as expected
+3. **Mark as tested** → `/deploy-project --mark-tested iter-1`
+4. **Repeat** → Deploy more iterations as needed
+5. **Final release** → `/deploy-project --final` (only after all tested)
+6. **Archive** → Run `/claude-complete` to close the todo
+
+**When to Use Iterations:**
+- Large features with multiple phases
+- Features where each phase needs production validation
+- Gradual rollouts where early phases inform later ones
+- Risk mitigation for complex changes

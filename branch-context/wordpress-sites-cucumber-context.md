@@ -1,85 +1,104 @@
 # Resume Instructions for Claude
 
 ## IMMEDIATE SETUP
-1. **Change directory:** `cd /Users/brent/scripts/CB-Workspace/wordpress-sites`
-2. **Plugin location:** Symlinked at `requestdesk-connector/` → LocalWP site
-3. **LocalWP Admin:** `http://localhost:10013/wp-admin/`
-4. **Template Importer:** RequestDesk → Template Importer
+1. **Change directory:** `cd /Users/brent/LocalSites/contentcucumber/app/public/wp-content/themes/cucumber-gp-child`
+2. **Verify branch:** `git branch --show-current` (should be: main)
+3. **Plugin location:** `/Users/brent/LocalSites/contentcucumber/app/public/wp-content/plugins/requestdesk-connector/`
+4. **Theme location:** `/Users/brent/LocalSites/contentcucumber/app/public/wp-content/themes/cucumber-gp-child/`
+5. **Local WP site:** `http://contentcucumber.local/wp-admin/`
 
 ## SESSION METADATA
-**wordpress-sites repo:** `92ad1f8 Initial commit - WordPress Sites workspace`
-**contentcucumber repo:** `ced7c27 Add dynamic parent/child landing page system (v2.5.0)`
-**Plugin Version:** 2.5.0
-**Saved:** 2025-12-27
+**Last Commit:** `a203543 Fix mega menu hover behavior + remove GeneratePress footer credit`
+**Saved:** 2025-12-31
+**Purpose:** Mega menu fixes + WAF 403 investigation
 
-## WHAT WAS ACCOMPLISHED THIS SESSION
+## MEGA MENU STATUS: ✅ COMPLETE (USER TESTED)
+The dynamic mega menu is fully working:
+- 3-column layout for Services dropdown
+- Hover bridge on nav item (::after) - doesn't block Login
+- Grandchildren items display correctly
+- "Built with GeneratePress" removed from footer
+- Customizer settings for banner/promo content
 
-### 1. Dynamic Parent/Child Landing Page System (v2.5.0)
-- **Parent page dropdown** added to Template Importer UI
-- **`[requestdesk_child_grid]` shortcode** created - dynamically queries children
-- **Auto parent assignment** - child pages get `post_parent` set on import
-- **ItemList schema** auto-generated from child pages
-- Replaced 225 lines of hardcoded grid with 15-line dynamic shortcode
+### Key Commits This Session:
+1. `a203543` - Fix hover bridge (moved from dropdown ::before to nav item ::after)
+2. `b39aa28` - Walker class, CSS positioning, clickable links
 
-### 2. Created `/cucumber-writer` Skill
-- AI content creation with Content Cucumber brand voice
-- Uses RequestDesk API for brand persona
-- Supports: blog, service, landing-child, landing-parent, social, email, meta
-- Located: `.claude-local/commands/cucumber-writer.md`
+## CRITICAL ISSUE: FLYWHEEL WAF BLOCKING PAGE SAVES
 
-### 3. WordPress Sites Repo Created
-- Initialized git repo for `/Users/brent/scripts/CB-Workspace/wordpress-sites/`
-- Excludes symlinks (contentcucumber, requestdesk-connector, talk-commerce)
-- Excludes test-data folder
-- Tracks: README.md, todo/, .gitignore
+### Problem Summary
+- **Symptom:** 403 Forbidden on ALL REST API endpoints when editing certain pages on LIVE
+- **Affected pages:** Content Creation, Marketing Management (parent landing pages)
+- **Working pages:** Content in Commerce
+- **LOCAL:** Works perfectly
+- **LIVE:** 403 errors immediately when opening page in Gutenberg
 
-## CURRENT DISCUSSION: Services Parent Page Design
+### 403 Error Details
+When opening affected pages in Gutenberg on live:
+```
+OPTIONS /wp-json/wp/v2/settings - 403
+GET /wp-json/wp/v2/users/96 - 403
+GET /wp-json/wp/v2/comments - 403
+GET /wp-json/wp/v2/taxonomies - 403
+GET /wp-json/wp/v2/wp_pattern_category - 403
+```
 
-**User wants to create REAL services page for Content Cucumber**
+### Root Cause
+Flywheel's WAF (Web Application Firewall) is blocking requests because something in the page CONTENT triggers a ModSecurity rule. The same pages work perfectly on local WordPress.
 
-**Key requirement:** Mixed grid with:
-- **3 External links** → HubSpot landing pages (HubSpot, Flywheel, Case Studies)
-- **6+ Internal links** → WordPress child pages (Blog, SEO, Website, Email, Social, AEO)
+### Previous Fix Attempt (From Earlier Session)
+JSON-LD `<script type="application/ld+json">` tags were removed from templates. Templates are now clean - but WAF still triggers on certain content.
 
-**Three options discussed:**
-1. **Option A:** Hardcode Featured section, dynamic grid below
-2. **Option B:** All in one grid with external URL field
-3. **Option C:** All WordPress pages, some with redirects to HubSpot ← User asked for explanation
+### WORKAROUND
+- Edit pages LOCALLY
+- Push database to live
+- Pages display correctly, just can't be edited on live
 
-**Option C explained:**
-- Create WP child pages for HubSpot/Flywheel/Cases that redirect to HubSpot LPs
-- Single unified grid (no two sections)
-- Dynamic shortcode works unchanged
-- Easy to convert redirect → full page later
+### REQUIRED ACTION
+**Contact Flywheel Support** with this message:
+```
+Subject: WAF blocking REST API requests when editing specific pages
 
-**User was about to choose an option when save was requested**
+Hi Flywheel Support,
+
+I'm getting 403 Forbidden errors on my site (contentcucumber.com) when trying to edit certain pages in WordPress Gutenberg editor.
+
+Issue:
+- Opening specific pages in Gutenberg immediately triggers 403 errors on ALL REST API endpoints
+- The same pages work fine on my local WordPress installation
+- Other pages on the same site edit/save without issue
+- The 403 happens before I even click Save - just loading the page in the editor triggers it
+
+Affected endpoints (all return 403):
+- /wp-json/wp/v2/settings
+- /wp-json/wp/v2/comments
+- /wp-json/wp/v2/users
+- /wp-json/wp/v2/taxonomies
+
+Could you please check the WAF/ModSecurity logs to identify which rule is being triggered by my page content?
+
+Thank you!
+```
 
 ## TODO LIST STATE
-- ✅ COMPLETED: Add parent page dropdown to importer UI
-- ✅ COMPLETED: Rebuild parent template with dynamic child query
-- ✅ COMPLETED: Update child import function to use selected parent ID
-- ⏳ PENDING: Test full workflow: parent import → child import → verify linking
-- ⏳ PENDING: Create real services page CSV for Content Cucumber
-- ⏳ PENDING: Decide on Option A/B/C for HubSpot integration
+- ✅ COMPLETED: Mega menu working (USER TESTED)
+- ✅ COMPLETED: Remove "Built with GeneratePress" footer
+- ✅ COMPLETED: Fix hover bridge blocking Login nav item
+- ⏳ PENDING: Contact Flywheel about WAF 403 issue
+- ⏳ PENDING: Update featured field in Email Marketing/Social Media CSVs (if wanted)
+- ⏳ PENDING: Remove DEBUG comments from functions.php (optional)
 
 ## NEXT ACTIONS (PRIORITY ORDER)
-1. **FIRST:** Get user decision on Option A, B, or C
-2. **THEN:** Use `/cucumber-writer landing-parent` to create parent page content
-3. **THEN:** Use `/cucumber-writer landing-child` for each service
-4. **CREATE:** CSV files for import
-5. **TEST:** Import on LocalWP at localhost:10013
+1. **CONTACT FLYWHEEL** - Send the support message above
+2. **WORKAROUND** - Edit pages locally, push DB to live
+3. **OPTIONAL** - Clean up DEBUG comments in functions.php Walker class
 
 ## KEY FILES MODIFIED THIS SESSION
-- `requestdesk-connector/requestdesk-connector.php` - v2.5.0, added shortcode
-- `requestdesk-connector/admin/aeo-template-importer.php` - parent dropdown
-- `requestdesk-connector/admin/aeo-template-landing-parent.php` - dynamic grid
-- `.claude-local/commands/cucumber-writer.md` - new skill
+1. `functions.php` - Added footer copyright filter, simplified mega menu JS
+2. `mega-menu.css` - Fixed hover bridge (now on nav item ::after instead of dropdown ::before)
 
-## API REFERENCE
-- **Content Cucumber API Key:** `spF-vAD3uzTiEYyaxF9TD0zQ01zUny5DK4eVjIMPuB8`
-- **Endpoint:** `https://app.requestdesk.ai/api/agent/content`
-
-## VERIFICATION COMMANDS
-- Check plugin: `ls -la wordpress-sites/requestdesk-connector/`
-- Check LocalWP: Open `http://localhost:10013/wp-admin/`
-- Test API: `curl -s -X POST "https://app.requestdesk.ai/api/agent/content" -H "Authorization: Bearer spF-vAD3uzTiEYyaxF9TD0zQ01zUny5DK4eVjIMPuB8"`
+## CONTEXT NOTES
+- Live site: https://www.contentcucumber.com (Flywheel hosting)
+- Theme: GeneratePress child theme (cucumber-gp-child)
+- The WAF issue is NOT fixable in code - it's a hosting configuration issue
+- Local and live use same WordPress version, same plugins, same content
