@@ -1,86 +1,68 @@
 # Resume Instructions for Claude
 
 ## IMMEDIATE SETUP
-1. **Change directory:** `cd /Users/brent/scripts/CB-Workspace/brent-workspace`
-2. **Verify branch:** `git branch --show-current` (should be: main)
-3. **Run:** `/brent-start` to load daily operating system
+1. **Working directory:** `/Users/brent/scripts/CB-Workspace/brent-workspace`
+2. **Run:** `/brent-start` to load daily operating system
 
 ## SESSION METADATA
-**Last Commit:** `0264537 Add SMS idea capture plan - Twilio to RequestDesk integration`
+**Last Commit:** `5e9a729 End of day - 2026-01-01 (Holiday)`
 **Saved:** January 1, 2026
 
-## WHAT WE ACCOMPLISHED THIS SESSION
+## MONDAY JAN 6 - FIRST THING
 
-### Dec 31 - Brain Dump & Time Tracking
-- Created `/brent-finish` command for day closeout with todo review
-- Updated `/brent-start` with time tracking + daily non-negotiables
-- Created `WORK-LOG.md` for tracking hours
-- Added blocker chain framework to MASTER-COMMITMENTS.md
-- Added daily non-negotiables: Clear HubSpot tasks, Review CC CSS
-- Added MiMS fundraising (weekly video until June 21)
-- Added SMS idea capture plan to idea-stash
-- Logged Dec 31: 11.5 hours (4:15 AM - 3:49 PM)
+### URGENT: HubSpot Calendar
+- [ ] Update HubSpot meeting scheduler to Hawaiian time
 
-### Jan 1 - HubSpot Task Triage
-- Cleared 23+ stale HubSpot tasks (most were Fireflies auto-generated from May 2025)
-- Established pattern: tasks older than 6 months with no context get closed
-- Kept 7 actionable tasks for follow-up
+### Domain Consolidation (ContentBasis → ContentCucumber)
 
-### Jan 1 - Partner Email Sequence (IN PROGRESS)
-- Researched Mia Murphy / Tontine.ai (price optimization for Shopify brands)
-- Drafted 5-email sequence `SEQ-PARTNER-001` for partner outreach
-- Template designed to be reusable
-- **NOT YET SAVED TO FILE** - emails drafted in conversation only
+**Nameserver Migration:**
+1. [ ] Update nameservers for contentcucumber.com at registrar → Route53
+   - ns-1834.awsdns-37.co.uk
+   - ns-432.awsdns-54.com
+   - ns-1344.awsdns-40.org
+   - ns-611.awsdns-12.net
 
-## DRAFT EMAIL SEQUENCE (SEQ-PARTNER-001)
+2. [ ] Add `get.contentcucumber.com` in HubSpot (Settings → Domains & URLs)
 
-**Prospect:** Mia Murphy, Co-Founder & CRO at Tontine.ai
-**Company:** Price optimization platform for Shopify/Shopify+ (Steve Madden, FashionNova, K-Swiss)
-**Angle:** RequestDesk partnership - co-marketing + integration listing
-**Cadence:** 7-7-7-14-14 days (relaxed)
+3. [ ] Update landing page URLs from `landing.contentbasis.io` to `get.contentcucumber.com`
 
-**Email 1:** Partnership intro (highly personalized for Mia)
-**Email 2:** Value add (template - share relevant resource)
-**Email 3:** Social proof (template - case study example)
-**Email 4:** Direct ask (template - 15 min meeting)
-**Email 5:** Breakup (template - closing the loop)
+4. [ ] Update Route53 for contentbasis.io → S3 buckets
+   - S3 endpoint: contentbasis.io.s3-website-us-east-1.amazonaws.com
+   - Redirects to: contentcucumber.com/contentbasis
 
-**User feedback:** User stopped me from creating HubSpot custom properties (sequence_code, sequence_step, partnership_interest) - HubSpot already handles sequence tracking natively. Don't over-engineer.
+5. [ ] Test: visit contentbasis.io → should land on contentcucumber.com/contentbasis
 
-## REMAINING HUBSPOT TASKS TO ACTION
+## INFRASTRUCTURE READY (Created Jan 1)
 
-7 tasks kept for follow-up:
-1. Reply with case studies to Mia Murphy
-2. Follow up with Scott Wueschinski (Content workflow)
-3. Follow up with Matthew Eickman (entrepreneur brain)
-4. Create demo for Hair Pro brand
-5. Follow up with Ken Shenkman (So many things)
-6. Follow up with Denis Dyli (Case Studies Partnership)
-7. Follow up with Rebecca Brocton (2 more months in CST)
+| Asset | Status | Details |
+|-------|--------|---------|
+| S3 bucket: contentbasis.io | Ready | Redirects to contentcucumber.com/contentbasis |
+| S3 bucket: www.contentbasis.io | Ready | Redirects to contentcucumber.com/contentbasis |
+| Route53 hosted zone | Ready | Zone ID: Z0666747DC6UHMKN8YRO |
+| get.contentcucumber.com | Ready | Points to HubSpot: 39487190.group40.sites.hubspot.net |
+| /contentbasis page | Live | https://www.contentcucumber.com/contentbasis/ |
 
-## TODO LIST STATE
-- 🔄 IN PROGRESS: Continue building brain dump list
-- ⏳ PENDING: Tell Susan about MM26FL promo video campaign
-- ⏳ PENDING: Start LLM Product Visibility white paper (2 weeks urgent)
-- ⏳ PENDING: Jan 2: Full Q1 planning day
-- ⏳ PENDING: Jan 6: Re-engage VTEX + BigCommerce
+## PARTNER OUTREACH
 
-## NEXT ACTIONS (PRIORITY ORDER)
-1. **SAVE EMAIL SEQUENCE:** Write SEQ-PARTNER-001 to a template file
-2. **UPDATE MIA'S TASK:** Mark original task complete, create new sequence tasks
-3. **SEND EMAIL 1:** Personalized email to Mia Murphy
-4. **JAN 2 PLANNING:** Full Q1 prioritization with MASTER-COMMITMENTS.md
+**Mia Murphy (Tontine.ai):**
+- HubSpot contact updated with personalization_paragraph
+- Email sequence template: SEQ-PARTNER-001
+- Ready to enroll in sequence after HubSpot templates created
+
+**Email Template Location:** `brent-workspace/templates/email-sequences/SEQ-PARTNER-001.md`
+
+## Q1 PAID ADS
+
+**Plan:** LinkedIn first, then Meta
+- Budget: $1-3k/mo
+- Goal: Demo requests for Content Cucumber
+- Landing page: get.contentcucumber.com/content-flywheel-plan (after migration)
 
 ## KEY FILES
-- **Dashboard:** `ob-notes/Brent Notes/Dashboard/`
-- **MASTER-COMMITMENTS.md:** Brain dump + blocker chains
+- **MASTER-COMMITMENTS.md:** Monday tasks + Q1 brain dump
 - **WORK-LOG.md:** Time tracking
-- **idea-stash/sms-idea-capture-plan.md:** Twilio integration plan
+- **SEQ-PARTNER-001.md:** Partner email sequence template
 
 ## COMMANDS AVAILABLE
 - `/brent-start` - Daily operating system with time tracking
 - `/brent-finish` - Day closeout with todo review
-- `/brand-brent` - Load personal brand persona for content
-
-## LESSON LEARNED
-Don't over-engineer HubSpot integrations. HubSpot tracks sequences natively. Focus on writing good emails, not building infrastructure.
