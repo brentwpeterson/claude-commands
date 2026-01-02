@@ -3,6 +3,7 @@ Claude Session Save - Create Resume Instructions + Preserve Work
 **USAGE:**
 - `/claude-save <project>` - Full comprehensive save with validation
 - `/claude-save <project> --quick` - Fast save with minimal context usage (skips validation)
+- `/claude-save <project> --no-todo` - Save without linking to todo directory (for ad-hoc work)
 - `/claude-save <project> <X%>` - Context-aware save (e.g., `/claude-save requestdesk 9%`)
 
 **🚨 CONTEXT-AWARE SAVE MODES (CRITICAL - READ FIRST):**
@@ -334,8 +335,20 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
    - Stage context files: `git add /Users/brent/scripts/CB-Workspace/.claude/branch-context/`
    - Commit with: "Save resume instructions for session restart"
 
+**Phase 4.5: Link Context to Todo Progress Log (Full & Quick modes only)**
+6. **Update Progress Log with Context File Reference:**
+   - **Skip if:** `--no-todo` flag passed, OR emergency mode (<8%), OR no todo directory found
+   - **If todo directory exists:**
+     ```bash
+     TODO_DIR=$(dirname "$TODO_PATH")
+     CONTEXT_FILE="[context-filename].md"
+     echo "$(date '+%Y-%m-%d %H:%M') - SESSION SAVED → .claude/branch-context/${CONTEXT_FILE}" >> "$TODO_DIR/progress.log"
+     ```
+   - **Why:** Links todo work history to context files, making it easy to find the most recent/valid context
+   - **Format:** `YYYY-MM-DD HH:MM - SESSION SAVED → .claude/branch-context/[filename].md`
+
 **Phase 5: Official MCP Memory Integration (Automatic with Fallback)**
-6. **Store Session Summary to Official Anthropic MCP Memory Server:**
+7. **Store Session Summary to Official Anthropic MCP Memory Server:**
    - **Check official MCP memory server availability:**
      Try to use `mcp__memory__search_nodes` with a simple query to test connectivity
      **⚠️ NEVER use `mcp__memory__read_graph` - it returns massive token dumps (~14k+)**
@@ -371,9 +384,10 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
      - **Type**: "session"
      - **Observations**: Current state, accomplishments, next steps
 
-7. **END BY SHOWING CONTEXT FILE PATH:**
+8. **END BY SHOWING CONTEXT FILE PATH:**
    - **⚠️ CRITICAL**: If todo path doesn't exist, STOP and ask user to clarify
    - Display: "📁 Resume instructions saved to: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[keyword]-context.md`"
+   - **If todo linked**: "📝 + Linked in progress.log"
    - **If MCP worked**: "🧠 + Session stored to official MCP memory server"
    - **If MCP failed**: "⚠️ (Official MCP unavailable - file-based only)"
 
@@ -404,11 +418,12 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 - **`/claude-save keyword 5%`** → Emergency saves <8% (~1% context usage, memory-only)
 
 **Context Usage Comparison:**
-| Mode | Context Used | When to Use |
-|------|-------------|-------------|
-| **Full** | ~8-13% | >15% remaining, normal end of session |
-| **Quick** | ~2-3% | 8-15% remaining, or when --quick flag passed |
-| **Emergency** | ~1% | <8% remaining, critical save before context loss |
+| Mode | Context Used | Progress.log Link | When to Use |
+|------|-------------|-------------------|-------------|
+| **Full** | ~8-13% | ✅ Yes | >15% remaining, normal end of session |
+| **Quick** | ~2-3% | ✅ Yes | 8-15% remaining, or when --quick flag passed |
+| **Emergency** | ~1% | ❌ No | <8% remaining, critical save before context loss |
+| **--no-todo** | varies | ❌ No | Ad-hoc work without todo directory |
 
 **Quick mode (8-15% or --quick) skips:**
 - ❌ Detailed todo directory validation
@@ -422,6 +437,7 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 - ✅ Basic todo detection
 - ✅ Essential context template
 - ✅ Branch and directory capture
+- ✅ Progress.log context link (if todo exists)
 
 **Emergency mode (<8%) skips EVERYTHING except:**
 - ✅ One git command (branch name)
