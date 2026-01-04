@@ -48,3 +48,4 @@ local/*.local.*
 *.temp
 *~
 !branch-context/master-context.md
+commands/brand-brent.md
