@@ -117,11 +117,11 @@ Brand:       /brand-brent, /brand-cucumber, /brand-requestdesk,
 
 ## TODO: Commands to Update
 
-| Command | Update Needed |
-|---------|---------------|
-| `/claude-save` | Add `--close` flag (absorb claude-close functionality) |
-| `/claude-debug` | Absorb log-debug functionality, add deployment/production debugging |
-| `/claude-start` | Add root directory validation, security features from security-start |
+| Command | Update Needed | Status |
+|---------|---------------|--------|
+| `/claude-save` | Add `--close` flag (absorb claude-close functionality) | ✅ Done |
+| `/claude-debug` | Absorb log-debug functionality, add deployment/production debugging | Pending |
+| `/claude-start` | Add root directory validation, security features from security-start | Pending |
 
 ---
 

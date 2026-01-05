@@ -3,6 +3,7 @@ Claude Session Save - Create Resume Instructions + Preserve Work
 **USAGE:**
 - `/claude-save <project>` - Full comprehensive save with validation
 - `/claude-save <project> --quick` - Fast save with minimal context usage (skips validation)
+- `/claude-save <project> --close` - Formal session close with security scan and CLAUDE.md update
 - `/claude-save <project> --no-todo` - Save without linking to todo directory (for ad-hoc work)
 - `/claude-save <project> <X%>` - Context-aware save (e.g., `/claude-save requestdesk 9%`)
 
@@ -13,6 +14,76 @@ Claude Session Save - Create Resume Instructions + Preserve Work
 | **>15%** | FULL | All tasks: git ops, context files, memory, verbose summaries |
 | **8-15%** | QUICK | Essential only: brief context, minimal git output, skip verbose ops |
 | **<8%** | EMERGENCY | JUST save context - NO git reads, NO tests, pure context dump |
+
+---
+
+## 🔒 CLOSE MODE (`--close` flag)
+
+**When to use:** End of work session, switching to different project, formal handoff.
+
+**What `--close` adds beyond normal save:**
+
+1. **Comprehensive Security Scan:**
+   - Scan all staged/modified files for credentials
+   - Check for API keys (OpenAI, Anthropic, AWS, GitHub)
+   - Detect hardcoded URLs, database credentials, JWT tokens
+   - Generate security report if issues found
+   - **BLOCK close if CRITICAL security issues detected**
+
+2. **Update CLAUDE.md Header:**
+   - Add `## LAST SESSION STATUS` section at top of project's CLAUDE.md
+   - Include: branch, last commit, next steps, any blockers
+   - Format for quick context recovery on next session
+
+3. **Progress Log Final Entry:**
+   - Add formal "SESSION CLOSED" entry to progress.log
+   - Include timestamp, session duration if known, summary
+
+4. **Verbose Commit:**
+   - Comprehensive commit message with session summary
+   - List all files changed, features worked on
+   - Note any incomplete work or known issues
+
+**Close Mode Workflow:**
+
+```
+1. Run security scan
+   ├─ CRITICAL issues → STOP, show issues, require fix
+   └─ No issues → Continue
+
+2. Normal save operations (Phase 1-4)
+
+3. Update CLAUDE.md header:
+   ## LAST SESSION STATUS - [DATE]
+   **Branch:** [branch-name]
+   **Last Commit:** [hash] [message]
+   **Status:** [summary]
+   **Next Steps:** [1-3 priority actions]
+
+4. Add progress.log entry:
+   [DATE TIME] - SESSION CLOSED
+   Summary: [work completed]
+   Next: [what to do on resume]
+
+5. Verbose commit:
+   Session close: [summary]
+
+   Changes:
+   - [file1]: [what changed]
+   - [file2]: [what changed]
+
+   Next session:
+   - [action 1]
+   - [action 2]
+
+6. Show completion:
+   ✅ Session closed
+   📁 Context: [path]
+   🔒 Security: Passed
+   📝 CLAUDE.md: Updated
+```
+
+---
 
 **⚡ EMERGENCY MODE (<8% context) - IMMEDIATE ACTION:**
 
@@ -86,7 +157,48 @@ When context % is passed and is <8%, SKIP ALL OTHER INSTRUCTIONS and do ONLY thi
 | junogo         | /Users/brent/scripts/CB-Workspace/cb-junogo            |
 | memory-system  | /Users/brent/scripts/CB-Workspace/cb-memory-system     |
 | jobs           | /Users/brent/scripts/CB-Workspace/jobs                 |
+| brent-workspace| /Users/brent/scripts/CB-Workspace/brent-workspace      |
 ```
+
+---
+
+## 🕐 SPECIAL: brent-workspace TIME TRACKING
+
+**When project = `brent-workspace`, ALWAYS do time capture FIRST before normal save:**
+
+### Step 1: Read Active Task
+```bash
+cat "/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Planning/2026/active-task.md"
+```
+
+### Step 2: ASK User for Time
+**MANDATORY QUESTION:**
+> "How long did you work on **[current task name]**? (e.g., 30m, 1h, 2.5h)"
+
+**Wait for response before continuing.**
+
+### Step 3: Log Time
+Update the Time Log table in active-task.md:
+```markdown
+| [today's date] | [task ID] | [task name] | [time user provided] | [brief note] |
+```
+
+### Step 4: ASK Task Status
+**MANDATORY QUESTION:**
+> "Is **[task name]** complete, or continuing later?"
+> - If **complete**: Clear Current Task section, update sprint scorecard
+> - If **continuing**: Keep Current Task, note progress made
+
+### Step 5: Update Spreadsheet (if task complete)
+Log actual time to Google Sheet in "Actual Time" column for calibration.
+
+### Step 6: Continue Normal Save
+Proceed with standard claude-save workflow.
+
+### 🚨 BRENT-WORKSPACE RULES:
+- **ONE task at a time** - Never start new task without closing current
+- **Time capture required** - Cannot skip time question
+- **No multitasking** - If switching tasks, must log time on current first
 
 **🚨 CRITICAL: Always use this mapping to resolve project names to full paths!**
 - If project name not in mapping, ASK USER for the correct path
