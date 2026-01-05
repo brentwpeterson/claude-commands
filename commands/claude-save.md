@@ -160,49 +160,30 @@ When context % is passed and is <8%, SKIP ALL OTHER INSTRUCTIONS and do ONLY thi
 | brent-workspace| /Users/brent/scripts/CB-Workspace/brent-workspace      |
 ```
 
----
-
-## 🕐 SPECIAL: brent-workspace TIME TRACKING
-
-**When project = `brent-workspace`, ALWAYS do time capture FIRST before normal save:**
-
-### Step 1: Read Active Task
-```bash
-cat "/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Planning/2026/active-task.md"
-```
-
-### Step 2: ASK User for Time
-**MANDATORY QUESTION:**
-> "How long did you work on **[current task name]**? (e.g., 30m, 1h, 2.5h)"
-
-**Wait for response before continuing.**
-
-### Step 3: Log Time
-Update the Time Log table in active-task.md:
-```markdown
-| [today's date] | [task ID] | [task name] | [time user provided] | [brief note] |
-```
-
-### Step 4: ASK Task Status
-**MANDATORY QUESTION:**
-> "Is **[task name]** complete, or continuing later?"
-> - If **complete**: Clear Current Task section, update sprint scorecard
-> - If **continuing**: Keep Current Task, note progress made
-
-### Step 5: Update Spreadsheet (if task complete)
-Log actual time to Google Sheet in "Actual Time" column for calibration.
-
-### Step 6: Continue Normal Save
-Proceed with standard claude-save workflow.
-
-### 🚨 BRENT-WORKSPACE RULES:
-- **ONE task at a time** - Never start new task without closing current
-- **Time capture required** - Cannot skip time question
-- **No multitasking** - If switching tasks, must log time on current first
-
 **🚨 CRITICAL: Always use this mapping to resolve project names to full paths!**
 - If project name not in mapping, ASK USER for the correct path
 - NEVER guess or assume directory locations
+
+---
+
+## 🕐 DEFERRED QUESTIONS (brent-workspace only)
+
+**When project = `brent-workspace`, SAVE questions for next session - DO NOT ASK NOW:**
+
+In the context file, add a `## DEFERRED QUESTIONS` section:
+
+```markdown
+## DEFERRED QUESTIONS (Ask on /claude-start)
+1. **Time tracking:** "How long did you work on [task name]?"
+   - Task: [current task from active-task.md]
+   - Date: [today's date]
+2. **Task status:** "Is [task name] complete or continuing?"
+```
+
+**Rules:**
+- **NEVER ask these questions during save** - just record them
+- **NEVER wait for responses** - save and exit immediately
+- **claude-start will ask** when context is fresh
 
 **🗂️ CRITICAL PATH DEFINITION:**
 ```

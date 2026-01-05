@@ -260,6 +260,18 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
    - **If current:** Proceed with session resume
 5. **Restore TodoWrite:** Set up todos from MCP memory context or instruction file
 
+**Step 5.5: Handle Deferred Questions (if present)**
+1. **Check context file for `## DEFERRED QUESTIONS` section**
+2. **If found, ASK these questions NOW** (we have fresh context):
+   - Time tracking: "How long did you work on [task]?"
+   - Task status: "Is [task] complete or continuing?"
+3. **Log the answers:**
+   - Update active-task.md with time entry
+   - Update sprint scorecard if task complete
+4. **Then continue to Step 6**
+
+**Why deferred questions exist:** The previous `/claude-save` ran low on context and couldn't afford to ask questions. Now we have fresh context to handle them.
+
 **Step 6: Present Status and Wait**
 1. **Show resume summary:** Display what was restored and current state
 2. **Present MCP memory insights:** Surface relevant session entities and cross-project patterns
@@ -288,6 +300,13 @@ The context file contains everything needed to resume:
 
 ## TODO LIST STATE
 [TodoWrite items with status]
+
+## DEFERRED QUESTIONS (Ask on /claude-start)
+[Questions that couldn't be asked during save - ASK THESE FIRST]
+1. **Time tracking:** "How long did you work on [task name]?"
+   - Task: [task name]
+   - Date: [date]
+2. **Task status:** "Is [task name] complete or continuing?"
 
 ## NEXT ACTIONS (PRIORITY ORDER)
 [Exact next steps]
