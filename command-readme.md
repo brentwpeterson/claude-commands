@@ -120,7 +120,7 @@ Brand:       /brand-brent, /brand-cucumber, /brand-requestdesk,
 | Command | Update Needed | Status |
 |---------|---------------|--------|
 | `/claude-save` | Add `--close` flag (absorb claude-close functionality) | ✅ Done |
-| `/claude-debug` | Absorb log-debug functionality, add deployment/production debugging | Pending |
+| `/claude-debug` | Absorb log-debug functionality, add deployment/production debugging | ✅ Done |
 | `/claude-start` | Add root directory validation, security features from security-start | Pending |
 
 ---

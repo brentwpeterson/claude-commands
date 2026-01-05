@@ -2,7 +2,12 @@
 
 **Purpose**: Launch structured debug session with regression tracking to prevent circular debugging.
 
-**Usage**: `/claude-debug <project> [issue-description]`
+**Usage**:
+- `/claude-debug <project> [issue-description]` - Start/continue debug session
+- `/claude-debug --log [description]` - Add entry to current debug log (auto-numbered)
+- `/claude-debug --log --fail [description]` - Log failed attempt with analysis
+- `/claude-debug --deploy` - Debug deployment/production issues
+- `/claude-debug --docker` - Show Docker logs and container status
 
 **Arguments**:
 - `<project>` (required): Project to debug - any Git repository in your workspace (per `.claude/local/workspace.env` configuration)
@@ -188,6 +193,183 @@ Ready to execute attempt? [Y/n/modify]
 - `/claude-debug --experiments`: List all experiments with results
 - `/claude-debug --regression`: Check if this is a known regression
 - `/claude-debug --close`: Finalize session with resolution
+- `/claude-debug --log`: Add entry to debug log (see below)
+- `/claude-debug --deploy`: Deployment debugging mode (see below)
+- `/claude-debug --docker`: Docker diagnostics (see below)
+
+---
+
+## 📝 LOG MODE (`--log` flag)
+
+**Purpose**: Quickly add an entry to the current debug log without full session setup.
+
+**Usage**:
+```
+/claude-debug --log "Tested API endpoint with new token"
+/claude-debug --log --fail "Database connection timeout"
+```
+
+**Behavior**:
+1. Find current debug log file (from branch name)
+2. Auto-detect next attempt number
+3. Add entry to both summary and detailed sections
+4. If `--fail` flag: Prompt for failure analysis
+
+**Log Entry Format**:
+```
+# Summary line:
+Attempt #X | YYYY-MM-DD HH:MM | [description] | PENDING/SUCCESS/FAILED | [brief note]
+
+# Detailed entry:
+##############################################################################
+# X. YYYY-MM-DD HH:MM - ATTEMPT #X: [Description]
+# - WHAT WAS TRIED: [Specific action taken]
+# - RESULT: [SUCCESS/FAILED/PARTIAL]
+# - OBSERVATIONS: [What was observed]
+# - NEXT STEP: [What to try next]
+##############################################################################
+```
+
+**With `--fail` flag**:
+- Auto-sets result to FAILED
+- Prompts for:
+  - What specifically failed?
+  - Error messages/stack traces?
+  - What was expected vs actual?
+  - Lessons learned?
+
+---
+
+## 🚀 DEPLOY MODE (`--deploy` flag)
+
+**Purpose**: Debug deployment and production issues with structured approach.
+
+**Usage**:
+```
+/claude-debug --deploy
+/claude-debug --deploy "New version not starting"
+```
+
+**Deploy Debug Workflow**:
+
+```
+1. INFRASTRUCTURE CHECK
+   ├─ docker ps - Container status
+   ├─ docker logs [container] --tail 100 - Recent logs
+   ├─ Check ECS/service status if AWS
+   └─ Verify load balancer health
+
+2. DEPLOYMENT STATUS
+   ├─ git log --oneline -5 - Recent commits
+   ├─ git describe --tags - Current version
+   ├─ Check GitHub Actions status
+   └─ Compare deployed vs expected version
+
+3. HEALTH CHECKS
+   ├─ curl health endpoints
+   ├─ Check database connectivity
+   ├─ Verify environment variables
+   └─ Test critical API endpoints
+
+4. LOG ANALYSIS
+   ├─ Application logs (errors, warnings)
+   ├─ Container startup logs
+   ├─ Load balancer logs
+   └─ Database connection logs
+
+5. COMMON ISSUES CHECKLIST
+   [ ] Image architecture mismatch (ARM64 vs AMD64)
+   [ ] Missing environment variables
+   [ ] Database migration not run
+   [ ] Port binding conflicts
+   [ ] Memory/resource limits
+   [ ] SSL/certificate issues
+   [ ] DNS propagation delays
+```
+
+**Output Format**:
+```
+## 🚀 DEPLOYMENT DEBUG
+
+**Issue**: [description]
+**Environment**: production/staging/dev
+**Last Deploy**: [timestamp] - [tag/commit]
+
+### Infrastructure Status
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Container | ✅/❌ | [details] |
+| Health Check | ✅/❌ | [details] |
+| Load Balancer | ✅/❌ | [details] |
+
+### Recent Logs
+[Last 20 lines of relevant logs]
+
+### Suspected Cause
+[Analysis based on evidence]
+
+### Recommended Actions
+1. [First action to try]
+2. [Second action]
+```
+
+---
+
+## 🐳 DOCKER MODE (`--docker` flag)
+
+**Purpose**: Quick Docker diagnostics and log viewing.
+
+**Usage**:
+```
+/claude-debug --docker
+/claude-debug --docker backend
+/claude-debug --docker --logs frontend
+```
+
+**Docker Debug Commands**:
+```bash
+# Container status
+docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+# Specific container logs
+docker logs [container] --tail 100 --timestamps
+
+# Container inspection
+docker inspect [container] | jq '.[0].State'
+
+# Resource usage
+docker stats --no-stream
+
+# Network inspection
+docker network ls
+docker network inspect [network]
+
+# Volume inspection
+docker volume ls
+```
+
+**Output Format**:
+```
+## 🐳 DOCKER STATUS
+
+### Running Containers
+| Name | Status | Ports | Health |
+|------|--------|-------|--------|
+| backend | Up 2h | 3000 | healthy |
+| frontend | Up 2h | 3001 | healthy |
+| mongo | Up 2h | 27017 | - |
+
+### Recent Logs ([container])
+[Last 50 lines]
+
+### Resource Usage
+| Container | CPU | Memory |
+|-----------|-----|--------|
+| backend | 2% | 256MB |
+
+### Issues Detected
+- [Any problems found]
+```
 
 ### INTEGRATION WITH OTHER COMMANDS:
 
