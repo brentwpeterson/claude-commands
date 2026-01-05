@@ -109,10 +109,10 @@ Brand:       /brand-brent, /brand-cucumber, /brand-requestdesk,
 
 ## TODO: Commands to Create
 
-| Command | Purpose | Priority |
-|---------|---------|----------|
-| `/claude-help` | List all commands with descriptions. `--<command>` for details. | High |
-| `/content-audit` | SEO/AEO audit with `--enrich` flag for schema enrichment. Combines old seo-audit + aeo-enrich. | Medium |
+| Command | Purpose | Priority | Status |
+|---------|---------|----------|--------|
+| `/claude-help` | List all commands with descriptions. `--<command>` for details. | High | ✅ Created |
+| `/content-audit` | SEO/AEO audit with `--enrich` flag for schema enrichment. Combines old seo-audit + aeo-enrich. | Medium | Pending |
 
 ## TODO: Commands to Update
 
