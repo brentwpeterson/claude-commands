@@ -106,8 +106,26 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
 
 **📋 EXECUTION STEPS:**
 
+**Step 0: Date Verification (MANDATORY FIRST STEP)**
+1. **Run date command to get ACTUAL current date:**
+   ```bash
+   date "+%Y-%m-%d %A"
+   ```
+2. **Display and confirm:**
+   ```
+   📅 Today is: [YYYY-MM-DD] ([Day of week])
+   📆 Current Year: [YYYY]
+   ```
+3. **CRITICAL: Use this date for ALL operations in this session**
+   - API calls (Vista Social, etc.)
+   - File dates
+   - Log entries
+   - Any date-based queries
+
+**Why this exists:** Claude's training data can cause year confusion. This step ensures correct dates.
+
 **Step 1: Read Work Log for Day Context**
-1. **Get today's date** from system environment (format: YYYY-MM-DD)
+1. **Get today's date** from Step 0 (format: YYYY-MM-DD)
 2. **Read WORK-LOG.md:**
    ```
    WORK_LOG_PATH = /Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Daily/WORK-LOG.md
