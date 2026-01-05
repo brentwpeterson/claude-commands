@@ -49,3 +49,7 @@ local/*.local.*
 *~
 !branch-context/master-context.md
 commands/brand-brent.md
+commands/brent-start.md
+commands/brent-finish.md
+commands/brent-task.md
+commands/daily-content.md
