@@ -106,19 +106,84 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
 
 **📋 EXECUTION STEPS:**
 
-**Step 1: Navigate to Project (Using Directory Mapping)**
+**Step 1: Read Work Log for Day Context**
+1. **Get today's date** from system environment (format: YYYY-MM-DD)
+2. **Read WORK-LOG.md:**
+   ```
+   WORK_LOG_PATH = /Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Daily/WORK-LOG.md
+   ```
+3. **Parse today's entry** - Look for `## [today's date]` section
+4. **Extract timer status:**
+   - Start time (if present)
+   - End time (if present)
+   - Hours worked (if present)
+   - Accomplishments listed
+5. **Display Day Status:**
+   ```
+   ⏱️ Day Status: [date]
+   - Timer: [Started at X:XX AM | Not started | Completed X.X hrs]
+   - Accomplishments: [count] items logged
+   ```
+6. **If no entry for today:** Display "⏱️ Timer not started today - no WORK-LOG entry for [date]"
+
+**Step 2: Navigate to Project (Using Directory Mapping)**
 1. **Resolve project name to directory:** Use the PROJECT-TO-DIRECTORY MAPPING above
 2. **Verify directory exists:** `ls [resolved-path]` - if fails, ASK USER
 3. **Change to project directory:** `cd [resolved-path]`
 4. **Confirm location:** Display "📁 Working in: [resolved-path]"
 5. **Get current branch:** `git branch --show-current`
 
-**Step 2: Query Official MCP Memory Server FIRST (Primary Context Source)**
-3. **Check Official MCP Memory Server availability:**
+**Step 2.5: Security Validation (Automatic)**
+
+**Purpose**: Ensure project state is valid and secure before resuming work.
+
+1. **Root Directory Validation:**
+   ```bash
+   # Verify we're in the CB-Workspace
+   if [[ "$(pwd)" != /Users/brent/scripts/CB-Workspace/* ]]; then
+     echo "⚠️ WARNING: Not in CB-Workspace directory"
+     echo "Current: $(pwd)"
+     echo "Expected: /Users/brent/scripts/CB-Workspace/[project]"
+     # ASK USER before proceeding
+   fi
+   ```
+
+2. **Debug Log Check:**
+   - Check if active todo directory has scattered debug files
+   - If found, notify user: "Found X scattered debug files. Run `/claude-debug` to consolidate."
+   - Do NOT auto-consolidate - just report
+
+3. **Security Status Check:**
+   - Look for `.security-status` file in project root (created by `/claude-save --close`)
+   - If previous session flagged security issues, display them
+   - Quick scan for potential secrets in uncommitted files:
+     ```bash
+     git diff --name-only | xargs grep -l -E "(API_KEY|SECRET|TOKEN|PASSWORD)" 2>/dev/null
+     ```
+   - If found, warn user before proceeding
+
+4. **Git State Validation:**
+   ```bash
+   # Check for uncommitted changes
+   if [ -n "$(git status --porcelain)" ]; then
+     echo "⚠️ Uncommitted changes detected:"
+     git status --short
+   fi
+
+   # Check if branch is behind remote
+   git fetch origin --quiet
+   BEHIND=$(git rev-list HEAD..origin/$(git branch --show-current) --count 2>/dev/null)
+   if [ "$BEHIND" -gt 0 ]; then
+     echo "⚠️ Branch is $BEHIND commits behind remote"
+   fi
+   ```
+
+**Step 3: Query Official MCP Memory Server FIRST (Primary Context Source)**
+1. **Check Official MCP Memory Server availability:**
    Try to use `mcp__memory__search_nodes` with a simple test query to verify connectivity
    **⚠️ NEVER use `mcp__memory__read_graph` - it returns massive token dumps (~14k+) that fill context**
 
-4. **Query Official MCP Memory Server for Context (Primary):**
+2. **Query Official MCP Memory Server for Context (Primary):**
    - **If MCP available - Query for recent work using TARGETED searches:**
      ```
      # Query for project-specific session data
@@ -149,10 +214,10 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
      💡 MCP should be configured in .mcp.json with @modelcontextprotocol/server-memory
      ```
 
-**Step 3: File-Based Context & Emergency Detection**
-5. **Locate context file:** `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[branch-name]-context.md`
-6. **Read instruction file:** Load the handoff document if it exists
-7. **🚨 CHECK FOR EMERGENCY FLAG:**
+**Step 4: File-Based Context & Emergency Detection**
+1. **Locate context file:** `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[branch-name]-context.md`
+2. **Read instruction file:** Load the handoff document if it exists
+3. **🚨 CHECK FOR EMERGENCY FLAG:**
    - If file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE":
      - **STOP normal flow** and execute **EMERGENCY CONTEXT RECOVERY MODE** (see above)
      - Query MCP memory extensively with multiple searches
@@ -160,20 +225,20 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
      - Check todo directories
      - Merge all sources before continuing
    - If NOT an emergency file, continue normal flow
-8. **Parse instructions:** Extract setup steps, current state, todos, next actions
-9. **Todo directory inventory check:** Look for todo directory structure:
+4. **Parse instructions:** Extract setup steps, current state, todos, next actions
+5. **Todo directory inventory check:** Look for todo directory structure:
    ```bash
    # Expected 7 files exactly:
    # 1. README.md  2. [branch-name]-plan.md  3. progress.log
    # 4. debug.log  5. notes.md  6. architecture-map.md  7. user-documentation.md
    ```
 
-**Step 4: Execute Setup Instructions**
-10. **Follow setup from context source:** Execute commands from OpenMemory or file-based instructions
-11. **Verify expected state:** Confirm git status, processes, etc. match expectations
+**Step 5: Execute Setup Instructions**
+1. **Follow setup from context source:** Execute commands from OpenMemory or file-based instructions
+2. **Verify expected state:** Confirm git status, processes, etc. match expectations
    - **Docker containers check:** Use `docker ps` to verify containers are running
    - **If containers not found:** ASK USER immediately - do not troubleshoot Docker issues
-12. **Verify README.md Branch Reference:** If todo directory found, check README.md shows correct branch
+3. **Verify README.md Branch Reference:** If todo directory found, check README.md shows correct branch
    ```bash
    # Get current branch
    CURRENT_BRANCH=$(git branch --show-current)
@@ -188,18 +253,18 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
      fi
    fi
    ```
-13. **Architecture Validation (CB Projects Only):** Validate architecture map is current
+4. **Architecture Validation (CB Projects Only):** Validate architecture map is current
    - **Skip for external projects:** cb-shopify, cb-junogo, astro-sites (use Gadget/external docs)
    - **For CB projects:** Check if architecture-map.md needs updating
    - **If outdated:** Recommend running `/update-architecture` to document changes
    - **If current:** Proceed with session resume
-14. **Restore TodoWrite:** Set up todos from MCP memory context or instruction file
+5. **Restore TodoWrite:** Set up todos from MCP memory context or instruction file
 
-**Step 5: Present Status and Wait**
-15. **Show resume summary:** Display what was restored and current state
-16. **Present MCP memory insights:** Surface relevant session entities and cross-project patterns
-17. **Present next actions:** Show priority actions from memory or instruction file
-18. **Ask for direction:** "I've restored your session. Which task should I work on first?"
+**Step 6: Present Status and Wait**
+1. **Show resume summary:** Display what was restored and current state
+2. **Present MCP memory insights:** Surface relevant session entities and cross-project patterns
+3. **Present next actions:** Show priority actions from memory or instruction file
+4. **Ask for direction:** "I've restored your session. Which task should I work on first?"
 
 **🎯 KEY PRINCIPLES:**
 - **Official MCP first** - Use knowledge graph memory as primary context source
