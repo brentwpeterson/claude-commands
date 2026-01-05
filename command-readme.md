@@ -32,7 +32,7 @@ Branch/Task: /create-branch, /create-bugfix, /finish-todo, /plan-feature,
              /update-architecture, /violation-log
 
 Audit:       /a11y-audit, /analyze-refactor-candidates, /audit-branches,
-             /audit-codebase, /check-terms, /lighthouse
+             /audit-codebase, /check-terms, /content-audit, /lighthouse
 
 Deploy:      /deploy-project
 
@@ -78,6 +78,7 @@ Brand:       /brand-brent, /brand-cucumber, /brand-requestdesk,
 | `/audit-branches` | Review git branches across projects, identify stale branches for cleanup. | Public |
 | `/audit-codebase` | Dead code analysis using vulture, complexity metrics using radon. | Public |
 | `/check-terms` | Check content against RequestDesk terms API for overused/avoid terms. | Public |
+| `/content-audit` | SEO/AEO audit with `--enrich` flag for schema enrichment. | Public |
 | `/lighthouse` | Lighthouse performance audit for web pages. | Public |
 
 ### Deployment
@@ -112,7 +113,7 @@ Brand:       /brand-brent, /brand-cucumber, /brand-requestdesk,
 | Command | Purpose | Priority | Status |
 |---------|---------|----------|--------|
 | `/claude-help` | List all commands with descriptions. `--<command>` for details. | High | ✅ Created |
-| `/content-audit` | SEO/AEO audit with `--enrich` flag for schema enrichment. Combines old seo-audit + aeo-enrich. | Medium | Pending |
+| `/content-audit` | SEO/AEO audit with `--enrich` flag for schema enrichment. Combines old seo-audit + aeo-enrich. | Medium | ✅ Created |
 
 ## TODO: Commands to Update
 
