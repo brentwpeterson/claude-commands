@@ -1,104 +1,80 @@
 # Resume Instructions for Claude
 
 ## IMMEDIATE SETUP
-1. **Change directory:** `cd /Users/brent/LocalSites/contentcucumber/app/public/wp-content/themes/cucumber-gp-child`
+1. **Change directory:** `cd /Users/brent/LocalSites/contentcucumber/app/public/wp-content/plugins/requestdesk-connector`
 2. **Verify branch:** `git branch --show-current` (should be: main)
 3. **Plugin location:** `/Users/brent/LocalSites/contentcucumber/app/public/wp-content/plugins/requestdesk-connector/`
 4. **Theme location:** `/Users/brent/LocalSites/contentcucumber/app/public/wp-content/themes/cucumber-gp-child/`
 5. **Local WP site:** `http://contentcucumber.local/wp-admin/`
 
 ## SESSION METADATA
-**Last Commit:** `a203543 Fix mega menu hover behavior + remove GeneratePress footer credit`
-**Saved:** 2025-12-31
-**Purpose:** Mega menu fixes + WAF 403 investigation
+**Last Commit:** `f998988 Add Open Base template - flexible Claude-friendly landing pages`
+**Saved:** 2026-01-02
+**Purpose:** Open Base template implementation for flexible landing pages
 
-## MEGA MENU STATUS: ✅ COMPLETE (USER TESTED)
-The dynamic mega menu is fully working:
-- 3-column layout for Services dropdown
-- Hover bridge on nav item (::after) - doesn't block Login
-- Grandchildren items display correctly
-- "Built with GeneratePress" removed from footer
-- Customizer settings for banner/promo content
+## CONTENT SOURCE CSVs - CRITICAL REFERENCE
+**Path:** `/Users/brent/scripts/CB-Workspace/wordpress-sites/test-data/csv-examples/cucumber-services/`
+All page content is defined in these CSVs - NOT in theme files!
 
-### Key Commits This Session:
-1. `a203543` - Fix hover bridge (moved from dropdown ::before to nav item ::after)
-2. `b39aa28` - Walker class, CSS positioning, clickable links
+## FLYWHEEL WAF ISSUE - WAITING ON SUPPORT
+- **Status:** Escalated to Hosting Operations team (Dec 31)
+- **Issue:** 403 Forbidden on all REST API endpoints when editing pages in Gutenberg
+- **Workaround:** Edit locally → push to staging → push to live
 
-## CRITICAL ISSUE: FLYWHEEL WAF BLOCKING PAGE SAVES
+## COMPLETED THIS SESSION
 
-### Problem Summary
-- **Symptom:** 403 Forbidden on ALL REST API endpoints when editing certain pages on LIVE
-- **Affected pages:** Content Creation, Marketing Management (parent landing pages)
-- **Working pages:** Content in Commerce
-- **LOCAL:** Works perfectly
-- **LIVE:** 403 errors immediately when opening page in Gutenberg
+### 1. Open Base Template (NEW)
+Created flexible template for Claude-assisted landing page creation:
+- **Template file:** `admin/aeo-template-open-base.php`
+- **Import function added to:** `admin/aeo-template-importer.php`
+- Dropdown option: "🎨 Open Base - Flexible sections (Claude-friendly)"
 
-### 403 Error Details
-When opening affected pages in Gutenberg on live:
-```
-OPTIONS /wp-json/wp/v2/settings - 403
-GET /wp-json/wp/v2/users/96 - 403
-GET /wp-json/wp/v2/comments - 403
-GET /wp-json/wp/v2/taxonomies - 403
-GET /wp-json/wp/v2/wp_pattern_category - 403
-```
+### 2. CSV Structure for Open Base
+| Section | Columns |
+|---------|---------|
+| Hero | title, subtitle, hero_tagline, hero_image_url, hero_image_alt, hero_cta_text, hero_cta_url, color_theme |
+| Sections (1-10) | section_N_heading, section_N_content, section_N_image_url, section_N_image_alt, section_N_image_position |
+| CTA | cta_heading, cta_text, cta_button_text, cta_button_url |
 
-### Root Cause
-Flywheel's WAF (Web Application Firewall) is blocking requests because something in the page CONTENT triggers a ModSecurity rule. The same pages work perfectly on local WordPress.
+### 3. Sample CSVs Created
+- `500-open-base-example.csv` - Generic example with 3 sections
+- `600-contentbasis-welcome-openbase.csv` - ContentBasis welcome page converted
 
-### Previous Fix Attempt (From Earlier Session)
-JSON-LD `<script type="application/ld+json">` tags were removed from templates. Templates are now clean - but WAF still triggers on certain content.
-
-### WORKAROUND
-- Edit pages LOCALLY
-- Push database to live
-- Pages display correctly, just can't be edited on live
-
-### REQUIRED ACTION
-**Contact Flywheel Support** with this message:
-```
-Subject: WAF blocking REST API requests when editing specific pages
-
-Hi Flywheel Support,
-
-I'm getting 403 Forbidden errors on my site (contentcucumber.com) when trying to edit certain pages in WordPress Gutenberg editor.
-
-Issue:
-- Opening specific pages in Gutenberg immediately triggers 403 errors on ALL REST API endpoints
-- The same pages work fine on my local WordPress installation
-- Other pages on the same site edit/save without issue
-- The 403 happens before I even click Save - just loading the page in the editor triggers it
-
-Affected endpoints (all return 403):
-- /wp-json/wp/v2/settings
-- /wp-json/wp/v2/comments
-- /wp-json/wp/v2/users
-- /wp-json/wp/v2/taxonomies
-
-Could you please check the WAF/ModSecurity logs to identify which rule is being triggered by my page content?
-
-Thank you!
-```
+### 4. Spacing Fixes Applied
+- Reduced section padding: 70px → 50px
+- Removed nested content wrapper groups (was adding extra margins)
+- Added explicit `margin:0` to sections, headings, images
+- Added `blockGap:"0"` to prevent default WordPress spacing
 
 ## TODO LIST STATE
-- ✅ COMPLETED: Mega menu working (USER TESTED)
-- ✅ COMPLETED: Remove "Built with GeneratePress" footer
-- ✅ COMPLETED: Fix hover bridge blocking Login nav item
-- ⏳ PENDING: Contact Flywheel about WAF 403 issue
-- ⏳ PENDING: Update featured field in Email Marketing/Social Media CSVs (if wanted)
-- ⏳ PENDING: Remove DEBUG comments from functions.php (optional)
+- ✅ COMPLETED: Create aeo-template-open-base.php with dynamic sections
+- ✅ COMPLETED: Add Open Base to template dropdown in importer
+- ✅ COMPLETED: Add import function for Open Base CSV
+- ✅ COMPLETED: Add template getter with CSV replacements
+- ✅ COMPLETED: Create sample CSV for testing
+- ⏳ PENDING: User test landing page import (re-import after spacing fix)
+- ⏳ PENDING: Push theme/plugin changes Local → Staging → Live
+- 🔄 BACKGROUND: Wait for Flywheel WAF response
 
 ## NEXT ACTIONS (PRIORITY ORDER)
-1. **CONTACT FLYWHEEL** - Send the support message above
-2. **WORKAROUND** - Edit pages locally, push DB to live
-3. **OPTIONAL** - Clean up DEBUG comments in functions.php Walker class
+1. **FIRST:** Delete existing "Welcome ContentBasis" page (has old template structure)
+2. **THEN:** Re-import `600-contentbasis-welcome-openbase.csv` with Open Base template
+3. **VERIFY:** Check that spacing is tighter after the fix
+4. **IF STILL BAD:** May need to further adjust or check WordPress theme CSS overrides
+5. **WHEN READY:** Push changes Local → Staging → Live
+
+## VERIFICATION COMMANDS
+- Import landing page: WP Admin → RequestDesk → AEO Template Importer → Open Base
+- CSV location: `/Users/brent/scripts/CB-Workspace/wordpress-sites/test-data/csv-examples/cucumber-services/600-contentbasis-welcome-openbase.csv`
 
 ## KEY FILES MODIFIED THIS SESSION
-1. `functions.php` - Added footer copyright filter, simplified mega menu JS
-2. `mega-menu.css` - Fixed hover bridge (now on nav item ::after instead of dropdown ::before)
+1. `admin/aeo-template-open-base.php` - **NEW** - Template with dynamic section generators
+2. `admin/aeo-template-importer.php` - Added dropdown, import function, template getter
+3. `500-open-base-example.csv` - **NEW** - Example CSV
+4. `600-contentbasis-welcome-openbase.csv` - **NEW** - ContentBasis welcome page
 
 ## CONTEXT NOTES
 - Live site: https://www.contentcucumber.com (Flywheel hosting)
 - Theme: GeneratePress child theme (cucumber-gp-child)
-- The WAF issue is NOT fixable in code - it's a hosting configuration issue
-- Local and live use same WordPress version, same plugins, same content
+- Workflow: Local → Staging → Live (due to WAF issue)
+- User mentioned excessive spacing in first test - applied fixes, needs re-test

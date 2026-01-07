@@ -1,5 +1,27 @@
 Claude Session Save - Create Resume Instructions + Preserve Work
 
+# 🚨🚨🚨 ABSOLUTE RULE #1: NEVER ASK QUESTIONS DURING SAVE 🚨🚨🚨
+
+**THIS IS THE MOST IMPORTANT RULE - VIOLATIONS CAUSE SESSION LOSS**
+
+❌ **NEVER DO THIS DURING /claude-save:**
+- Ask about time tracking
+- Ask if task is complete
+- Ask for clarification on anything
+- Wait for user response
+- Read active-task.md or other files for questions
+
+✅ **ONLY DO THIS:**
+- Save context from conversation memory
+- Write the context file
+- Exit immediately
+
+**WHY:** Asking questions uses context tokens. If you're already low on context when saving, questions will cause auto-compact and LOSE THE SESSION. This has happened multiple times.
+
+**DEFER ALL QUESTIONS TO /claude-start** - that's when context is fresh.
+
+---
+
 **USAGE:**
 - `/claude-save <project>` - Full comprehensive save with validation
 - `/claude-save <project> --quick` - Fast save with minimal context usage (skips validation)
@@ -168,21 +190,29 @@ When context % is passed and is <8%, SKIP ALL OTHER INSTRUCTIONS and do ONLY thi
 
 ## 🕐 DEFERRED QUESTIONS (brent-workspace only)
 
-**When project = `brent-workspace`, SAVE questions for next session - DO NOT ASK NOW:**
+**🚨 CRITICAL: NEVER ASK QUESTIONS DURING SAVE - YOU WILL RUN OUT OF CONTEXT 🚨**
+
+**When project = `brent-workspace`:**
+- **DO NOT** ask for time tracking
+- **DO NOT** ask if task is complete
+- **DO NOT** read active-task.md
+- **DO NOT** wait for any user response
+- **JUST SAVE** and defer questions to `/claude-start`
 
 In the context file, add a `## DEFERRED QUESTIONS` section:
 
 ```markdown
 ## DEFERRED QUESTIONS (Ask on /claude-start)
 1. **Time tracking:** "How long did you work on [task name]?"
-   - Task: [current task from active-task.md]
+   - Task: [describe from conversation memory]
    - Date: [today's date]
 2. **Task status:** "Is [task name] complete or continuing?"
 ```
 
 **Rules:**
-- **NEVER ask these questions during save** - just record them
+- **NEVER ask these questions during save** - burns context when you need it most
 - **NEVER wait for responses** - save and exit immediately
+- **NEVER read active-task.md during save** - wastes tokens
 - **claude-start will ask** when context is fresh
 
 **🗂️ CRITICAL PATH DEFINITION:**
