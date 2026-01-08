@@ -25,29 +25,50 @@ git status --short
 ```
 
 ### Step 2: Multi-Workspace Detection
-**CRITICAL:** Check if the session touched multiple workspaces by reviewing:
-1. Context files in `.claude/branch-context/` - what projects do they reference?
-2. The conversation history - were multiple directories mentioned?
-3. Any `/claude-save` or `/claude-clean` outputs from the session
+**CRITICAL:** Check session tracking file for workspaces touched this session.
 
-```
-MULTI-WORKSPACE CHECK
-=====================
-Workspaces potentially modified this session:
+1. **Read session tracking file:**
+   ```bash
+   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
+   if [ -f "$SESSION_FILE" ]; then
+     cat "$SESSION_FILE"
+   fi
+   ```
 
-1. /Users/brent/scripts/CB-Workspace/astro-sites/
-   Branch: master
-   Context files: astro-sites-*.md
+2. **Also check context files in `.claude/branch-context/` for additional context**
 
-2. /Users/brent/scripts/CB-Workspace/requestdesk-app/
-   Branch: feature/xyz
-   Context files: requestdesk-*.md
+3. **Display using shortcodes:**
+   ```
+   MULTI-WORKSPACE CHECK
+   =====================
+   Session tracking file found:
+   - Started: 2026-01-08T07:00:00
+   - Start workspace: [as] astro-sites
 
-⚠️  Multiple workspaces detected!
-    You must run /claude-complete separately for each workspace.
+   Workspaces touched this session:
+   1. [as] astro-sites     - /Users/brent/.../astro-sites (Branch: master)
+   2. [rd] requestdesk     - /Users/brent/.../cb-requestdesk (Branch: master)
 
-Which workspace are you completing now? [1/2]: _
-```
+   ⚠️  Multiple workspaces detected!
+       You must run /claude-complete separately for each workspace.
+
+   Which workspace are you completing now?
+   Type shortcode to confirm (e.g., 'as' for astro-sites): _
+   ```
+
+**SHORTCODE REFERENCE:**
+| Shortcode | Workspace |
+|-----------|-----------|
+| `rd` | cb-requestdesk |
+| `as` | astro-sites |
+| `sh` | cb-shopify |
+| `wp` | cb-wordpress |
+| `mg` | cb-magento-integration |
+| `jg` | cb-junogo |
+| `job` | jobs |
+| `ms` | cb-memory-system |
+| `bw` | brent-workspace |
+| `cc` | .claude (claude-commands) |
 
 ### Step 3: Explicit User Confirmation (REQUIRED)
 **Present this to the user and WAIT for confirmation:**
@@ -57,18 +78,19 @@ Which workspace are you completing now? [1/2]: _
 ║              WORKSPACE & BRANCH CONFIRMATION                      ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                   ║
-║  Directory:  /Users/brent/scripts/CB-Workspace/astro-sites/      ║
-║  Branch:     master                                               ║
+║  Workspace:   [as] astro-sites                                   ║
+║  Directory:   /Users/brent/scripts/CB-Workspace/astro-sites/     ║
+║  Branch:      master                                              ║
 ║  Last Commit: abc1234 - Add feature XYZ                          ║
 ║                                                                   ║
 ║  This completion will:                                            ║
-║  • Archive context files for THIS workspace only                  ║
-║  • Update documentation in THIS workspace                         ║
-║  • Potentially delete branches in THIS workspace                  ║
+║  • Archive context files for [as] only                           ║
+║  • Update documentation in [as]                                   ║
+║  • Potentially delete branches in [as]                           ║
 ║                                                                   ║
 ╚══════════════════════════════════════════════════════════════════╝
 
-Is this the correct workspace and branch to complete? [Y/n]: _
+Type the shortcode to confirm (e.g., 'as'): _
 ```
 
 **If user says NO:** Stop immediately and ask which workspace they want to complete.

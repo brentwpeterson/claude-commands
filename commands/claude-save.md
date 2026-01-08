@@ -167,20 +167,22 @@ When context % is passed and is <8%, SKIP ALL OTHER INSTRUCTIONS and do ONLY thi
 
 ---
 
-**🗂️ PROJECT-TO-DIRECTORY MAPPING:**
-```
-| Project Name   | Directory Path                                          |
-|----------------|--------------------------------------------------------|
-| requestdesk    | /Users/brent/scripts/CB-Workspace/cb-requestdesk       |
-| astro-sites    | /Users/brent/scripts/CB-Workspace/astro-sites          |
-| shopify        | /Users/brent/scripts/CB-Workspace/cb-shopify           |
-| wordpress      | /Users/brent/scripts/CB-Workspace/cb-wordpress         |
-| magento        | /Users/brent/scripts/CB-Workspace/cb-magento           |
-| junogo         | /Users/brent/scripts/CB-Workspace/cb-junogo            |
-| memory-system  | /Users/brent/scripts/CB-Workspace/cb-memory-system     |
-| jobs           | /Users/brent/scripts/CB-Workspace/jobs                 |
-| brent-workspace| /Users/brent/scripts/CB-Workspace/brent-workspace      |
-```
+**🗂️ WORKSPACE SHORTCODES & DIRECTORY MAPPING:**
+
+| Shortcode | Full Name | Directory Path |
+|-----------|-----------|----------------|
+| `rd` | requestdesk | `/Users/brent/scripts/CB-Workspace/cb-requestdesk` |
+| `as` | astro-sites | `/Users/brent/scripts/CB-Workspace/astro-sites` |
+| `sh` | shopify | `/Users/brent/scripts/CB-Workspace/cb-shopify` |
+| `wp` | wordpress | `/Users/brent/scripts/CB-Workspace/cb-wordpress` |
+| `mg` | magento | `/Users/brent/scripts/CB-Workspace/cb-magento-integration` |
+| `jg` | junogo | `/Users/brent/scripts/CB-Workspace/cb-junogo` |
+| `ms` | memory-system | `/Users/brent/scripts/CB-Workspace/cb-memory-system` |
+| `job` | jobs | `/Users/brent/scripts/CB-Workspace/jobs` |
+| `bw` | brent-workspace | `/Users/brent/scripts/CB-Workspace/brent-workspace` |
+| `cc` | claude-commands | `/Users/brent/scripts/CB-Workspace/.claude` |
+
+**SESSION TRACKING FILE:** `/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json`
 
 **🚨 CRITICAL: Always use this mapping to resolve project names to full paths!**
 - If project name not in mapping, ASK USER for the correct path
@@ -214,6 +216,105 @@ In the context file, add a `## DEFERRED QUESTIONS` section:
 - **NEVER wait for responses** - save and exit immediately
 - **NEVER read active-task.md during save** - wastes tokens
 - **claude-start will ask** when context is fresh
+
+---
+
+## 📝 BRENT-WORKSPACE WORK LOG INTEGRATION (brent-workspace ONLY)
+
+**🚨 ONLY when project = `brent-workspace`** - append session accomplishments to WORK-LOG.md
+
+**This creates incremental saves throughout the day, so even if /brent-finish doesn't run, work is captured.**
+
+### Automatic Work Log Update
+
+**After saving context file but BEFORE final output, do this:**
+
+```bash
+WORK_LOG="/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Daily/WORK-LOG.md"
+TODAY=$(date +%Y-%m-%d)
+SESSION_TIME=$(date +%H:%M)
+```
+
+**Step 1: Check if today's section exists**
+```bash
+if ! grep -q "## $TODAY" "$WORK_LOG"; then
+    # Add today's header (TimeKeeper will add times later)
+    echo -e "\n\n## $TODAY\n\n| Start | End | Hours |\n|-------|-----|-------|\n" >> "$WORK_LOG"
+fi
+```
+
+**Step 2: Check if Accomplished section exists for today**
+```bash
+# Look for ### Accomplished under today's date
+if ! sed -n "/## $TODAY/,/## 202[0-9]/p" "$WORK_LOG" | grep -q "### Accomplished"; then
+    # Add Accomplished section
+    echo -e "\n### Accomplished\n" >> "$WORK_LOG"
+fi
+```
+
+**Step 3: Append session accomplishments with timestamp**
+
+Use the Edit tool to append to today's Accomplished section:
+
+```markdown
+**Session $SESSION_TIME:**
+- [accomplishment 1 from conversation memory]
+- [accomplishment 2 from conversation memory]
+- [accomplishment 3 from conversation memory]
+```
+
+**How to gather accomplishments from conversation memory:**
+- What files were edited/created this session
+- What features were implemented
+- What bugs were fixed
+- What was deployed
+- What was tested/verified
+- Keep it brief (1 line per item)
+
+**Step 4: Add session marker at end of file (for counting)**
+
+```bash
+# This creates a countable marker for how many saves happened today
+echo "<!-- Session save: $TODAY $SESSION_TIME -->" >> "$WORK_LOG"
+```
+
+### Example Work Log After Multiple Sessions
+
+```markdown
+## 2026-01-08
+
+| Start | End | Hours |
+|-------|-----|-------|
+| 5:49 AM | 9:30 AM | 3.68 |
+
+### Accomplished
+
+**Session 07:15:**
+- Fixed /brent-finish to write accomplishments immediately
+- Added Step 2.5 to /brent-start for missing accomplishment detection
+
+**Session 09:25:**
+- Updated /claude-save with work log integration
+- Tested joke posting to all 3 platforms
+
+---
+<!-- Session save: 2026-01-08 07:15 -->
+<!-- Session save: 2026-01-08 09:25 -->
+```
+
+### Counting Sessions
+
+To see how many times /claude-save was called today:
+```bash
+grep -c "<!-- Session save: $TODAY" "$WORK_LOG"
+```
+
+### Why This Matters
+
+1. **Incremental saves** - Work captured even if /brent-finish doesn't run
+2. **Session visibility** - See how many context resets happened
+3. **Accomplishment trail** - Each save adds to the day's record
+4. **No data loss** - Even partial days have some accomplishments recorded
 
 **🗂️ CRITICAL PATH DEFINITION:**
 ```
@@ -258,6 +359,49 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 - Only the human can confirm true completion
 
 **📋 COMPLETE SAVE WORKFLOW:**
+
+**Phase 0.5: Workspace Confirmation (REQUIRED - except Emergency mode)**
+
+**Skip this phase if:** Emergency mode (<8% context) - just save and exit.
+
+1. **Read session tracking file:**
+   ```bash
+   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
+   if [ -f "$SESSION_FILE" ]; then
+     cat "$SESSION_FILE"
+   else
+     echo "No session file found - single workspace session"
+   fi
+   ```
+
+2. **Display workspaces touched this session:**
+   ```
+   ╔══════════════════════════════════════════════════════════════════╗
+   ║              WORKSPACES TOUCHED THIS SESSION                      ║
+   ╠══════════════════════════════════════════════════════════════════╣
+   ║                                                                   ║
+   ║  Started in:  [SHORTCODE] ([full-name])                          ║
+   ║  Current:     [SHORTCODE] ([full-name])                          ║
+   ║                                                                   ║
+   ║  All workspaces touched:                                          ║
+   ║  • [as] astro-sites - /Users/brent/.../astro-sites               ║
+   ║  • [rd] requestdesk - /Users/brent/.../cb-requestdesk            ║
+   ║                                                                   ║
+   ║  Saving context for: [SHORTCODE]                                  ║
+   ║                                                                   ║
+   ╚══════════════════════════════════════════════════════════════════╝
+   ```
+
+3. **Confirm save target:**
+   - If multiple workspaces touched: "⚠️ Multiple workspaces modified. This save is for [SHORTCODE] only."
+   - If single workspace: Continue without warning
+
+4. **Include workspaces in context file:**
+   - Add `## WORKSPACES TOUCHED` section to context file
+   - List all shortcodes and what was done in each
+   - This helps `/claude-start` and `/claude-complete` know about multi-workspace sessions
+
+---
 
 **Phase 1: Work Preservation**
 1. **Check Development Status:**
@@ -381,6 +525,18 @@ Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where yo
 2. **Verify git status:** `git status` (expect: [list files])
 3. **Check processes:** `docker ps` (expect: [containers running])
 4. **Verify branch:** `git branch --show-current` (should be: [branch])
+
+## WORKSPACES TOUCHED THIS SESSION
+**Started in:** [SHORTCODE] ([full-name])
+**Current workspace:** [SHORTCODE] ([full-name])
+**All workspaces:** [as], [rd], etc.
+
+| Shortcode | Workspace | What was done |
+|-----------|-----------|---------------|
+| `as` | astro-sites | Created /ai-interfaces page |
+| `rd` | requestdesk | Fixed API endpoint |
+
+⚠️ **If multiple workspaces listed:** Run `/claude-save` for each workspace separately.
 
 ## SESSION METADATA
 **Last Commit:** `[hash] [message]`

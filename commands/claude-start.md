@@ -10,19 +10,22 @@ Claude Session Start - Read Resume Instructions and Execute
 **Arguments**:
 - `<project>` (required): Project name (used to find context file)
 
-**🗂️ PROJECT-TO-DIRECTORY MAPPING:**
-```
-| Project Name   | Directory Path                                          |
-|----------------|--------------------------------------------------------|
-| requestdesk    | /Users/brent/scripts/CB-Workspace/cb-requestdesk       |
-| astro-sites    | /Users/brent/scripts/CB-Workspace/astro-sites          |
-| shopify        | /Users/brent/scripts/CB-Workspace/cb-shopify           |
-| wordpress      | /Users/brent/scripts/CB-Workspace/cb-wordpress         |
-| magento        | /Users/brent/scripts/CB-Workspace/cb-magento           |
-| junogo         | /Users/brent/scripts/CB-Workspace/cb-junogo            |
-| memory-system  | /Users/brent/scripts/CB-Workspace/cb-memory-system     |
-| jobs           | /Users/brent/scripts/CB-Workspace/jobs                 |
-```
+**🗂️ WORKSPACE SHORTCODES & DIRECTORY MAPPING:**
+
+| Shortcode | Full Name | Directory Path |
+|-----------|-----------|----------------|
+| `rd` | requestdesk | `/Users/brent/scripts/CB-Workspace/cb-requestdesk` |
+| `as` | astro-sites | `/Users/brent/scripts/CB-Workspace/astro-sites` |
+| `sh` | shopify | `/Users/brent/scripts/CB-Workspace/cb-shopify` |
+| `wp` | wordpress | `/Users/brent/scripts/CB-Workspace/cb-wordpress` |
+| `mg` | magento | `/Users/brent/scripts/CB-Workspace/cb-magento-integration` |
+| `jg` | junogo | `/Users/brent/scripts/CB-Workspace/cb-junogo` |
+| `ms` | memory-system | `/Users/brent/scripts/CB-Workspace/cb-memory-system` |
+| `job` | jobs | `/Users/brent/scripts/CB-Workspace/jobs` |
+| `bw` | brent-workspace | `/Users/brent/scripts/CB-Workspace/brent-workspace` |
+| `cc` | claude-commands | `/Users/brent/scripts/CB-Workspace/.claude` |
+
+**SESSION TRACKING FILE:** `/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json`
 
 **🚨 CRITICAL: Always use this mapping to resolve project names to full paths!**
 - If project name not in mapping, ASK USER for the correct path
@@ -124,6 +127,41 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
 
 **Why this exists:** Claude's training data can cause year confusion. This step ensures correct dates.
 
+**Step 0.5: Session Tracking Initialization (MANDATORY)**
+
+**Purpose:** Track which workspaces are touched during this session for multi-workspace awareness.
+
+1. **Get the shortcode for the starting workspace:**
+   ```bash
+   # Map project argument to shortcode
+   # rd=requestdesk, as=astro-sites, sh=shopify, wp=wordpress, mg=magento, jg=junogo, job=jobs, ms=memory-system, bw=brent-workspace, cc=claude-commands
+   ```
+
+2. **Initialize or update session tracking file:**
+   ```bash
+   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
+   SHORTCODE="[resolved-shortcode]"
+   NOW=$(date -u +"%Y-%m-%dT%H:%M:%S")
+
+   # Create session file (or reset if new day)
+   cat > "$SESSION_FILE" << EOF
+   {
+     "started": "$NOW",
+     "startWorkspace": "$SHORTCODE",
+     "workspacesTouched": ["$SHORTCODE"],
+     "lastActivity": "$NOW"
+   }
+   EOF
+   ```
+
+3. **Display session initialized:**
+   ```
+   🚀 Session started: [SHORTCODE] ([full-project-name])
+   📁 Tracking workspaces in: .claude/local/active-session.json
+   ```
+
+**Why this exists:** Enables `/claude-save` and `/claude-complete` to know ALL workspaces touched during a session, preventing accidental context loss when multiple projects are modified.
+
 **Step 1: Read Work Log for Day Context**
 1. **Get today's date** from Step 0 (format: YYYY-MM-DD)
 2. **Read WORK-LOG.md:**
@@ -145,11 +183,24 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
 6. **If no entry for today:** Display "⏱️ Timer not started today - no WORK-LOG entry for [date]"
 
 **Step 2: Navigate to Project (Using Directory Mapping)**
-1. **Resolve project name to directory:** Use the PROJECT-TO-DIRECTORY MAPPING above
+1. **Resolve project name to directory:** Use the WORKSPACE SHORTCODES mapping above
 2. **Verify directory exists:** `ls [resolved-path]` - if fails, ASK USER
 3. **Change to project directory:** `cd [resolved-path]`
-4. **Confirm location:** Display "📁 Working in: [resolved-path]"
+4. **Confirm location:** Display "📁 Working in: [SHORTCODE] ([resolved-path])"
 5. **Get current branch:** `git branch --show-current`
+
+**🔄 WORKSPACE CHANGE TRACKING (During Session):**
+When you `cd` to a DIFFERENT workspace during the session:
+```bash
+SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
+NEW_SHORTCODE="[new-workspace-shortcode]"
+NOW=$(date -u +"%Y-%m-%dT%H:%M:%S")
+
+# Add to workspacesTouched if not already present
+# Update lastActivity timestamp
+# Use jq or manual JSON update
+```
+Display: "📁 Added workspace: [SHORTCODE] to session tracking"
 
 **Step 2.5: Security Validation (Automatic)**
 
