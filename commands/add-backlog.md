@@ -1,6 +1,6 @@
 # Add Backlog Item
 
-Add an item to the Priority List Google Sheet backlog.
+Add an item to the RequestDesk backlog system.
 
 ## Usage
 
@@ -16,79 +16,59 @@ Add an item to the Priority List Google Sheet backlog.
 
 ## Instructions for Claude
 
-### Step 1: Get Current Row Count
+### Step 1: Add to RequestDesk Backlog
+
+Use the same agent API key as brand-brent (`MNRcaklW3XF7UpKX4VrxPV7wo2L7xsWg`):
 
 ```bash
-TOKEN=$(gcloud auth application-default print-access-token)
-
-# Get last row with data
-curl -s -H "Authorization: Bearer $TOKEN" \
-  -H "x-goog-user-project: content-cucumber" \
-  "https://sheets.googleapis.com/v4/spreadsheets/1yw2gUt-vHdQgDLHr3HVKf0IkPzLwgsDrnQURhy9vFBo/values/All%20Items%21A:A" | jq '.values | length'
-```
-
-### Step 2: Generate Next ID
-
-- Count existing BK items or use next available number
-- Format: `BK[N]` (e.g., BK7, BK8)
-
-### Step 3: Add to Google Sheet
-
-```bash
-TOKEN=$(gcloud auth application-default print-access-token)
-
-# Replace [ROW] with next row number, [ID] with next BK ID
-curl -s -X PUT \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "x-goog-user-project: content-cucumber" \
+curl -s -X POST "https://app.requestdesk.ai/api/backlog" \
+  -H "Authorization: Bearer MNRcaklW3XF7UpKX4VrxPV7wo2L7xsWg" \
   -H "Content-Type: application/json" \
-  "https://sheets.googleapis.com/v4/spreadsheets/1yw2gUt-vHdQgDLHr3HVKf0IkPzLwgsDrnQURhy9vFBo/values/All%20Items%21A[ROW]:H[ROW]?valueInputOption=RAW" \
-  -d '{"values": [["[ID]", "[ITEM DESCRIPTION]", 3, null, "", "Backlog", "", ""]]}'
+  -d '{
+    "title": "[ITEM DESCRIPTION]",
+    "priority": 3,
+    "category": "Backlog",
+    "source": "claude"
+  }' | jq .
 ```
 
-**IMPORTANT:** Use actual numbers, not strings:
-- Priority: `3` not `"3"`
-- Points: `2` not `"2"` (or `null` if empty)
+**Replace `[ITEM DESCRIPTION]` with the user's backlog item text.**
 
-**URL Encoding Required:**
-- Space → `%20`
-- `!` → `%21`
-
-### Step 4: Confirm
+### Step 2: Confirm
 
 Report to user:
 ```
-✅ Added to backlog:
-- ID: BK[N]
+Added to backlog:
+- ID: [returned id]
 - Item: [description]
-- Row: [row number]
-- Sheet: https://docs.google.com/spreadsheets/d/1yw2gUt-vHdQgDLHr3HVKf0IkPzLwgsDrnQURhy9vFBo/edit?gid=651574547#gid=651574547
+- Priority: 3 (default)
+- Source: claude
+- Status: backlog
 ```
 
-## Sheet Reference
+## API Reference
 
 | Field | Value |
 |-------|-------|
-| Sheet ID | `1yw2gUt-vHdQgDLHr3HVKf0IkPzLwgsDrnQURhy9vFBo` |
-| Tab | All Items (gid=651574547) |
-| Quota Project | content-cucumber |
+| Endpoint | `https://app.requestdesk.ai/api/backlog` |
+| Method | POST |
+| Auth | `Authorization: Bearer {AGENT_API_KEY}` |
 
-## Column Structure
+## Request Fields
 
-| Col | Field | Backlog Default |
-|-----|-------|-----------------|
-| A | ID | BK[N] |
-| B | Item | [user input] |
-| C | Priority | 3 |
-| D | Est Points | (empty) |
-| E | Frequency | (empty) |
-| F | Category | Backlog |
-| G | Subcategory | (empty) |
-| H | SOP Status | (empty) |
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| title | string | required | The backlog item description |
+| priority | int | 3 | Priority 1-5 (1=highest) |
+| category | string | "Backlog" | Item category |
+| subcategory | string | null | Optional sub-grouping |
+| estimated_points | int | null | Optional effort estimate |
+| notes | string | null | Optional longer description |
+| source | string | "claude" | Origin: claude, ui, import, api |
 
 ## Notes
 
-- All backlog items default to Priority 3 (P3)
-- Category is always "Backlog"
-- Items can be re-prioritized later in the sheet
-- Local markdown file (`PRIORITY-LIST.md`) is NOT updated - Google Sheet is source of truth
+- All items default to Priority 3 and status "backlog"
+- Source is set to "claude" when added via this command
+- Uses same agent API key as brand-brent command
+- Items can be viewed/updated in RequestDesk admin UI
