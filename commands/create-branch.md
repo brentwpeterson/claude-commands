@@ -29,7 +29,7 @@ Create standardized development branch with automated documentation setup based 
 1. **Prompt User for Structure Type:**
    ```
    Choose todo structure for [task-name]:
-   1. 📁 **Standard 7-File Structure** (Comprehensive - recommended for complex tasks)
+   1. 📁 **Standard 8-File Structure** (Comprehensive - recommended for complex tasks)
    2. 📄 **Lightweight 4-File Structure** (Simple - for straightforward tasks)
    3. 🔧 **Bug Fix 4-File Structure** (Bug-specific workflow)
 
@@ -37,7 +37,7 @@ Create standardized development branch with automated documentation setup based 
    ```
 
 2. **Structure Descriptions:**
-   - **Standard 7-File**: Complete documentation with architecture mapping, debug logs, user docs
+   - **Standard 8-File**: Complete documentation with architecture mapping, debug logs, user docs
    - **Lightweight 4-File**: Planning-focused with README, planning, progress, debug
    - **Bug Fix 4-File**: Bug-specific with README, report, fix, test
 
@@ -53,9 +53,10 @@ Create standardized development branch with automated documentation setup based 
 **Phase P3: Generate Selected File Structure**
 4. **Create Files Based on User Selection:**
 
-   **Standard 7-File Structure:**
+   **Standard 8-File Structure:**
    - `README.md` - Task overview with guidelines references
-   - `[task-name]-plan.md` - Requirements + acceptance criteria + implementation + testing + completion checklist
+   - `success-criteria.md` - Explicit, measurable conditions that define "done"
+   - `[task-name]-plan.md` - Requirements + implementation + testing + completion checklist
    - `progress.log` - Daily progress tracking template
    - `debug.log` - Debug attempts structure template
    - `notes.md` - Discoveries and insights template
@@ -83,7 +84,7 @@ Create standardized development branch with automated documentation setup based 
 
 **🎯 PLANNING TEMPLATES BY STRUCTURE TYPE:**
 
-### Standard 7-File Structure Templates:
+### Standard 8-File Structure Templates:
 
 **README.md Template:**
 ```markdown
@@ -116,7 +117,8 @@ which will create the actual git branch and update this README with the real bra
 
 ## 📁 **FILES IN THIS TODO**
 - [x] README.md - This file (task overview and status)
-- [ ] [task-name]-plan.md - Requirements + acceptance criteria + implementation + testing + completion checklist
+- [ ] success-criteria.md - Explicit, measurable conditions that define "done"
+- [ ] [task-name]-plan.md - Requirements + implementation + testing + completion checklist
 - [ ] progress.log - Daily progress tracking and updates
 - [ ] debug.log - Debug attempts and troubleshooting sessions
 - [ ] notes.md - Discoveries, blockers, insights
@@ -237,12 +239,12 @@ which will create the actual git branch and update this README with the real bra
 6. **Create ALL Required Files for Selected Structure:**
 
    **Create Files Based on Structure Choice:**
-   - **Standard 7-File**: Create all 7 files with planning templates
+   - **Standard 8-File**: Create all 8 files with planning templates
    - **Lightweight 4-File**: Create 4 files with planning templates
    - **Bug Fix 4-File**: Create 4 files with bug-specific templates
 
    **File Count by Structure:**
-   - Standard 7-File Structure: 7 files exactly
+   - Standard 8-File Structure: 8 files exactly
    - Lightweight 4-File Structure: 4 files exactly
    - Bug Fix 4-File Structure: 4 files exactly
 
@@ -250,7 +252,7 @@ which will create the actual git branch and update this README with the real bra
 7. **Output Planning Summary:**
    ```
    📁 Planning structure created: /todo/current/[category]/[task-name]/
-   📝 Structure: [Standard 7-File|Lightweight 4-File|Bug Fix 4-File]
+   📝 Structure: [Standard 8-File|Lightweight 4-File|Bug Fix 4-File]
    ✅ Files created: [ACTUAL-COUNT] files
 
    📚 Next steps:
@@ -260,16 +262,16 @@ which will create the actual git branch and update this README with the real bra
    - When ready: /create-branch todo/current/[category]/[task-name]/README.md
 
    🔍 VALIDATION INTEGRATION:
-   - /claude-save will validate 7-file structure: "✅ Complete (7/7 files)" or "⚠️ Incomplete (X/7 files)"
-   - /claude-start will verify todo directory has exactly 7 files using `ls -1 [todo-path] | wc -l`
-   - These commands expect standard 7-file structure (README.md, [task]-plan.md, progress.log, debug.log, notes.md, architecture-map.md, user-documentation.md)
+   - /claude-save will validate 8-file structure: "✅ Complete (8/8 files)" or "⚠️ Incomplete (X/8 files)"
+   - /claude-start will verify todo directory has exactly 8 files using `ls -1 [todo-path] | wc -l`
+   - These commands expect standard 8-file structure (README.md, success-criteria.md, [task]-plan.md, progress.log, debug.log, notes.md, architecture-map.md, user-documentation.md)
 
-   📝 NOTE: If you chose lightweight or bug-fix structure, convert to standard 7-file before implementation
+   📝 NOTE: If you chose lightweight or bug-fix structure, convert to standard 8-file before implementation
    ```
 
 **🎯 COMPLETE TEMPLATES FOR ALL FILE TYPES:**
 
-### Standard 7-File Additional Templates:
+### Standard 8-File Additional Templates:
 
 **[task-name]-plan.md Template:**
 ```markdown
@@ -314,13 +316,63 @@ which will create the actual git branch and update this README with the real bra
 - [ ] Ready for deployment
 ```
 
+**success-criteria.md Template:**
+```markdown
+# [Task Name] - Success Criteria
+
+## 🎯 **SUCCESS CRITERIA** (All must pass for completion)
+
+### Functional Requirements
+- [ ] [Specific measurable outcome 1]
+- [ ] [Specific measurable outcome 2]
+- [ ] [Specific measurable outcome 3]
+
+### Performance Requirements (if applicable)
+- [ ] [Response time under X ms]
+- [ ] [Handles X concurrent users]
+
+---
+
+## 🧪 **VERIFICATION COMMANDS**
+
+```bash
+# Command to verify criteria 1
+[curl or test command here]
+# Expected: [expected output]
+
+# Command to verify criteria 2
+[curl or test command here]
+# Expected: [expected output]
+```
+
+---
+
+## ✅ **VERIFICATION STATUS**
+
+| Criteria | Local | Production | Verified By |
+|----------|-------|------------|-------------|
+| [Criteria 1] | ⏳ | ⏳ | |
+| [Criteria 2] | ⏳ | ⏳ | |
+| [Criteria 3] | ⏳ | ⏳ | |
+
+**Legend:** ⏳ Pending | ✅ Passed | ❌ Failed
+
+---
+
+## 📋 **SIGN-OFF**
+
+- [ ] Claude verified locally
+- [ ] User confirmed in production
+- [ ] Ready for /claude-complete
+```
+
 **progress.log Template:**
 ```
 ##############################################################################
 # PLANNING PROGRESS LOG - [TASK-NAME]
 ##############################################################################
 [current-timestamp] - Planning phase started
-[current-timestamp] - Todo structure created ([7|4] files)
+[current-timestamp] - Todo structure created ([8|4] files)
 [current-timestamp] - Ready for requirements gathering
 
 # PLANNING PHASE TRACKING:
@@ -518,13 +570,14 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
    - Create folder: `/todo/current/[category]/[branch-name]/`
    - If `/todo/current/` doesn't exist, create the entire directory structure
 
-5. **Generate Standardized 7-File Documentation Structure:**
+5. **Generate Standardized 8-File Documentation Structure:**
    **CRITICAL: Populate README.md with ACTUAL branch name, not placeholders**
-   **ALL CATEGORIES use the same standardized structure (7 files):**
+   **ALL CATEGORIES use the same standardized structure (8 files):**
 
-   **Always Create These 7 Files:**
+   **Always Create These 8 Files:**
    - **README.md** - Task overview, branch, current status, references to guidelines
-   - **[branch-name]-plan.md** - Requirements + acceptance criteria + implementation plan + testing plan + completion checklist
+   - **success-criteria.md** - Explicit, measurable conditions that define "done"
+   - **[branch-name]-plan.md** - Requirements + implementation plan + testing plan + completion checklist
    - **progress.log** - Daily progress tracking and updates
    - **debug.log** - Debug attempts and troubleshooting sessions (using `/debug-attempt` command)
    - **notes.md** - Discoveries, blockers, insights, and additional context
@@ -558,7 +611,7 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
    - **Fixes**: Focus on bug resolution and testing validation
 
 **Phase 4: File Template Creation**
-6. **Initialize All 7 Files with Templates:**
+6. **Initialize All 8 Files with Templates:**
 
    **CRITICAL: Update README.md Branch Information**
    - If README.md already exists (from planning mode), **UPDATE the branch line**:
@@ -573,7 +626,7 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
    # [TASK-TYPE] PROGRESS LOG - [TASK-NAME]
    ##############################################################################
    [current-timestamp] - Branch created: [category]/[branch-name]
-   [current-timestamp] - Documentation structure set up (7 files)
+   [current-timestamp] - Documentation structure set up (8 files)
    [current-timestamp] - Ready to begin [category] work
 
    # Format for future entries:
@@ -605,11 +658,11 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
    **CRITICAL**: Architecture map must be completed during implementation, not left as template
 
 7. **Verification and Summary:**
-   - Confirm all 7 standardized files created
+   - Confirm all 8 standardized files created
    - **VERIFY README.md shows actual branch name** (not placeholder)
    - Display task folder location: `/todo/current/[category]/[branch-name]/`
    - Show branch name: `[category]/[branch-name]`
-   - List the 7 files created with their purposes
+   - List the 8 files created with their purposes
    - Ready for development work
 
    **EXAMPLE README.md Verification:**
@@ -644,14 +697,14 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
 /create-branch current/payment-dashboard-redesign.md
 ```
 
-## 📁 **STANDARDIZED 7-FILE STRUCTURE - COMPREHENSIVE GUIDE**
+## 📁 **STANDARDIZED 8-FILE STRUCTURE - COMPREHENSIVE GUIDE**
 
 **🎯 TODO + CONTEXT = SESSION RECOVERY**
 - **Context file**: Session state and resume instructions
 - **Todo file**: Task requirements and progress
 - **Both required**: For complete session handoff between Claude instances
 
-### 📋 **Required Files (Always Create These 7)**
+### 📋 **Required Files (Always Create These 8)**
 
 **ALL task categories use the same standardized structure:**
 
@@ -663,15 +716,23 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
 - Shows current progress and next steps
 - **Critical reminder**: If you don't know what todo you're working on, ASK IMMEDIATELY
 
-#### 2. **[branch-name]-plan.md** - Complete Implementation Plan
-**Purpose**: Requirements + acceptance criteria + implementation + testing + completion checklist
+#### 2. **success-criteria.md** - What Defines "Done"
+**Purpose**: Explicit, measurable conditions that must pass for task completion
 **Why needed**:
-- **CRITICAL**: Every todo MUST have acceptance criteria before completion
+- **THE MOST IMPORTANT FILE** - defines what success looks like
+- Prevents Claude from claiming "done" without meeting specific criteria
+- Provides checklist for deployment verification
+- Forces upfront thinking about what "complete" means
+- Easy to reference during testing and deployment
+
+#### 3. **[branch-name]-plan.md** - Implementation Plan
+**Purpose**: Requirements + implementation approach + testing strategy + completion checklist
+**Why needed**:
 - Provides detailed roadmap for implementation
 - Ensures nothing is missed during development
-- Required for TodoWrite completion approval protocol
+- Contains testing strategy and completion checklist
 
-#### 3. **progress.log** - Daily Progress Tracking and Updates
+#### 4. **progress.log** - Daily Progress Tracking and Updates
 **Purpose**: Chronological timeline with timestamps for session tracking
 **Why needed**:
 - Tracks progress across multiple Claude sessions
@@ -679,7 +740,7 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
 - Essential for debugging when things go wrong
 - Shows development velocity and time estimates
 
-#### 4. **debug.log** - Debug Attempts and Troubleshooting Sessions
+#### 5. **debug.log** - Debug Attempts and Troubleshooting Sessions
 **Purpose**: Structured debug attempts using `/debug-attempt` command
 **Why needed**:
 - Prevents repeating failed approaches
@@ -687,7 +748,7 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
 - Critical for complex debugging sessions
 - Helps identify patterns in failures
 
-#### 5. **notes.md** - Discoveries, Blockers, Insights
+#### 6. **notes.md** - Discoveries, Blockers, Insights
 **Purpose**: Discoveries, blockers, insights, and additional context
 **Why needed**:
 - Captures important insights that might be forgotten
@@ -695,7 +756,7 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
 - Preserves architectural decisions and rationale
 - Prevents losing valuable context between sessions
 
-#### 6. **architecture-map.md** - CB Technical Flow Mapping
+#### 7. **architecture-map.md** - CB Technical Flow Mapping
 **Purpose**: CB technical flow: Frontend → DataLayer → Router → Service Layer → Model → Collection
 **Why needed**:
 - **CRITICAL**: Maps changes across CB's technical layers
@@ -704,7 +765,7 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
 - Ensures complete technical context for session handoffs
 - Prevents "archaeological digs" to understand what was modified
 
-#### 7. **user-documentation.md** - Public and Private User Documentation
+#### 8. **user-documentation.md** - Public and Private User Documentation
 **Purpose**: Public and private user documentation (API docs, guides, installation, examples, internal docs)
 **Why needed**:
 - Plans user-facing documentation from the start
@@ -712,22 +773,23 @@ User Action → Frontend Component → DataLayer API Call → Router Endpoint �
 - Separates public vs internal documentation needs
 - Required for complete feature delivery
 
-### 🔄 **HOW THE 7 FILES WORK TOGETHER**
+### 🔄 **HOW THE 8 FILES WORK TOGETHER**
 
 **Session Handoff Process:**
 1. **README.md** - Quick context and current status
-2. **[branch-name]-plan.md** - Detailed requirements and acceptance criteria
-3. **progress.log** - What's been done and timeline
-4. **debug.log** - What problems were encountered and solved
-5. **notes.md** - Important insights and decisions
-6. **architecture-map.md** - Technical changes across CB layers
-7. **user-documentation.md** - Documentation planning and content
+2. **success-criteria.md** - What defines "done" (CHECK THIS FIRST)
+3. **[branch-name]-plan.md** - Detailed requirements and implementation
+4. **progress.log** - What's been done and timeline
+5. **debug.log** - What problems were encountered and solved
+6. **notes.md** - Important insights and decisions
+7. **architecture-map.md** - Technical changes across CB layers
+8. **user-documentation.md** - Documentation planning and content
 
 **Critical Integration Points:**
-- **TodoWrite + Acceptance Criteria**: All todos must reference acceptance criteria from plan.md
+- **TodoWrite + Success Criteria**: All todos must reference criteria from success-criteria.md
 - **Debug Attempts**: Use `/debug-attempt` to maintain structured debug.log
 - **Architecture Updates**: Run `/update-architecture` to keep architecture-map.md current
-- **Save Validation**: `/claude-save` validates all 7 files exist and architecture is current
+- **Save Validation**: `/claude-save` validates all 8 files exist and architecture is current
 
 ### 🚨 **CRITICAL COMPLETION REQUIREMENTS**
 
@@ -795,11 +857,12 @@ todo/current/
 
 **📁 STANDARDIZED RESULT STRUCTURE:**
 
-**ALL CATEGORIES use the same 7-file structure:**
+**ALL CATEGORIES use the same 8-file structure:**
 ```
 /todo/current/[category]/[branch-name]/
 ├── README.md                 # 📋 Task overview and current status
-├── [branch-name]-plan.md     # 📝 Requirements + acceptance criteria + implementation + testing + completion checklist
+├── success-criteria.md       # 🎯 Explicit, measurable conditions that define "done"
+├── [branch-name]-plan.md     # 📝 Requirements + implementation + testing + completion checklist
 ├── progress.log              # 📊 Daily progress tracking and updates
 ├── debug.log                 # 🐛 Debug attempts and troubleshooting sessions
 ├── notes.md                  # 💡 Discoveries, blockers, insights
@@ -818,7 +881,7 @@ todo/current/
 1. Analyze task document and determine category
 2. Create standardized branch from clean master
 3. Create `/todo/current/[category]/[branch-name]/` directory structure (creates full path if needed)
-4. Generate standardized 7-file documentation structure for ALL task types
+4. Generate standardized 8-file documentation structure for ALL task types
 5. Initialize all files with appropriate templates (progress.log, debug.log, architecture-map.md, etc.)
 6. **POPULATE README.md with ACTUAL git branch name** (not placeholders)
 7. Ready for immediate development work with complete documentation framework
