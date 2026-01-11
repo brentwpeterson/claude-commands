@@ -27,6 +27,7 @@ Claude Session Save - Create Resume Instructions + Preserve Work
 - `/claude-save <project> --quick` - Fast save with minimal context usage (skips validation)
 - `/claude-save <project> --close` - Formal session close with security scan and CLAUDE.md update
 - `/claude-save <project> --no-todo` - Save without linking to todo directory (for ad-hoc work)
+- `/claude-save <project> --backlog` - Save AND add to backlog as P0 for resuming later
 - `/claude-save <project> <X%>` - Context-aware save (e.g., `/claude-save requestdesk 9%`)
 
 **🚨 CONTEXT-AWARE SAVE MODES (CRITICAL - READ FIRST):**
@@ -36,6 +37,97 @@ Claude Session Save - Create Resume Instructions + Preserve Work
 | **>15%** | FULL | All tasks: git ops, context files, memory, verbose summaries |
 | **8-15%** | QUICK | Essential only: brief context, minimal git output, skip verbose ops |
 | **<8%** | EMERGENCY | JUST save context - NO git reads, NO tests, pure context dump |
+
+---
+
+## 📋 BACKLOG MODE (`--backlog` flag)
+
+**When to use:** Saving work-in-progress to resume later. Marks as P0 (highest priority) since you're mid-task.
+
+**What `--backlog` adds beyond normal save:**
+
+1. **Creates/Updates Backlog Entry:**
+   - File: `/Users/brent/scripts/CB-Workspace/.claude/backlog/workspace-resume.md`
+   - Priority: **P0** (highest - indicates interrupted work)
+   - Includes context file path for easy resume
+   - Includes current todo state
+
+2. **Backlog Entry Format:**
+   ```markdown
+   ## [P0] [Task Title] - RESUME PENDING
+   **Added:** YYYY-MM-DD HH:MM
+   **Project:** [project-shortcode]
+   **Context:** `.claude/branch-context/[context-file].md`
+   **Branch:** [branch-name]
+
+   ### Current State
+   [Brief description of where work stopped]
+
+   ### Pending Todos
+   - [ ] [todo 1]
+   - [ ] [todo 2]
+
+   ### To Resume
+   ```bash
+   /claude-start [project]
+   ```
+   ```
+
+3. **Backlog File Structure:**
+   ```
+   /Users/brent/scripts/CB-Workspace/.claude/backlog/
+   └── workspace-resume.md   # ALL resume items (P0, P1, P2) across workspaces
+   ```
+
+   **Priority Levels:**
+   - **P0** - Interrupted mid-task, resume ASAP (default for --backlog)
+   - **P1** - Planned work, ready to start
+   - **P2** - Ideas/future work
+
+**Backlog Mode Workflow:**
+
+```
+1. Normal save operations (Phase 1-5)
+
+2. Create/append to workspace-resume.md:
+   - Add P0 entry with context file path
+   - Include current todos from conversation
+   - Include branch and project info
+
+3. Show completion:
+   ✅ Session saved
+   📁 Context: [path]
+   📋 Added to backlog: P0 - [task title]
+
+   To resume: /claude-start [project]
+```
+
+**Example Usage:**
+```bash
+# Mid-task, need to switch contexts
+/claude-save shopify --backlog
+
+# Output:
+# 📁 Context saved to: .claude/branch-context/shopify-feature-x.md
+# 📋 Added to backlog: [P0] Shopify Feature X - RESUME PENDING
+# 🧠 Session stored to MCP memory
+#
+# To resume later: /claude-start shopify
+# Or view queue: cat .claude/backlog/workspace-resume.md
+```
+
+**Viewing & Managing the Resume Queue:**
+```bash
+# View all P0 items waiting to resume
+cat /Users/brent/scripts/CB-Workspace/.claude/backlog/workspace-resume.md
+
+# After resuming, manually remove the entry or mark as complete
+```
+
+**Future: `/claude-resume` command** (not yet implemented) would:
+1. Show workspace-resume.md items
+2. Let you pick which to resume
+3. Auto-call `/claude-start` for that project
 
 ---
 
@@ -171,16 +263,19 @@ When context % is passed and is <8%, SKIP ALL OTHER INSTRUCTIONS and do ONLY thi
 
 | Shortcode | Full Name | Directory Path |
 |-----------|-----------|----------------|
-| `rd` | requestdesk | `/Users/brent/scripts/CB-Workspace/cb-requestdesk` |
-| `as` | astro-sites | `/Users/brent/scripts/CB-Workspace/astro-sites` |
-| `sh` | shopify | `/Users/brent/scripts/CB-Workspace/cb-shopify` |
-| `wp` | wordpress | `/Users/brent/scripts/CB-Workspace/cb-wordpress` |
-| `mg` | magento | `/Users/brent/scripts/CB-Workspace/cb-magento-integration` |
-| `jg` | junogo | `/Users/brent/scripts/CB-Workspace/cb-junogo` |
-| `ms` | memory-system | `/Users/brent/scripts/CB-Workspace/cb-memory-system` |
+| `rd` | requestdesk | `/Users/brent/scripts/CB-Workspace/requestdesk-app` |
+| `rd-test` | requestdesk-testing | `/Users/brent/scripts/CB-Workspace/requestdesk-app-testing` |
+| `astro` | astro-sites | `/Users/brent/scripts/CB-Workspace/astro-sites` |
+| `shop` | shopify | `/Users/brent/scripts/CB-Workspace/cb-shopify` |
+| `wpp` | wordpress-plugin | `/Users/brent/scripts/CB-Workspace/requestdesk-wordpress` |
+| `wps` | wordpress-sites | `/Users/brent/scripts/CB-Workspace/wordpress-sites` |
+| `mage` | magento | `/Users/brent/scripts/CB-Workspace/cb-magento-integration` |
+| `juno` | junogo | `/Users/brent/scripts/CB-Workspace/cb-junogo` |
 | `job` | jobs | `/Users/brent/scripts/CB-Workspace/jobs` |
-| `bw` | brent-workspace | `/Users/brent/scripts/CB-Workspace/brent-workspace` |
+| `brent` | brent-workspace | `/Users/brent/scripts/CB-Workspace/brent-workspace` |
+| `bt` | brent-timekeeper | `/Users/brent/scripts/CB-Workspace/brent-timekeeper` |
 | `cc` | claude-commands | `/Users/brent/scripts/CB-Workspace/.claude` |
+| `doc` | documentation | `/Users/brent/scripts/CB-Workspace/documentation` |
 
 **SESSION TRACKING FILE:** `/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json`
 

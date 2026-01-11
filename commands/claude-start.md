@@ -14,16 +14,19 @@ Claude Session Start - Read Resume Instructions and Execute
 
 | Shortcode | Full Name | Directory Path |
 |-----------|-----------|----------------|
-| `rd` | requestdesk | `/Users/brent/scripts/CB-Workspace/cb-requestdesk` |
-| `as` | astro-sites | `/Users/brent/scripts/CB-Workspace/astro-sites` |
-| `sh` | shopify | `/Users/brent/scripts/CB-Workspace/cb-shopify` |
-| `wp` | wordpress | `/Users/brent/scripts/CB-Workspace/cb-wordpress` |
-| `mg` | magento | `/Users/brent/scripts/CB-Workspace/cb-magento-integration` |
-| `jg` | junogo | `/Users/brent/scripts/CB-Workspace/cb-junogo` |
-| `ms` | memory-system | `/Users/brent/scripts/CB-Workspace/cb-memory-system` |
+| `rd` | requestdesk | `/Users/brent/scripts/CB-Workspace/requestdesk-app` |
+| `rd-test` | requestdesk-testing | `/Users/brent/scripts/CB-Workspace/requestdesk-app-testing` |
+| `astro` | astro-sites | `/Users/brent/scripts/CB-Workspace/astro-sites` |
+| `shop` | shopify | `/Users/brent/scripts/CB-Workspace/cb-shopify` |
+| `wpp` | wordpress-plugin | `/Users/brent/scripts/CB-Workspace/requestdesk-wordpress` |
+| `wps` | wordpress-sites | `/Users/brent/scripts/CB-Workspace/wordpress-sites` |
+| `mage` | magento | `/Users/brent/scripts/CB-Workspace/cb-magento-integration` |
+| `juno` | junogo | `/Users/brent/scripts/CB-Workspace/cb-junogo` |
 | `job` | jobs | `/Users/brent/scripts/CB-Workspace/jobs` |
-| `bw` | brent-workspace | `/Users/brent/scripts/CB-Workspace/brent-workspace` |
+| `brent` | brent-workspace | `/Users/brent/scripts/CB-Workspace/brent-workspace` |
+| `bt` | brent-timekeeper | `/Users/brent/scripts/CB-Workspace/brent-timekeeper` |
 | `cc` | claude-commands | `/Users/brent/scripts/CB-Workspace/.claude` |
+| `doc` | documentation | `/Users/brent/scripts/CB-Workspace/documentation` |
 
 **SESSION TRACKING FILE:** `/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json`
 
@@ -134,7 +137,7 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
 1. **Get the shortcode for the starting workspace:**
    ```bash
    # Map project argument to shortcode
-   # rd=requestdesk, as=astro-sites, sh=shopify, wp=wordpress, mg=magento, jg=junogo, job=jobs, ms=memory-system, bw=brent-workspace, cc=claude-commands
+   # rd=requestdesk, rd-test=requestdesk-testing, astro=astro-sites, shop=shopify, wpp=wordpress-plugin, wps=wordpress-sites, mage=magento, juno=junogo, job=jobs, brent=brent-workspace, bt=brent-timekeeper, cc=claude-commands, doc=documentation
    ```
 
 2. **Initialize or update session tracking file:**

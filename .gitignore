@@ -48,8 +48,37 @@ local/*.local.*
 *.temp
 *~
 !branch-context/master-context.md
+
+# =============================================================================
+# PROPRIETARY COMMANDS - Symlinked from .claude-local/commands/
+# These are business-specific commands that should NEVER be in the public repo.
+# The actual files live in .claude-local (separate git repo).
+# =============================================================================
+
+# Brand-specific commands
 commands/brand-brent.md
+commands/brand-cucumber.md
+commands/brand-requestdesk.md
+
+# Personal workflow commands
 commands/brent-start.md
 commands/brent-finish.md
 commands/brent-task.md
 commands/daily-content.md
+
+# Business content commands
+commands/add-backlog.md
+commands/check-terms.md
+commands/content-audit.md
+commands/newsletter-planner.md
+commands/cucumber-writer.md
+
+# Tuesdays with Claude (personal brand)
+commands/twc-backlog.md
+commands/twc-finish.md
+commands/twc-note.md
+commands/twc-start.md
+commands/twc-status.md
+
+# Local files (gitignored, not symlinked)
+local/

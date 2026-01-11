@@ -149,6 +149,28 @@ Brand:       /brand-brent, /brand-cucumber, /brand-requestdesk,
 
 ---
 
+## Workspace Shortcodes
+
+Used with session commands (`/claude-save`, `/claude-start`, etc.)
+
+| Shortcode | Project | Directory |
+|-----------|---------|-----------|
+| `rd` | RequestDesk | `requestdesk-app` |
+| `rd-test` | RequestDesk Testing | `requestdesk-app-testing` |
+| `astro` | Astro Sites | `astro-sites` |
+| `shop` | Shopify | `cb-shopify` |
+| `wpp` | WordPress Plugin | `requestdesk-wordpress` |
+| `wps` | WordPress Sites | `wordpress-sites` |
+| `mage` | Magento | `cb-magento-integration` |
+| `juno` | JunoGO | `cb-junogo` |
+| `job` | Jobs | `jobs` |
+| `brent` | Brent Workspace | `brent-workspace` |
+| `bt` | Brent Timekeeper | `brent-timekeeper` |
+| `cc` | Claude Commands | `.claude` |
+| `doc` | Documentation | `documentation` |
+
+---
+
 ## Skills
 
 Skills are registered automatically from command files. Each command in `.claude/commands/` becomes a skill.

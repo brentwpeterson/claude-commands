@@ -159,7 +159,40 @@ Then summarize in structured format:
 **Location:** Public (.claude/commands/)
 ```
 
-### Step 3: Handle Unknown Commands
+### Step 3: Handle Special Topics
+
+**If `shortcodes` argument:**
+
+Display workspace shortcodes from command-readme.md:
+
+```
+## Workspace Shortcodes
+
+Used with session commands (`/claude-save`, `/claude-start`, etc.)
+
+| Shortcode | Project | Directory |
+|-----------|---------|-----------|
+| rd        | RequestDesk | requestdesk-app |
+| rd-test   | RequestDesk Testing | requestdesk-app-testing |
+| astro     | Astro Sites | astro-sites |
+| shop      | Shopify | cb-shopify |
+| wpp       | WordPress Plugin | requestdesk-wordpress |
+| wps       | WordPress Sites | wordpress-sites |
+| mage      | Magento | cb-magento-integration |
+| juno      | JunoGO | cb-junogo |
+| job       | Jobs | jobs |
+| brent     | Brent Workspace | brent-workspace |
+| bt        | Brent Timekeeper | brent-timekeeper |
+| cc        | Claude Commands | .claude |
+| doc       | Documentation | documentation |
+
+**Examples:**
+  /claude-save rd           # Save RequestDesk session
+  /claude-start astro       # Start Astro Sites session
+  /claude-save shop --quick # Quick save Shopify session
+```
+
+### Step 4: Handle Unknown Commands
 
 If user asks for help on a command that doesn't exist:
 
@@ -171,6 +204,7 @@ Did you mean one of these?
   /claude-complete
 
 Use `/claude-help --list` to see all available commands.
+Use `/claude-help shortcodes` to see workspace shortcodes.
 ```
 
 ---
