@@ -6,7 +6,7 @@ Complete API reference for CB-Workspace OpenMemory integration.
 
 ```bash
 API_URL="http://localhost:8080"
-API_KEY="fGqS8XZNFZnjzONJu5bOrBH+nCioPsnP3SZvWLbODXw="
+API_KEY="YOUR_API_KEY_HERE"
 USER_ID="cb-workspace"
 
 HEADERS=(
@@ -296,7 +296,7 @@ curl -X GET "http://localhost:8080/memory/all?sector=semantic"
 All API requests require Bearer token authentication:
 
 ```bash
-Authorization: Bearer fGqS8XZNFZnjzONJu5bOrBH+nCioPsnP3SZvWLbODXw=
+Authorization: Bearer YOUR_API_KEY_HERE
 ```
 
 ## 💾 Data Types
