@@ -23,13 +23,13 @@ Supports phased deployments where features are released incrementally and tested
 3. **Return to original directory** when deployment is complete
 
 **🚨 CRITICAL VERSION POLICY:**
-🚫 **NEVER INCREMENT `/VERSION` FILE** during deployment - Version increments are separate from deployments
-📖 **ALWAYS READ** existing version from `[project]/VERSION` file (e.g., "0.30.0")
-🔄 **VERSION INCREMENTS** only happen during migrations or when user explicitly requests
-💡 **USE DESCRIPTIVE TAGS** to identify deployments (e.g., app-v0.30.0-content-terms-fix)
-⚠️  **DO NOT CREATE NEW VERSION NUMBERS** - Use the EXISTING version from VERSION file
-❌ **WRONG**: backend-v0.31.0-fix (if VERSION file says 0.30.0)
-✅ **RIGHT**: backend-v0.30.0-fix (matches VERSION file)
+🔄 **SYNC VERSION FILE** with API before deployment - Run Phase 0.25 to ensure VERSION matches `/api/current_version`
+📖 **SOURCE OF TRUTH** is the API endpoint (reflects migration versions), NOT the VERSION file
+🔢 **VERSION FILE** must be synced and committed before creating deployment tags
+💡 **USE DESCRIPTIVE TAGS** with synced version (e.g., matrix-v0.39.2-content-terms-fix)
+⚠️  **ALWAYS RUN VERSION SYNC** - VERSION file can drift behind migrations
+❌ **WRONG**: Using VERSION file value without checking API (may be outdated)
+✅ **RIGHT**: Query API, sync VERSION file, then create tag with correct version
 
 **Current Branch:** [Claude will auto-detect]
 **Branch Type:** [feature/fix/hotfix/enhancement/etc.]
@@ -45,6 +45,50 @@ Supports phased deployments where features are released incrementally and tested
    - Verify location: `pwd` should end with `/[project]`
    - Verify VERSION file exists: `ls VERSION` (should show VERSION file)
    - Store current branch BEFORE any operations: `ORIGINAL_BRANCH=$(git branch --show-current)`
+
+**🔢 Phase 0.25: Version Sync (MANDATORY)**
+
+**🚨 CRITICAL: Sync VERSION file with actual database version BEFORE deployment**
+
+The VERSION file can become outdated. The source of truth is the API endpoint which reflects migration versions.
+
+1. **Query Actual Version from API:**
+   ```bash
+   ACTUAL_VERSION=$(curl -s http://localhost:3000/api/current_version | grep -o '"version":"[^"]*"' | cut -d'"' -f4)
+   echo "API Version: $ACTUAL_VERSION"
+   ```
+
+2. **Read VERSION File:**
+   ```bash
+   FILE_VERSION=$(cat VERSION)
+   echo "FILE Version: $FILE_VERSION"
+   ```
+
+3. **Compare and Sync:**
+   ```bash
+   if [ "$ACTUAL_VERSION" != "$FILE_VERSION" ]; then
+     echo "⚠️ VERSION MISMATCH DETECTED!"
+     echo "   API reports: $ACTUAL_VERSION"
+     echo "   FILE shows:  $FILE_VERSION"
+     echo ""
+     echo "🔄 Updating VERSION file to $ACTUAL_VERSION..."
+     echo "$ACTUAL_VERSION" > VERSION
+     git add VERSION
+     git commit -m "Sync VERSION file to $ACTUAL_VERSION (from API/migrations)"
+     echo "✅ VERSION file updated and committed"
+   else
+     echo "✅ VERSION file is in sync: $ACTUAL_VERSION"
+   fi
+   ```
+
+4. **Use Synced Version for Deployment Tags:**
+   - All deployment tags MUST use the synced version: `matrix-v$ACTUAL_VERSION-[description]`
+   - **NEVER use the old FILE_VERSION if they differed**
+
+**WHY THIS STEP EXISTS:**
+- VERSION file was 4 versions behind (0.35.0 vs 0.39.2) causing misleading deployment tags
+- Migrations increment version but VERSION file wasn't being updated
+- API endpoint `/api/current_version` reflects actual migration state
 
 **🔄 Phase 0.5: Iteration Mode Detection**
 

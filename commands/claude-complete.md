@@ -304,6 +304,31 @@ Branch Cleanup: N/A (work done directly on master, no feature branch to delete)
 
 ## Phase 7: Version Management & Tagging
 
+**🔢 Step 13.5: Version Sync (MANDATORY BEFORE TAGGING)**
+
+**Sync VERSION file with actual database version before creating any tags:**
+
+```bash
+# Query actual version from API
+ACTUAL_VERSION=$(curl -s http://localhost:3000/api/current_version | grep -o '"version":"[^"]*"' | cut -d'"' -f4)
+FILE_VERSION=$(cat VERSION)
+
+echo "API Version:  $ACTUAL_VERSION"
+echo "FILE Version: $FILE_VERSION"
+
+if [ "$ACTUAL_VERSION" != "$FILE_VERSION" ]; then
+  echo "⚠️ VERSION MISMATCH - Syncing..."
+  echo "$ACTUAL_VERSION" > VERSION
+  git add VERSION
+  git commit -m "Sync VERSION file to $ACTUAL_VERSION (from API/migrations)"
+  echo "✅ VERSION synced to $ACTUAL_VERSION"
+else
+  echo "✅ VERSION file is in sync"
+fi
+```
+
+**WHY:** VERSION file can drift behind migrations. API endpoint is source of truth.
+
 14. **Create Completion Tag:**
     - Create a git tag for completed work:
       ```bash
