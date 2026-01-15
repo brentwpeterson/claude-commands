@@ -64,6 +64,26 @@ You have enough information to start [TASK].
 Stop planning. Start doing.
 ```
 
+### Rule 5: Track Actual Time on Completion
+
+When Brent says something is "done", "completed", or "finished":
+
+**ALWAYS ASK:**
+```
+Nice! Before we move on: How long did [TASK] actually take?
+
+(This helps calibrate our estimates for Friday retro)
+```
+
+**Then record:**
+- Update sprint plan story: `**Actual:** X.X hrs | **Variance:** +/- X`
+- If significantly off from estimate, note why
+
+**Why this matters:**
+- Improves estimation accuracy over time
+- Shows where time actually goes (vs. where we think it goes)
+- Friday retro needs real data, not guesses
+
 ## Exceptions
 
 **Don't enforce accountability when:**

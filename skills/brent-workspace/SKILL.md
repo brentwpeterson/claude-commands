@@ -88,6 +88,37 @@ Apply this skill automatically when Brent:
 
 ---
 
+## Writing Voice Rules
+
+**RULE: Include "AI would object" elements**
+
+Brent's writing must contain elements that AI would typically smooth over, hedge, or remove. These are authenticity signals that prove a human wrote it.
+
+**Include:**
+- Snarky asides and parenthetical jabs
+- Opinionated statements about vendors/trends
+- Light humor that breaks polished tone
+- Bold claims without excessive hedging
+- Industry inside jokes
+
+**Example (keep this):**
+> "(unless you are Shopify then you specialize in every area)"
+
+**Why this matters:** AI-generated content is too polished. It hedges everything, avoids opinions, and optimizes out personality. Human content has rough edges, takes sides, and includes the occasional zinger. These "flaws" are features.
+
+**Terms to AVOID (AI tells on itself):**
+- "actually"
+- "Here's the thing"
+- "leverage" / "utilize"
+- "game-changer" / "deep dive"
+- "unpack" / "robust"
+- "Nobody's Talking About"
+- "Worth Watching"
+- "I worked with..." (most overused AI phrase of 2025)
+- Excessive hedging ("it might be worth considering...")
+
+---
+
 ## Priority Framework (Quick Reference)
 
 | Priority | Meaning | Action |

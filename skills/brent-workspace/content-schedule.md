@@ -97,6 +97,40 @@ See `media-properties.md` for full details.
 
 ---
 
+## Social Post Scheduling (Vista Social)
+
+### Pre-Publish Checklist
+1. **ALWAYS run `/brand-brent` terms checker** on ALL new post content
+2. Check character limits (X: 280, Bluesky: 300, Threads: 500, LinkedIn: 3000)
+3. Put links in first comment, not main post (avoids algorithm suppression)
+
+### Vista Social API
+- **Base URL:** `https://vistasocial.com/api/integration`
+- **Auth:** Query param `?api_key=xxx`
+- **First comment:** Use `comments` array parameter
+
+### Profile IDs
+| Platform | Profile | ID |
+|----------|---------|-----|
+| X | Brent W. Peterson | 23232 |
+| Bluesky | Brent W Peterson | 457112 |
+| Threads | brentwpeterson | 399179 |
+| LinkedIn | Brent W Peterson | 22469 |
+
+### Post Scheduling Example
+```bash
+curl -X POST "https://vistasocial.com/api/integration/posts?api_key=KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "profile_id": [23232],
+    "message": "Post content here",
+    "publish_at": "2026-01-16 09:00",
+    "comments": ["https://link-in-first-comment.com"]
+  }'
+```
+
+---
+
 ## Metrics (Weekly Scorecard)
 
 | Metric | Target | Where Tracked |
