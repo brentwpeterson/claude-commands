@@ -215,6 +215,190 @@ const API_KEY = process.env.AGENT_API_KEY;
 
 ---
 
+## Creating a Blog for Another Astro Site
+
+To add an SSR blog to another Astro site (e.g., contentbasis.io), follow these steps:
+
+### Step 1: Create the Astro Blog Pages
+
+1. **Create blog directory:**
+   ```
+   [site]/src/pages/blog/
+   ```
+
+2. **Create index.astro** (list page):
+   ```astro
+   ---
+   export const prerender = false;
+
+   const API_KEY = process.env.AGENT_API_KEY;
+   const BACKEND_URL = process.env.BACKEND_URL || 'https://app.requestdesk.ai';
+
+   const response = await fetch(`${BACKEND_URL}/api/astro-proxy/blog-posts`, {
+     headers: { 'Authorization': `Bearer ${API_KEY}` }
+   });
+   const data = await response.json();
+   const posts = data.data?.posts || [];
+   ---
+   <!-- Render posts -->
+   ```
+
+3. **Create [slug].astro** (single post page):
+   ```astro
+   ---
+   export const prerender = false;
+   const { slug } = Astro.params;
+
+   const API_KEY = process.env.AGENT_API_KEY;
+   const BACKEND_URL = process.env.BACKEND_URL || 'https://app.requestdesk.ai';
+
+   const response = await fetch(`${BACKEND_URL}/api/astro-proxy/blog-posts/${slug}`, {
+     headers: { 'Authorization': `Bearer ${API_KEY}` }
+   });
+   const data = await response.json();
+   const post = data.data?.post;
+   ---
+   <!-- Render post -->
+   ```
+
+### Step 2: Configure Astro for Hybrid Mode
+
+In `astro.config.mjs`:
+```javascript
+import node from '@astrojs/node';
+
+export default defineConfig({
+  output: 'hybrid',  // Static by default, SSR for prerender: false
+  adapter: node({ mode: 'standalone' })
+});
+```
+
+### Step 3: Update Nginx Config
+
+Add proxy rule for the new site in `deployment/nginx.conf`:
+```nginx
+# [site-name] server
+server {
+    listen 3003;
+    server_name [domain];
+    root /usr/share/nginx/html/[site-name];
+
+    # Blog routes - proxy to Astro SSR server
+    location /blog {
+        proxy_pass http://astro_ssr;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+    }
+
+    # Other routes...
+}
+```
+
+### Step 4: Update Dockerfile
+
+If the site is new to SSR, add to `deployment/Dockerfile`:
+```dockerfile
+# Copy SSR server for new site
+COPY --from=builder /app/[site-name]/dist/server /app/[site-name]/server
+COPY --from=builder /app/[site-name]/node_modules /app/[site-name]/node_modules
+```
+
+### Step 5: Create/Reuse API Key
+
+Either use the existing `cb-app/astro-agent` secret or create a new one (see "Updating the API Key" section below).
+
+### Step 6: Deploy
+
+```bash
+git commit -am "Add SSR blog to [site-name]"
+git tag main-site-v[X.X.X]-[site]-blog
+git push origin main-site-v[X.X.X]-[site]-blog
+```
+
+---
+
+## Updating the API Key
+
+If the API key needs to be rotated or changed:
+
+### Step 1: Generate New Key in RequestDesk
+
+1. Go to https://app.requestdesk.ai
+2. Navigate to Settings > API Keys
+3. Create a new agent API key
+4. Copy the new key value
+
+### Step 2: Update AWS Secrets Manager
+
+**Via AWS Console:**
+1. Go to AWS Secrets Manager: https://console.aws.amazon.com/secretsmanager
+2. Find secret: `cb-app/astro-agent`
+3. Click "Retrieve secret value" > "Edit"
+4. Update `AGENT_API_KEY` value
+5. Save
+
+**Via AWS CLI:**
+```bash
+aws secretsmanager update-secret \
+  --secret-id cb-app/astro-agent \
+  --secret-string '{"AGENT_API_KEY":"NEW_KEY_VALUE_HERE"}'
+```
+
+### Step 3: Restart ECS Tasks
+
+The new secret value is pulled when tasks start. Force a new deployment:
+
+**Via AWS Console:**
+1. Go to ECS > Clusters > cb-app-cluster
+2. Find service: cb-app-main-site
+3. Click "Update service"
+4. Check "Force new deployment"
+5. Click "Update service"
+
+**Via AWS CLI:**
+```bash
+aws ecs update-service \
+  --cluster cb-app-cluster \
+  --service cb-app-main-site \
+  --force-new-deployment
+```
+
+### Step 4: Verify
+
+Wait for new tasks to be running, then test:
+```bash
+curl -s "https://requestdesk.ai/blog/" | grep -o "Unable to load\|Hello World"
+```
+
+### Creating a New Secret (for different sites)
+
+If you need a separate API key for another site:
+
+1. **Create secret in AWS:**
+   ```bash
+   aws secretsmanager create-secret \
+     --name cb-app/[site-name]-agent \
+     --secret-string '{"AGENT_API_KEY":"YOUR_KEY_HERE"}'
+   ```
+
+2. **Update task definition** (`docker/main-site-task-definition.json`):
+   ```json
+   "secrets": [
+     {
+       "name": "AGENT_API_KEY",
+       "valueFrom": "arn:aws:secretsmanager:us-east-1:973753295447:secret:cb-app/[site-name]-agent-XXXXXX:AGENT_API_KEY::"
+     }
+   ]
+   ```
+
+3. **Update supervisord** if multiple SSR servers need different keys.
+
+---
+
 ## When Claude Should Apply This Skill
 
 Apply this skill automatically when:
