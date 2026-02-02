@@ -1,827 +1,235 @@
 Claude Session Save - Create Resume Instructions + Preserve Work
 
-# 🚨🚨🚨 ABSOLUTE RULE #1: NEVER ASK QUESTIONS DURING SAVE 🚨🚨🚨
+# EMERGENCY MODE (<8% context) - READ THIS FIRST
 
-**THIS IS THE MOST IMPORTANT RULE - VIOLATIONS CAUSE SESSION LOSS**
+If a percentage was passed and it is <8%, OR if `--emergency` flag is set, do ONLY this:
 
-❌ **NEVER DO THIS DURING /claude-save:**
-- Ask about time tracking
-- Ask if task is complete
-- Ask for clarification on anything
-- Wait for user response
-- Read active-task.md or other files for questions
-
-✅ **ONLY DO THIS:**
-- Save context from conversation memory
-- Write the context file
-- Exit immediately
-
-**WHY:** Asking questions uses context tokens. If you're already low on context when saving, questions will cause auto-compact and LOSE THE SESSION. This has happened multiple times.
-
-**DEFER ALL QUESTIONS TO /claude-start** - that's when context is fresh.
-
----
-
-**USAGE:**
-- `/claude-save <project>` - Full comprehensive save with validation
-- `/claude-save <project> --quick` - Fast save with minimal context usage (skips validation)
-- `/claude-save <project> --close` - Formal session close with security scan and CLAUDE.md update
-- `/claude-save <project> --no-todo` - Save without linking to todo directory (for ad-hoc work)
-- `/claude-save <project> --backlog` - Save AND add to backlog as P0 for resuming later
-- `/claude-save <project> <X%>` - Context-aware save (e.g., `/claude-save requestdesk 9%`)
-
-**🚨 CONTEXT-AWARE SAVE MODES (CRITICAL - READ FIRST):**
-
-| Context % | Mode | Behavior |
-|-----------|------|----------|
-| **>15%** | FULL | All tasks: git ops, context files, memory, verbose summaries |
-| **8-15%** | QUICK | Essential only: brief context, minimal git output, skip verbose ops |
-| **<8%** | EMERGENCY | JUST save context - NO git reads, NO tests, pure context dump |
-
----
-
-## 📋 BACKLOG MODE (`--backlog` flag)
-
-**When to use:** Saving work-in-progress to resume later. Marks as P0 (highest priority) since you're mid-task.
-
-**What `--backlog` adds beyond normal save:**
-
-1. **Creates/Updates Backlog Entry:**
-   - File: `/Users/brent/scripts/CB-Workspace/.claude/backlog/workspace-resume.md`
-   - Priority: **P0** (highest - indicates interrupted work)
-   - Includes context file path for easy resume
-   - Includes current todo state
-
-2. **Backlog Entry Format:**
-   ```markdown
-   ## [P0] [Task Title] - RESUME PENDING
-   **Added:** YYYY-MM-DD HH:MM
-   **Project:** [project-shortcode]
-   **Context:** `.claude/branch-context/[context-file].md`
-   **Branch:** [branch-name]
-
-   ### Current State
-   [Brief description of where work stopped]
-
-   ### Pending Todos
-   - [ ] [todo 1]
-   - [ ] [todo 2]
-
-   ### To Resume
-   ```bash
-   /claude-start [project]
-   ```
-   ```
-
-3. **Backlog File Structure:**
-   ```
-   /Users/brent/scripts/CB-Workspace/.claude/backlog/
-   └── workspace-resume.md   # ALL resume items (P0, P1, P2) across workspaces
-   ```
-
-   **Priority Levels:**
-   - **P0** - Interrupted mid-task, resume ASAP (default for --backlog)
-   - **P1** - Planned work, ready to start
-   - **P2** - Ideas/future work
-
-**Backlog Mode Workflow:**
-
-```
-1. Normal save operations (Phase 1-5)
-
-2. Create/append to workspace-resume.md:
-   - Add P0 entry with context file path
-   - Include current todos from conversation
-   - Include branch and project info
-
-3. Show completion:
-   ✅ Session saved
-   📁 Context: [path]
-   📋 Added to backlog: P0 - [task title]
-
-   To resume: /claude-start [project]
-```
-
-**Example Usage:**
-```bash
-# Mid-task, need to switch contexts
-/claude-save shopify --backlog
-
-# Output:
-# 📁 Context saved to: .claude/branch-context/shopify-feature-x.md
-# 📋 Added to backlog: [P0] Shopify Feature X - RESUME PENDING
-# 🧠 Session stored to MCP memory
-#
-# To resume later: /claude-start shopify
-# Or view queue: cat .claude/backlog/workspace-resume.md
-```
-
-**Viewing & Managing the Resume Queue:**
-```bash
-# View all P0 items waiting to resume
-cat /Users/brent/scripts/CB-Workspace/.claude/backlog/workspace-resume.md
-
-# After resuming, manually remove the entry or mark as complete
-```
-
-**Future: `/claude-resume` command** (not yet implemented) would:
-1. Show workspace-resume.md items
-2. Let you pick which to resume
-3. Auto-call `/claude-start` for that project
-
----
-
-## 🔒 CLOSE MODE (`--close` flag)
-
-**When to use:** End of work session, switching to different project, formal handoff.
-
-**What `--close` adds beyond normal save:**
-
-1. **Comprehensive Security Scan:**
-   - Scan all staged/modified files for credentials
-   - Check for API keys (OpenAI, Anthropic, AWS, GitHub)
-   - Detect hardcoded URLs, database credentials, JWT tokens
-   - Generate security report if issues found
-   - **BLOCK close if CRITICAL security issues detected**
-
-2. **Update CLAUDE.md Header:**
-   - Add `## LAST SESSION STATUS` section at top of project's CLAUDE.md
-   - Include: branch, last commit, next steps, any blockers
-   - Format for quick context recovery on next session
-
-3. **Progress Log Final Entry:**
-   - Add formal "SESSION CLOSED" entry to progress.log
-   - Include timestamp, session duration if known, summary
-
-4. **Verbose Commit:**
-   - Comprehensive commit message with session summary
-   - List all files changed, features worked on
-   - Note any incomplete work or known issues
-
-**Close Mode Workflow:**
-
-```
-1. Run security scan
-   ├─ CRITICAL issues → STOP, show issues, require fix
-   └─ No issues → Continue
-
-2. Normal save operations (Phase 1-4)
-
-3. Update CLAUDE.md header:
-   ## LAST SESSION STATUS - [DATE]
-   **Branch:** [branch-name]
-   **Last Commit:** [hash] [message]
-   **Status:** [summary]
-   **Next Steps:** [1-3 priority actions]
-
-4. Add progress.log entry:
-   [DATE TIME] - SESSION CLOSED
-   Summary: [work completed]
-   Next: [what to do on resume]
-
-5. Verbose commit:
-   Session close: [summary]
-
-   Changes:
-   - [file1]: [what changed]
-   - [file2]: [what changed]
-
-   Next session:
-   - [action 1]
-   - [action 2]
-
-6. Show completion:
-   ✅ Session closed
-   📁 Context: [path]
-   🔒 Security: Passed
-   📝 CLAUDE.md: Updated
-```
-
----
-
-**⚡ EMERGENCY MODE (<8% context) - IMMEDIATE ACTION:**
-
-When context % is passed and is <8%, SKIP ALL OTHER INSTRUCTIONS and do ONLY this:
-
-1. **DO NOT run any bash commands except ONE:**
-   ```bash
-   git branch --show-current
-   ```
-
-2. **Write emergency context file IMMEDIATELY from conversation memory:**
-   - What branch we're on (from the one command above)
-   - What we were working on (from YOUR memory of this conversation)
-   - What's left to do (from YOUR memory of pending todos)
-   - Key files modified (from YOUR memory, NOT git diff)
-   - Any critical state (tokens, IDs, test results from memory)
-
-3. **Use this minimal template:**
-   ```markdown
-   # EMERGENCY CONTEXT SAVE - [DATE]
-
-   ## CRITICAL: LOW CONTEXT SAVE
-   This save was triggered with <8% context remaining. Minimal validation performed.
-
-   ## BRANCH
-   [branch-name]
-
-   ## DIRECTORY
-   [project directory from conversation context]
-
-   ## WHAT WE WERE DOING
-   [From conversation memory - what task was in progress]
-
-   ## PENDING TODOS
-   [From conversation memory - what's still pending]
-
-   ## KEY FILES MODIFIED THIS SESSION
-   [From conversation memory - files you remember editing/creating]
-
-   ## CRITICAL STATE TO PRESERVE
-   [Any tokens, IDs, test results, error messages from conversation]
-
-   ## NEXT STEPS
-   [What should happen next when resuming]
-   ```
-
-4. **Write the file and STOP:**
+1. Run ONE command: `git branch --show-current`
+2. Write this file from conversation memory (NO other commands):
    - Path: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[project]-emergency-context.md`
-   - DO NOT commit (saves context tokens)
-   - DO NOT run MCP memory operations
-   - DO NOT validate anything
-   - Just output: "🚨 Emergency context saved to: [path]"
+3. Output: "Emergency context saved to: [path]" and STOP.
 
-**WHY EMERGENCY MODE EXISTS:**
-- Auto-compact can trigger mid-save causing context loss
-- At <8%, there's not enough tokens left for full save operations
-- Preserving SOME context is better than losing everything
-- Next session can restore and do proper cleanup
-
----
-
-**🗂️ WORKSPACE SHORTCODES & DIRECTORY MAPPING:**
-
-| Shortcode | Full Name | Directory Path |
-|-----------|-----------|----------------|
-| `rd` | requestdesk | `/Users/brent/scripts/CB-Workspace/requestdesk-app` |
-| `rd-test` | requestdesk-testing | `/Users/brent/scripts/CB-Workspace/requestdesk-app-testing` |
-| `astro` | astro-sites | `/Users/brent/scripts/CB-Workspace/astro-sites` |
-| `shop` | shopify | `/Users/brent/scripts/CB-Workspace/cb-shopify` |
-| `wpp` | wordpress-plugin | `/Users/brent/scripts/CB-Workspace/requestdesk-wordpress` |
-| `wps` | wordpress-sites | `/Users/brent/scripts/CB-Workspace/wordpress-sites` |
-| `mage` | magento | `/Users/brent/scripts/CB-Workspace/cb-magento-integration` |
-| `juno` | junogo | `/Users/brent/scripts/CB-Workspace/cb-junogo` |
-| `job` | jobs | `/Users/brent/scripts/CB-Workspace/jobs` |
-| `brent` | brent-workspace | `/Users/brent/scripts/CB-Workspace/brent-workspace` |
-| `bt` | brent-timekeeper | `/Users/brent/scripts/CB-Workspace/brent-timekeeper` |
-| `cc` | claude-commands | `/Users/brent/scripts/CB-Workspace/.claude` |
-| `doc` | documentation | `/Users/brent/scripts/CB-Workspace/documentation` |
-
-**SESSION TRACKING FILE:** `/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json`
-
-**🚨 CRITICAL: Always use this mapping to resolve project names to full paths!**
-- If project name not in mapping, ASK USER for the correct path
-- NEVER guess or assume directory locations
-
----
-
-## 🕐 DEFERRED QUESTIONS (brent-workspace only)
-
-**🚨 CRITICAL: NEVER ASK QUESTIONS DURING SAVE - YOU WILL RUN OUT OF CONTEXT 🚨**
-
-**When project = `brent-workspace`:**
-- **DO NOT** ask for time tracking
-- **DO NOT** ask if task is complete
-- **DO NOT** read active-task.md
-- **DO NOT** wait for any user response
-- **JUST SAVE** and defer questions to `/claude-start`
-
-In the context file, add a `## DEFERRED QUESTIONS` section:
-
+Emergency template:
 ```markdown
-## DEFERRED QUESTIONS (Ask on /claude-start)
-1. **Time tracking:** "How long did you work on [task name]?"
-   - Task: [describe from conversation memory]
-   - Date: [today's date]
-2. **Task status:** "Is [task name] complete or continuing?"
+# EMERGENCY CONTEXT SAVE - [DATE]
+## CRITICAL: LOW CONTEXT SAVE
+## BRANCH: [from git command]
+## DIRECTORY: [from conversation memory]
+## WHAT WE WERE DOING: [from memory]
+## PENDING TODOS: [from memory]
+## KEY FILES MODIFIED: [from memory]
+## CRITICAL STATE: [tokens, IDs, errors from memory]
+## NEXT STEPS: [what to do on resume]
 ```
 
-**Rules:**
-- **NEVER ask these questions during save** - burns context when you need it most
-- **NEVER wait for responses** - save and exit immediately
-- **NEVER read active-task.md during save** - wastes tokens
-- **claude-start will ask** when context is fresh
+DO NOT commit, DO NOT run MCP, DO NOT validate anything. Just write and stop.
 
 ---
 
-## 📝 BRENT-WORKSPACE WORK LOG INTEGRATION (brent-workspace ONLY)
+# CORE RULES
 
-**🚨 ONLY when project = `brent-workspace`** - append session accomplishments to WORK-LOG.md
-
-**This creates incremental saves throughout the day, so even if /brent-finish doesn't run, work is captured.**
-
-### Automatic Work Log Update
-
-**After saving context file but BEFORE final output, do this:**
-
-```bash
-WORK_LOG="/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Daily/WORK-LOG.md"
-TODAY=$(date +%Y-%m-%d)
-SESSION_TIME=$(date +%H:%M)
-```
-
-**Step 1: Check if today's section exists**
-```bash
-if ! grep -q "## $TODAY" "$WORK_LOG"; then
-    # Add today's header (TimeKeeper will add times later)
-    echo -e "\n\n## $TODAY\n\n| Start | End | Hours |\n|-------|-----|-------|\n" >> "$WORK_LOG"
-fi
-```
-
-**Step 2: Check if Accomplished section exists for today**
-```bash
-# Look for ### Accomplished under today's date
-if ! sed -n "/## $TODAY/,/## 202[0-9]/p" "$WORK_LOG" | grep -q "### Accomplished"; then
-    # Add Accomplished section
-    echo -e "\n### Accomplished\n" >> "$WORK_LOG"
-fi
-```
-
-**Step 3: Append session accomplishments with timestamp**
-
-Use the Edit tool to append to today's Accomplished section:
-
-```markdown
-**Session $SESSION_TIME:**
-- [accomplishment 1 from conversation memory]
-- [accomplishment 2 from conversation memory]
-- [accomplishment 3 from conversation memory]
-```
-
-**How to gather accomplishments from conversation memory:**
-- What files were edited/created this session
-- What features were implemented
-- What bugs were fixed
-- What was deployed
-- What was tested/verified
-- Keep it brief (1 line per item)
-
-**Step 4: Add session marker at end of file (for counting)**
-
-```bash
-# This creates a countable marker for how many saves happened today
-echo "<!-- Session save: $TODAY $SESSION_TIME -->" >> "$WORK_LOG"
-```
-
-### Example Work Log After Multiple Sessions
-
-```markdown
-## 2026-01-08
-
-| Start | End | Hours |
-|-------|-----|-------|
-| 5:49 AM | 9:30 AM | 3.68 |
-
-### Accomplished
-
-**Session 07:15:**
-- Fixed /brent-finish to write accomplishments immediately
-- Added Step 2.5 to /brent-start for missing accomplishment detection
-
-**Session 09:25:**
-- Updated /claude-save with work log integration
-- Tested joke posting to all 3 platforms
+1. **NEVER ask questions during save.** No time tracking, no task status, no clarification. Save and exit. Defer questions to /claude-start.
+2. **NEVER claim completion.** Say "ready for testing" not "complete."
+3. **One context file per workspace per day.** Update existing, don't create duplicates.
 
 ---
-<!-- Session save: 2026-01-08 07:15 -->
-<!-- Session save: 2026-01-08 09:25 -->
-```
 
-### Counting Sessions
+# MODE DETECTION
 
-To see how many times /claude-save was called today:
-```bash
-grep -c "<!-- Session save: $TODAY" "$WORK_LOG"
-```
+Parse arguments: `/claude-save <project> [flags] [X%]`
 
-### Why This Matters
+| Context % | Mode | What to do |
+|-----------|------|------------|
+| <8% | EMERGENCY | See above. Stop reading here. |
+| 8-15% or `--quick` | QUICK | Commit + minimal context file + show path |
+| >15% (default) | FULL | Commit + full context file + MCP memory + session registry |
 
-1. **Incremental saves** - Work captured even if /brent-finish doesn't run
-2. **Session visibility** - See how many context resets happened
-3. **Accomplishment trail** - Each save adds to the day's record
-4. **No data loss** - Even partial days have some accomplishments recorded
+Percentage parsing: `9%` -> extract `9` -> QUICK mode. `5%` -> EMERGENCY. No % passed -> FULL.
 
-**🗂️ CRITICAL PATH DEFINITION:**
+---
+
+# WORKSPACE SHORTCODES
+
+| Code | Directory |
+|------|-----------|
+| `rd` | `/Users/brent/scripts/CB-Workspace/requestdesk-app` |
+| `rd-test` | `/Users/brent/scripts/CB-Workspace/requestdesk-app-testing` |
+| `astro` | `/Users/brent/scripts/CB-Workspace/astro-sites` |
+| `shop` | `/Users/brent/scripts/CB-Workspace/cb-shopify` |
+| `wpp` | `/Users/brent/scripts/CB-Workspace/requestdesk-wordpress` |
+| `wps` | `/Users/brent/scripts/CB-Workspace/wordpress-sites` |
+| `mage` | `/Users/brent/scripts/CB-Workspace/cb-magento-integration` |
+| `juno` | `/Users/brent/scripts/CB-Workspace/cb-junogo` |
+| `job` | `/Users/brent/scripts/CB-Workspace/jobs` |
+| `brent` | `/Users/brent/scripts/CB-Workspace/brent-workspace` |
+| `bt` | `/Users/brent/scripts/CB-Workspace/brent-timekeeper` |
+| `cc` | `/Users/brent/scripts/CB-Workspace/.claude` |
+| `doc` | `/Users/brent/scripts/CB-Workspace/documentation` |
+
+---
+
+# PATHS
+
 ```
 WORKSPACE_ROOT = /Users/brent/scripts/CB-Workspace
 CONTEXT_DIR    = /Users/brent/scripts/CB-Workspace/.claude/branch-context/
-CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[branch-name]-context.md
+SESSION_FILE   = /Users/brent/scripts/CB-Workspace/.claude/local/active-session.json
+SESSIONS_REG   = /Users/brent/scripts/CB-Workspace/.claude/local/active-sessions.json
 ```
-**⚠️ ALWAYS use absolute paths. The `.claude/` directory is at WORKSPACE ROOT, NOT inside individual project directories.**
-
-**🎯 PURPOSE:**
-Create comprehensive INSTRUCTION FILE for next Claude to resume exactly where you left off
-
-**🚨 CRITICAL: NEVER ASSUME COMPLETION WITHOUT HUMAN CONFIRMATION 🚨**
-
-**⚠️ ABSOLUTE PROHIBITION: NEVER SAY THESE PHRASES:**
-- ❌ "Successfully completed"
-- ❌ "Task finished"
-- ❌ "Implementation complete"
-- ❌ "Work done"
-- ❌ "Ready for deployment"
-- ❌ "Feature complete"
-- ❌ Any variation suggesting work is finished
-
-**🛑 MANDATORY BEHAVIOR:**
-- **NEVER assume anything is done** - even if it appears to work
-- **NEVER mark tasks complete** without explicit user approval
-- **NEVER say "finished" or "completed"** - things may look done but haven't been tested
-- **ALWAYS wait for user confirmation** before marking anything as complete
-- **ASK EXPLICITLY**: "Is this task complete and ready to mark as done?"
-
-**🚨 COMPLETION APPROVAL RULES:**
-- **NEVER mark tasks as completed** without explicit user approval
-- **Always ask user**: "Is this task complete and ready to mark as done?"
-- **In context files**: Note "USER APPROVED: Yes" for any completed items
-- **TodoWrite with Acceptance Criteria**: All todos must include clear completion criteria
-
-**💀 WHY THIS IS CRITICAL:**
-- Code may appear to work but hasn't been tested
-- Integration points may have hidden issues
-- Edge cases may not have been considered
-- User requirements may not be fully met
-- Only the human can confirm true completion
-
-**📋 COMPLETE SAVE WORKFLOW:**
-
-**Phase 0.5: Workspace Confirmation (REQUIRED - except Emergency mode)**
-
-**Skip this phase if:** Emergency mode (<8% context) - just save and exit.
-
-1. **Read session tracking file:**
-   ```bash
-   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
-   if [ -f "$SESSION_FILE" ]; then
-     cat "$SESSION_FILE"
-   else
-     echo "No session file found - single workspace session"
-   fi
-   ```
-
-2. **Display workspaces touched this session:**
-   ```
-   ╔══════════════════════════════════════════════════════════════════╗
-   ║              WORKSPACES TOUCHED THIS SESSION                      ║
-   ╠══════════════════════════════════════════════════════════════════╣
-   ║                                                                   ║
-   ║  Started in:  [SHORTCODE] ([full-name])                          ║
-   ║  Current:     [SHORTCODE] ([full-name])                          ║
-   ║                                                                   ║
-   ║  All workspaces touched:                                          ║
-   ║  • [as] astro-sites - /Users/brent/.../astro-sites               ║
-   ║  • [rd] requestdesk - /Users/brent/.../cb-requestdesk            ║
-   ║                                                                   ║
-   ║  Saving context for: [SHORTCODE]                                  ║
-   ║                                                                   ║
-   ╚══════════════════════════════════════════════════════════════════╝
-   ```
-
-3. **Confirm save target:**
-   - If multiple workspaces touched: "⚠️ Multiple workspaces modified. This save is for [SHORTCODE] only."
-   - If single workspace: Continue without warning
-
-4. **Include workspaces in context file:**
-   - Add `## WORKSPACES TOUCHED` section to context file
-   - List all shortcodes and what was done in each
-   - This helps `/claude-start` and `/claude-complete` know about multi-workspace sessions
 
 ---
 
-**Phase 1: Work Preservation**
-1. **Check Development Status:**
-   - Run `git status` to capture exact file states
-   - Analyze changes to understand what work was completed
-   - Ensure no sensitive files (.env, keys, etc.) are included
+# QUICK MODE WORKFLOW (8-15% or --quick)
 
-2. **Commit Development Work:**
-   - Stage all relevant development files: `git add [relevant-files]`
-   - Create descriptive commit message based on changes
-   - Format: `git commit -m "[Description of work completed] 🤖 Generated with Claude Code"`
-   - **IMPORTANT**: Commit actual development work FIRST before context
+**Phase 1: Commit work**
+- `git status` in project directory
+- Stage relevant files (skip .env, credentials)
+- Commit: `git commit -m "[description] Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"`
 
-**Phase 2: Todo Directory Inventory Check**
-3. **Todo Directory Detection:**
+**Phase 2: Write context file**
+- Check for existing today: `ls .claude/branch-context/[workspace]-*$(date +%Y-%m-%d)*.md`
+- Update existing or create `[workspace]-[date]-context.md`
+- Use quick template (below)
 
-   **🚀 QUICK MODE (--quick flag):**
-   ```bash
-   # Minimal todo detection with single command
-   TODO_PATH=$(find . -path "*/todo/current/*" -name "README.md" | head -1)
-   FILE_COUNT=$(dirname "$TODO_PATH" | xargs ls -1 | wc -l 2>/dev/null || echo "0")
-   echo "Todo: ${TODO_PATH:-'None found'} (${FILE_COUNT} files)"
-   ```
+**Phase 3: Show path and exit**
+- Output: "Context saved to: [path]"
 
-   **📋 FULL MODE (default):**
-   - **MANDATORY: Get current todo path** - Ask user if not obvious
-   - **Check todo directory exists**: Verify `todo/current/[category]/[task-name]/` path
-   - **Verify README.md Branch Reference**: Ensure README.md shows current git branch:
-     ```bash
-     CURRENT_BRANCH=$(git branch --show-current)
-     if [ -f "todo/current/[category]/[task]/README.md" ]; then
-       if ! grep -q "**Branch:** $CURRENT_BRANCH" "todo/current/[category]/[task]/README.md"; then
-         echo "⚠️ README.md shows incorrect branch - updating before save..."
-         sed -i.bak "s/\*\*Branch:\*\* .*/\*\*Branch:\*\* $CURRENT_BRANCH/" "todo/current/[category]/[task]/README.md"
-         echo "✅ Updated README.md to show current branch: $CURRENT_BRANCH"
-       fi
-     fi
-     ```
-   - **Inventory check**: Count files and verify standardized 7-file structure:
-     ```bash
-     # Expected 7 files exactly:
-     # 1. README.md
-     # 2. [branch-name]-plan.md
-     # 3. progress.log
-     # 4. debug.log
-     # 5. notes.md
-     # 6. architecture-map.md
-     # 7. user-documentation.md
-     ```
-   - **File count validation**: `ls -1 [todo-path] | wc -l` should return 7
-   - **Missing file alert**: List any missing required files
-   - **Extra file warning**: List any unexpected files (should only be the 7 standard files)
-   - **Structure status**: Report "✅ Complete (7/7 files)" or "⚠️ Incomplete (X/7 files)"
-   - **Architecture Map Completeness Check**: Validate `architecture-map.md` is properly filled out:
-     ```bash
-     # Check for incomplete template markers:
-     # - [TASK-NAME] should be replaced with actual task name
-     # - [bracketed placeholders] should be filled with real paths/methods
-     # - Completion checklist should have some items checked (- [x])
-     # - Key sections should have content beyond template text
-     ```
-     - **Template validation**: Check if placeholder text `[TASK-NAME]`, `[path/to/`, `[describe` still exists
-     - **Completion checklist**: Count checked items `- [x]` vs unchecked `- [ ]`
-     - **Content analysis**: Verify key sections have actual content, not just template text
-     - **Architecture status**: Report "✅ Complete" or "⚠️ Template" or "⚠️ Partial ([X]/[Y] checklist items)"
-
-   - **Quick Architecture Status** (for context only):
-     - Note if project is external (cb-shopify, cb-junogo, astro-sites) or CB internal
-     - Simple status check - don't validate completeness during save
-
-**Phase 3: Create Handoff Instructions**
-4. **Create Resume Instruction File:**
-
-   **🚀 QUICK MODE (--quick flag):**
-   ```bash
-   # Single efficient context creation
-   BRANCH=$(git branch --show-current)
-   KEYWORD=${1:-$(echo $BRANCH | sed 's/\//-/g')}
-   TODO_PATH=$(find . -path "*/todo/current/*" -name "README.md" | head -1)
-   LAST_COMMIT=$(git log --oneline -1)
-
-   cat > /Users/brent/scripts/CB-Workspace/.claude/branch-context/${KEYWORD}-context.md << EOF
-   # Resume Instructions for Claude
-
-   ## IMMEDIATE SETUP
-   1. **Directory:** \`cd $(pwd)\`
-   2. **Branch:** \`git checkout $BRANCH\`
-   3. **Last Commit:** \`$LAST_COMMIT\`
-   4. **Status:** $(git status --porcelain | wc -l) files changed
-
-   ## CURRENT TODO
-   **Path:** ${TODO_PATH:-"No todo found"}
-   **Status:** [Current work focus]
-
-   ## WORKING ON
-   [Brief description of current task]
-
-   ## NEXT ACTIONS
-   1. **FIRST:** [Next command to run]
-   2. **THEN:** [Follow-up action]
-
-   ## NOTES
-   [Important context]
-   EOF
-   ```
-
-   **📋 FULL MODE (default):**
-   - Get current branch: `git branch --show-current`
-   - Get last commit: `git log --oneline -1`
-   - Get working directory: `pwd`
-   - Include todo inventory results in context
-   - Check running processes: `docker ps`, `lsof -i :3000`, etc.
-   - Create: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[keyword]-context.md`
-   - **Format as INSTRUCTIONS TO CLAUDE**, not status report:
-
+Quick template:
 ```markdown
 # Resume Instructions for Claude
 
 ## IMMEDIATE SETUP
-1. **Change directory:** `cd [exact-working-directory]`
-2. **Verify git status:** `git status` (expect: [list files])
-3. **Check processes:** `docker ps` (expect: [containers running])
-4. **Verify branch:** `git branch --show-current` (should be: [branch])
+1. **Directory:** `cd [path]`
+2. **Branch:** `git checkout [branch]`
+3. **Last Commit:** `[hash] [message]`
 
-## WORKSPACES TOUCHED THIS SESSION
-**Started in:** [SHORTCODE] ([full-name])
-**Current workspace:** [SHORTCODE] ([full-name])
-**All workspaces:** [as], [rd], etc.
+## WORKING ON
+[Brief description from conversation memory]
 
-| Shortcode | Workspace | What was done |
-|-----------|-----------|---------------|
-| `as` | astro-sites | Created /ai-interfaces page |
-| `rd` | requestdesk | Fixed API endpoint |
+## PENDING TODOS
+[From conversation memory]
 
-⚠️ **If multiple workspaces listed:** Run `/claude-save` for each workspace separately.
+## NEXT ACTIONS
+1. [Next thing to do]
+2. [Follow-up]
 
-## SESSION METADATA
-**Last Commit:** `[hash] [message]`
-**MCP Entity:** `[project]-[branch-short-name]`
-**Saved:** [YYYY-MM-DD HH:MM]
-
-## CURRENT TODO FILE
-**Path:** file:[exact-path-to-todo-readme]
-**Status:** [Working on step X of Y - specific current focus]
-**Directory Structure:** [✅ Complete (7/7 files) or ⚠️ Incomplete (X/7 files)]
-**Architecture Map:** [Project type and basic status - full validation on resume]
-
-## WHAT YOU WERE WORKING ON
-[Clear description of the task in progress]
-
-## CURRENT STATE
-- **Last command executed:** [exact command]
-- **Files modified:** [list with status and CB layer mapping]
-- **CB Flow Impact:** [trace: frontend-file → dataProvider → router → service → model → collection]
-- **Tests run:** [what was tested, results]
-- **Issues found:** [any blockers or problems]
-
-## TODO LIST STATE
-[Current TodoWrite items with exact status]
-- ✅ COMPLETED: [task] (USER APPROVED: Yes/No)
-- 🔄 IN PROGRESS: [task]
-- ⏳ PENDING: [task]
-
-## COMPLETION APPROVAL STATUS
-**🚨 CRITICAL RULE**: NEVER mark tasks as completed until user explicitly approves
-
-### Completion Trigger Protocol
-**🚫 CLAUDE CAN NEVER DECLARE TASKS COMPLETE - ONLY HUMANS CAN**
-
-**BEFORE asking about completion, Claude MUST:**
-1. **Check for Acceptance Criteria**: Does the todo have clear acceptance criteria?
-2. **If NO criteria exist**: STOP and ask user: "What are the acceptance criteria for this task?"
-3. **If criteria exist**: Verify each criteria point is met
-4. **🚨 NEVER DECLARE COMPLETION - ASK FOR USER APPROVAL**:
-   - **NEVER SAY**: "Task is complete" or "Implementation finished"
-   - **ALWAYS ASK**: "Based on the acceptance criteria, does this appear ready for you to mark as complete?"
-   - **WAIT FOR EXPLICIT CONFIRMATION**: User must say "yes", "complete", "done", or "approved"
-   - **IF UNCERTAIN**: Ask "Should I mark this as complete?" and wait for response
-5. **🔍 WHAT TO LOOK FOR IN USER RESPONSES**:
-   - **Completion approved**: "yes", "done", "complete", "mark it complete", "approved"
-   - **NOT completion**: "looks good", "almost there", "getting close", "seems right"
-   - **When in doubt**: Ask for clarification
-
-**Completion Requirements:**
-- **Completed Items**: Only mark as completed if user has said "this is done" or "approved"
-- **Context Indicator**: Always note "USER APPROVED: Yes" for completed items
-- **Acceptance Criteria**: All todos MUST include clear acceptance criteria before completion
-- **Criteria Check**: Read and verify ALL acceptance criteria before asking for approval
-
-## NEXT ACTIONS (PRIORITY ORDER)
-1. **FIRST:** [exact command to run]
-2. **THEN:** [next command]
-3. **VERIFY:** [how to check it worked]
-
-## VERIFICATION COMMANDS
-- Check feature: [command]
-- Test endpoint: [curl/url]
-- View logs: [log command]
-
-## CONTEXT NOTES
-[Any important details, gotchas, or background]
+## NOTES
+[Important context, gotchas]
 ```
 
-4. **Update CLAUDE.md Header (Optional):**
-   - Add brief status to project CLAUDE.md if needed
-   - Keep minimal - main instructions are in context file
+---
 
-**Phase 4: Context Commit + Display Path**
-5. **Commit Instructions:**
-   - Stage context files: `git add /Users/brent/scripts/CB-Workspace/.claude/branch-context/`
-   - Commit with: "Save resume instructions for session restart"
+# FULL MODE WORKFLOW (>15%)
 
-**Phase 4.5: Link Context to Todo Progress Log (Full & Quick modes only)**
-6. **Update Progress Log with Context File Reference:**
-   - **Skip if:** `--no-todo` flag passed, OR emergency mode (<8%), OR no todo directory found
-   - **If todo directory exists:**
-     ```bash
-     TODO_DIR=$(dirname "$TODO_PATH")
-     CONTEXT_FILE="[context-filename].md"
-     echo "$(date '+%Y-%m-%d %H:%M') - SESSION SAVED → .claude/branch-context/${CONTEXT_FILE}" >> "$TODO_DIR/progress.log"
-     ```
-   - **Why:** Links todo work history to context files, making it easy to find the most recent/valid context
-   - **Format:** `YYYY-MM-DD HH:MM - SESSION SAVED → .claude/branch-context/[filename].md`
+**Phase 1: Commit work**
+- `git status` in project directory
+- Stage relevant files (skip .env, credentials)
+- Commit development work first
 
-**Phase 5: Official MCP Memory Integration (Automatic with Fallback)**
-7. **Store Session Summary to Official Anthropic MCP Memory Server:**
-   - **Check official MCP memory server availability:**
-     Try to use `mcp__memory__search_nodes` with a simple query to test connectivity
-     **⚠️ NEVER use `mcp__memory__read_graph` - it returns massive token dumps (~14k+)**
+**Phase 2: Check session tracking**
+- Read `active-session.json` to see workspaces touched
+- If multiple workspaces: note in context file
 
-   - **If MCP available (automatic):**
-     Use `mcp__memory__create_entities` tool with:
-     ```
-     entities: [
-       {
-         "name": "Session-YYYY-MM-DD-[keyword]",
-         "entityType": "session",
-         "observations": [
-           "Session saved for [keyword] work",
-           "Branch: [current-branch]",
-           "Work: [brief-summary]",
-           "Todo status: [todo-structure-status]",
-           "Files changed: [count]",
-           "Architecture status: [architecture-status]"
-         ]
-       }
-     ]
-     ```
+**Phase 3: Write context file**
+- Check for existing today (update, don't duplicate)
+- Use full template (below)
 
-   - **If MCP not available (fallback):**
-     ```
-     ⚠️ Official MCP Memory Server not available - using file-based context only
-     💡 MCP should be configured in .mcp.json with @modelcontextprotocol/server-memory
-     ✅ Session still saved to context file successfully
-     ```
+**Phase 4: Commit context + link to todo**
+- Stage context files: `git add .claude/branch-context/`
+- Commit: "Save resume instructions for session restart"
+- If todo directory exists, append to progress.log:
+  `YYYY-MM-DD HH:MM - SESSION SAVED -> .claude/branch-context/[filename].md`
 
-   - **Session Entity Format for Memory:**
-     - **Name**: "Session-YYYY-MM-DD-[keyword]"
-     - **Type**: "session"
-     - **Observations**: Current state, accomplishments, next steps
+**Phase 5: MCP Memory (best effort)**
+- Use `mcp__memory__create_entities` (NEVER `read_graph`)
+- Entity name: `Session-YYYY-MM-DD-[keyword]`, type: `session`
+- 3-5 brief observations: branch, work summary, todo status
+- If MCP unavailable, skip silently
 
-8. **END BY SHOWING CONTEXT FILE PATH:**
-   - **⚠️ CRITICAL**: If todo path doesn't exist, STOP and ask user to clarify
-   - Display: "📁 Resume instructions saved to: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[keyword]-context.md`"
-   - **If todo linked**: "📝 + Linked in progress.log"
-   - **If MCP worked**: "🧠 + Session stored to official MCP memory server"
-   - **If MCP failed**: "⚠️ (Official MCP unavailable - file-based only)"
+**Phase 6: Update session registry**
+- Read `active-sessions.json`
+- Move session from `sessions` to `resumable`
+- Set `context_file`, `last_active`, `task_summary`
 
-**🧠 OFFICIAL MCP MEMORY SERVER BEST PRACTICES:**
-- **✅ USE**: `mcp__memory__search_nodes` for targeted queries - efficient and focused
-- **❌ AVOID**: `mcp__memory__read_graph` - returns massive token dumps (~14k+) that fill context quickly
-- **Search Examples**: "Session-2025-11-17-keyword", "project-name recent", "authentication issues"
-- **Entity Naming**: Use "Session-YYYY-MM-DD-[keyword]" format for consistency
-- **Observations**: Keep concise (1-2 sentences each) to prevent token bloat
-- **Benefits**: Cross-session continuity, pattern discovery, intelligent context bridging
+**Phase 7: Show path and exit**
+- Context file path
+- Whether MCP memory saved
+- Whether progress.log linked
 
-**🎯 KEY CHANGES:**
-- **Creates INSTRUCTION FILE** instead of status report
-- **Ends with context file path** for next session
-- **Includes everything needed** for immediate resume
-- **Ready for `/claude-start` to read and execute**
+Full template:
+```markdown
+# Resume Instructions for Claude
 
-**🔄 EXPECTED WORKFLOW:**
-1. `/claude-save <project>` → Creates instruction file, shows path
-2. `/clear new` → Clear current session
-3. `/claude-start <project>` → Reads instruction file and resumes
+## IMMEDIATE SETUP
+1. **Directory:** `cd [path]`
+2. **Identity:** Claude-[Name]
+3. **Branch:** `git checkout [branch]`
+4. **Last Commit:** `[hash] [message]`
+5. **Verify:** `git status`
 
-**⚡ CONTEXT OPTIMIZATION:**
+## WORKSPACES TOUCHED
+| Shortcode | What was done |
+|-----------|---------------|
+| [code] | [brief description] |
 
-**When to use each mode:**
-- **`/claude-save keyword`** → Full saves when context >15% (~8-13% context usage)
-- **`/claude-save keyword --quick`** OR **`/claude-save keyword 12%`** → Quick saves 8-15% (~2-3% context usage)
-- **`/claude-save keyword 5%`** → Emergency saves <8% (~1% context usage, memory-only)
+## CURRENT TODO
+**Path:** [path or "None"]
+**Status:** [current focus]
 
-**Context Usage Comparison:**
-| Mode | Context Used | Progress.log Link | When to Use |
-|------|-------------|-------------------|-------------|
-| **Full** | ~8-13% | ✅ Yes | >15% remaining, normal end of session |
-| **Quick** | ~2-3% | ✅ Yes | 8-15% remaining, or when --quick flag passed |
-| **Emergency** | ~1% | ❌ No | <8% remaining, critical save before context loss |
-| **--no-todo** | varies | ❌ No | Ad-hoc work without todo directory |
+## WHAT YOU WERE WORKING ON
+[Clear description of task in progress]
 
-**Quick mode (8-15% or --quick) skips:**
-- ❌ Detailed todo directory validation
-- ❌ Architecture map completeness checking
-- ❌ Multiple file update operations
-- ❌ Verbose bash command outputs
-- ❌ Complex MCP memory operations
+## CURRENT STATE
+- **Files modified:** [list]
+- **Tests run:** [results if any]
+- **Issues found:** [blockers if any]
 
-**Quick mode includes:**
-- ✅ Git commit with changes
-- ✅ Basic todo detection
-- ✅ Essential context template
-- ✅ Branch and directory capture
-- ✅ Progress.log context link (if todo exists)
+## TODO LIST STATE
+- Completed: [items] (USER APPROVED: Yes/No)
+- In Progress: [items]
+- Pending: [items]
 
-**Emergency mode (<8%) skips EVERYTHING except:**
-- ✅ One git command (branch name)
-- ✅ Writing context from conversation memory
-- ✅ That's it - pure survival mode
+## NEXT ACTIONS
+1. **FIRST:** [exact next step]
+2. **THEN:** [follow-up]
+3. **VERIFY:** [how to check]
 
-**🎯 PERCENTAGE PARSING:**
-When a percentage is passed (e.g., "9%", "15%", "3%"):
-1. Extract the number: `9%` → `9`
-2. Apply threshold:
-   - `< 8` → Emergency mode
-   - `8-15` → Quick mode (same as --quick)
-   - `> 15` → Full mode (default behavior)
+## CONTEXT NOTES
+[Important details, gotchas, background]
+```
+
+---
+
+# FLAG ADDONS
+
+## --backlog
+After normal save, append P0 entry to `/Users/brent/scripts/CB-Workspace/.claude/backlog/workspace-resume.md`:
+```markdown
+## [P0] [Task Title] - RESUME PENDING
+**Added:** YYYY-MM-DD HH:MM
+**Project:** [shortcode]
+**Context:** `.claude/branch-context/[file].md`
+**Branch:** [branch]
+### Current State: [where work stopped]
+### To Resume: `/claude-start [project]`
+```
+
+## --close
+Before normal save: scan staged files for credentials/API keys/hardcoded URLs. Block if critical issues found.
+After normal save: update project CLAUDE.md with `## LAST SESSION STATUS` header, add "SESSION CLOSED" to progress.log, verbose commit.
+
+## --no-todo
+Skip todo directory detection and progress.log linking.
+
+---
+
+# BRENT-WORKSPACE ADDON (only when project = brent)
+
+After saving context, append accomplishments to WORK-LOG.md:
+```
+WORK_LOG="/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Daily/WORK-LOG.md"
+```
+- Ensure today's date section exists
+- Append `**Session HH:MM:** [accomplishments from memory]` under `### Accomplished`
+- Add HTML comment marker: `<!-- Session save: YYYY-MM-DD HH:MM -->`
+- Add `## DEFERRED QUESTIONS` section to context file for time tracking and task status questions

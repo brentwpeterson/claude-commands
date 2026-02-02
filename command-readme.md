@@ -1,151 +1,180 @@
-# Claude Commands, Skills & Agents Reference
+# Claude Commands Reference
 
-**Last Updated:** 2026-01-05
-**Maintained by:** Brent Peterson
-
----
-
-## Overview
-
-This document describes all Claude Code commands available in this workspace, their purposes, skill mappings, and whether they're public (shareable) or local (CB-specific).
-
----
-
-## Command Locations
-
-| Location | Purpose | Git Status |
-|----------|---------|------------|
-| `.claude/commands/` | Public commands - generic, shareable | Tracked |
-| `.claude-local/commands/` | Private commands - CB-specific, contains tokens | Not tracked |
-
-Commands in `.claude-local/` are symlinked to `.claude/commands/` so they work as slash commands.
+**Last Updated:** 2026-02-02
+**Total Commands:** 55
 
 ---
 
 ## Quick Reference
 
 ```
-Session:     /claude-save, /claude-start, /claude-switch, /claude-clean,
-             /claude-commit, /claude-complete, /claude-debug
+Session:       /claude-save, /claude-start, /claude-switch, /claude-clean,
+               /claude-commit, /claude-complete, /claude-debug, /claude-trash
 
-Branch/Task: /create-branch, /create-bugfix, /finish-todo, /plan-feature,
-             /update-architecture, /violation-log
+Communication: /claude-comms
 
-Audit:       /a11y-audit, /analyze-refactor-candidates, /audit-branches,
-             /audit-codebase, /check-terms, /content-audit, /lighthouse
+Task/Sprint:   /start-work, /create-bugfix, /finish-todo, /sprint,
+               /add-backlog, /plan-feature
 
-Deploy:      /deploy-project
+Development:   /update-architecture, /frontend-design, /sync-wp-plugin
 
-Personal:    /brent-start, /brent-finish, /brent-task, /daily-content (local)
+Audit:         /a11y-audit, /analyze-refactor-candidates, /audit-branches,
+               /audit-codebase, /check-terms, /content-audit, /lighthouse,
+               /sentry-report
 
-Brand:       /brand-brent, /brand-cucumber, /brand-requestdesk,
-             /cucumber-writer, /brent-writing (local)
+Deploy:        /deploy-project
+
+Content:       /brand-brent, /brand-cucumber, /brand-requestdesk,
+               /cucumber-writer, /rd-blog, /daily-content,
+               /newsletter-planner, /canva
+
+Social:        /create-social, /plan-social
+
+Email/CRM:     /respond-email, /respond-comment, /send-email,
+               /hubspot-enrich, /detect-platform
+
+Personal:      /brent-start, /brent-finish, /brent-task
+
+TWC:           /twc-start, /twc-finish, /twc-note, /twc-status, /twc-backlog
+
+Meta:          /claude-help, /claude-learner, /violation-log, /rotate-violations
+
+Deprecated:    /create-branch (use /start-work)
 ```
 
 ---
 
-## Commands
+## Session Management
 
-### Session Management
+| Command | Purpose |
+|---------|---------|
+| `/claude-save <project> [flags] [X%]` | Save session context for handoff. Modes: full (>15%), quick (8-15% or `--quick`), emergency (<8%). Flags: `--close`, `--backlog`, `--no-todo`. |
+| `/claude-start <project>` | Resume from saved session. Reads context file, restores branch state and next actions. |
+| `/claude-switch` | Switch git branches with context preservation. Saves current context, switches, loads new. |
+| `/claude-clean` | Save work to current branch, switch to master for fresh start. Includes security scanning. |
+| `/claude-commit` | Enhanced commit with security validation. Scans for API keys, credentials, hardcoded URLs. |
+| `/claude-complete` | Complete a branch. Run checklist, merge to master, archive documentation. |
+| `/claude-debug` | Structured debugging with attempt tracking. Prevents circular debugging by logging what was tried. |
+| `/claude-trash [name]` | Close window and clean up. Archives context files and comms, removes name from registries. |
 
-| Command | Purpose | Location |
-|---------|---------|----------|
-| `/claude-save` | Save session context for handoff to next Claude session. Use when context is running low or ending work. Supports `--quick` for fast saves and `--close` (TODO) for formal session close. | Public |
-| `/claude-start` | Resume from a saved session. Reads context file and restores todos, branch state, and next actions. | Public |
-| `/claude-switch` | Switch git branches with context preservation. Saves current branch context, switches, loads new branch context. | Public |
-| `/claude-clean` | Save all work to current branch, switch to master for fresh start. Includes security scanning. | Public |
-| `/claude-commit` | Enhanced commit with security validation. Scans for API keys, credentials, file size limits. Blocks unsafe commits. | Public |
-| `/claude-complete` | Complete a branch - run checklist, merge to master, archive documentation, cleanup. | Public |
-| `/claude-debug` | Structured debugging with attempt tracking. Prevents circular debugging by logging what was tried. Auto-numbers attempts. | Public |
+## Inter-Claude Communication
 
-### Branch & Task Management
+| Command | Purpose |
+|---------|---------|
+| `/claude-comms` | Check inbox for messages from other Claude instances. |
+| `/claude-comms <name>` | Check inbox as a specific identity (e.g., `/claude-comms galileo`). |
+| `/claude-comms start` | Start a new conversation with another Claude. Shows active instances, writes message file, gives handoff instructions. |
 
-| Command | Purpose | Location |
-|---------|---------|----------|
-| `/create-branch` | Create new branch with standardized todo documentation structure (7 files). | Public |
-| `/create-bugfix` | Create bugfix branch from ticket (Sentry, support, etc.) with documentation. | Public |
-| `/finish-todo` | Archive completed todo - move to completed folder, document achievements, handle git branch. | Public |
-| `/plan-feature` | Interactive feature planning wizard. Guided discovery of requirements before implementation. | Public |
-| `/update-architecture` | Update architecture map documentation for CB projects. | Public |
-| `/violation-log` | Log Claude violations (deployment without permission, completion claims, etc.). | Public |
+## Task & Sprint Management
 
-### Auditing & Analysis
+| Command | Purpose |
+|---------|---------|
+| `/start-work` | Create task with mandatory acceptance criteria. Replaces `/create-branch`. |
+| `/create-bugfix` | Create bugfix branch from ticket (Sentry, support, etc.) with documentation. |
+| `/finish-todo` | Archive completed todo. Move to completed folder, document achievements. |
+| `/sprint` | Sprint management. View, create, and manage development sprints via backlog API. |
+| `/add-backlog` | Add item to RequestDesk backlog API. |
+| `/plan-feature` | Interactive feature planning wizard. Guided discovery of requirements before implementation. |
 
-| Command | Purpose | Location |
-|---------|---------|----------|
-| `/a11y-audit` | WCAG 2.1 AA accessibility audit using Pa11y with axe-core. | Public |
-| `/analyze-refactor-candidates` | Find large/complex files needing refactoring. Categorizes by size and complexity. | Public |
-| `/audit-branches` | Review git branches across projects, identify stale branches for cleanup. | Public |
-| `/audit-codebase` | Dead code analysis using vulture, complexity metrics using radon. | Public |
-| `/check-terms` | Check content against RequestDesk terms API for overused/avoid terms. | Public |
-| `/content-audit` | SEO/AEO audit with `--enrich` flag for schema enrichment. | Public |
-| `/lighthouse` | Lighthouse performance audit for web pages. | Public |
+## Development
 
-### Deployment
+| Command | Purpose |
+|---------|---------|
+| `/update-architecture` | Update architecture map documentation for CB projects. |
+| `/frontend-design` | Create production-grade frontend interfaces with high design quality. |
+| `/sync-wp-plugin` | Sync WordPress plugin files between development and production. |
 
-| Command | Purpose | Location |
-|---------|---------|----------|
-| `/deploy-project` | Deploy any project using tag-based system with iteration support. Works for requestdesk (app) or astro-sites (marketing). Supports `--mark-tested` and `--final` flags. | Public |
+## Auditing & Analysis
 
-### Personal Workflow (Brent-specific)
+| Command | Purpose |
+|---------|---------|
+| `/a11y-audit` | WCAG 2.1 AA accessibility audit using Pa11y with axe-core. |
+| `/analyze-refactor-candidates` | Find large/complex files needing refactoring. |
+| `/audit-branches` | Review git branches across projects, identify stale branches. |
+| `/audit-codebase` | Dead code analysis (vulture), complexity metrics (radon). |
+| `/check-terms` | Check content against RequestDesk terms API for overused/avoid terms. |
+| `/content-audit` | SEO/AEO audit with `--enrich` flag for schema enrichment. |
+| `/lighthouse` | Lighthouse performance audit for web pages. |
+| `/sentry-report` | Generate error report from Sentry. |
 
-| Command | Purpose | Location |
-|---------|---------|----------|
-| `/brent-start` | Daily operating system startup. Load rocks, tasks, content schedule. | Local (symlink) |
-| `/brent-finish` | End of day closeout. Log time, capture accomplishments, save context. | Local (symlink) |
-| `/brent-task` | Set active task for time tracking. One task at a time, must log before switching. | Local (symlink) |
-| `/daily-content` | Content planning dashboard. Review and update content TODO list. | Local (symlink) |
+## Deployment
 
-### Brand & Content
+| Command | Purpose |
+|---------|---------|
+| `/deploy-project` | Deploy using tag-based system with iteration support. Supports `--mark-tested` and `--final`. |
 
-| Command | Purpose | Location |
-|---------|---------|----------|
-| `/brand-brent` | Load Brent Peterson brand persona from API for consistent voice. | Local (symlink) |
-| `/brand-cucumber` | Load Content Cucumber brand persona from API. | Local (symlink) |
-| `/brand-requestdesk` | Load RequestDesk brand persona from API. | Local (symlink) |
-| `/cucumber-writer` | Content creation wizard for Content Cucumber with brand voice. | Local (symlink) |
-| `/brent-writing` | Interactive content creation wizard for Brent's content. | Local (no symlink) |
+## Content & Brand
+
+| Command | Purpose |
+|---------|---------|
+| `/brand-brent` | Load Brent Peterson brand persona for consistent voice. |
+| `/brand-cucumber` | Load Content Cucumber brand persona. |
+| `/brand-requestdesk` | Load RequestDesk brand persona. |
+| `/cucumber-writer` | Content creation with Content Cucumber brand voice. |
+| `/rd-blog` | Create RequestDesk blog posts with Brent's voice. |
+| `/daily-content` | Content planning dashboard. Review and update content schedule. |
+| `/newsletter-planner` | Plan and draft newsletter content. |
+| `/canva` | Design creation and management via Canva MCP. |
+
+## Social Media
+
+| Command | Purpose |
+|---------|---------|
+| `/create-social` | Draft, review, and schedule a social post. |
+| `/plan-social` | Multi-platform drip campaign planning, drafting, and scheduling. |
+
+## Email & HubSpot
+
+| Command | Purpose |
+|---------|---------|
+| `/respond-email` | Respond to emails using HubSpot context. |
+| `/respond-comment` | Respond to comments (blog, social). |
+| `/send-email` | Send email via HubSpot task workflow. |
+| `/hubspot-enrich` | Contact personalization and platform detection. |
+| `/detect-platform` | Detect contact's e-commerce platform via Wappalyzer. |
+
+## Personal Workflow (Brent)
+
+| Command | Purpose |
+|---------|---------|
+| `/brent-start` | Daily operating system. Load schedule, tasks, content plan. |
+| `/brent-finish` | End of day closeout. Log time, capture accomplishments, archive stale context/comms/sessions. |
+| `/brent-task` | Set active task for time tracking. |
+
+## Tuesdays with Claude (TWC)
+
+| Command | Purpose |
+|---------|---------|
+| `/twc-start` | Start a new TWC article. |
+| `/twc-finish` | Finalize and publish TWC article. |
+| `/twc-note` | Add a note to current TWC article. |
+| `/twc-status` | Check TWC article pipeline status. |
+| `/twc-backlog` | Manage TWC article backlog. |
+
+## Meta & System
+
+| Command | Purpose |
+|---------|---------|
+| `/claude-help` | Command reference. `--list` for names only, `<command>` for details. |
+| `/claude-learner` | Collaborative learning through discussion. |
+| `/violation-log` | Log Claude rule violations. |
+| `/rotate-violations` | Archive old violation logs. |
 
 ---
 
-## TODO: Commands to Create
+## Deprecated
 
-| Command | Purpose | Priority | Status |
-|---------|---------|----------|--------|
-| `/claude-help` | List all commands with descriptions. `--<command>` for details. | High | ✅ Created |
-| `/content-audit` | SEO/AEO audit with `--enrich` flag for schema enrichment. Combines old seo-audit + aeo-enrich. | Medium | ✅ Created |
-
-## TODO: Commands to Update
-
-| Command | Update Needed | Status |
-|---------|---------------|--------|
-| `/claude-save` | Add `--close` flag (absorb claude-close functionality) | ✅ Done |
-| `/claude-debug` | Absorb log-debug functionality, add deployment/production debugging | ✅ Done |
-| `/claude-start` | Add root directory validation, security features from security-start | ✅ Done |
-
----
-
-## Deleted Commands (for reference)
-
-| Command | Reason | Replacement |
-|---------|--------|-------------|
-| `claude-close` | Redundant | `claude-save --close` (TODO) |
-| `claude-resume` | Redundant | `claude-start` |
-| `claude-save-mcp` | Redundant | `claude-save` |
-| `create-local-command` | Rarely used | Manual process |
-| `log-debug` | Merge | `claude-debug` |
-| `screenshot` | Never used | Deleted |
-| `seo-audit` | Merge | `content-audit` (TODO) |
-| `aeo-enrich` | Merge | `content-audit --enrich` (TODO) |
-| `deploy-documentation` | Unused | Deleted |
-| `deploy-astro-site` | Redundant | `deploy-project astro-sites` |
-| `deploy-main-site` | Redundant | `deploy-project astro-sites` |
-| `debug-deployment` | Merge | `claude-debug` |
-| `debug-production` | Merge | `claude-debug` |
-| `view-docker-logs` | Merge | `claude-debug` |
-| `security-start` | Merge | `claude-start` |
-| `security-close` | Merge | `claude-save --close` |
-| `zsolutely` | Not needed | Base Claude behavior |
+| Command | Replacement |
+|---------|-------------|
+| `/create-branch` | `/start-work` |
+| `claude-close` | `/claude-save --close` |
+| `claude-resume` | `/claude-start` |
+| `claude-save-mcp` | `/claude-save` |
+| `log-debug` | `/claude-debug` |
+| `seo-audit` | `/content-audit` |
+| `aeo-enrich` | `/content-audit --enrich` |
+| `deploy-astro-site` | `/deploy-project` |
+| `deploy-main-site` | `/deploy-project` |
 
 ---
 
@@ -171,30 +200,10 @@ Used with session commands (`/claude-save`, `/claude-start`, etc.)
 
 ---
 
-## Skills
-
-Skills are registered automatically from command files. Each command in `.claude/commands/` becomes a skill.
-
-**Current Skills:** All commands listed above have corresponding skills.
-
----
-
-## Agents
-
-Available agent types for the Task tool:
-
-| Agent | Purpose |
-|-------|---------|
-| `general-purpose` | Research, code search, multi-step tasks. Has access to all tools. |
-| `Explore` | Fast codebase exploration. Find files, search code, answer questions about structure. |
-| `Plan` | Software architect for designing implementation plans. Returns step-by-step plans. |
-| `claude-code-guide` | Answer questions about Claude Code features, hooks, MCP servers, Agent SDK. |
-
----
-
 ## Changelog
 
 | Date | Change |
 |------|--------|
-| 2026-01-05 | Major audit - removed 16 redundant commands, consolidated deploy commands, moved brent-* to local |
-| 2026-01-04 | Initial document created |
+| 2026-02-02 | Full inventory update. Added 20+ missing commands. Overhauled /claude-save (917->236 lines). Added /claude-comms start mode. Added /claude-trash. Added comms cleanup to /brent-finish. |
+| 2026-01-05 | Major audit. Removed 16 redundant commands, consolidated deploy commands. |
+| 2026-01-04 | Initial document created. |

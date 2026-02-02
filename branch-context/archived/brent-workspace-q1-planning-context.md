@@ -36,7 +36,7 @@
 - `README.md` - Index of all SOPs by category
 
 ### 3. Google Sheet Enhancements
-**Sheet:** https://docs.google.com/spreadsheets/d/1yw2gUt-vHdQgDLHr3HVKf0IkPzLwgsDrnQURhy9vFBo/edit
+**Sheet:** https://app.requestdesk.ai (DELETED - now use RequestDesk backlog)
 
 **Columns Added:**
 - Est Points (D) - Story point estimates
@@ -115,7 +115,7 @@ The matrix:
 ## KEY RESOURCES
 
 ### Planning Infrastructure:
-- **Google Sheet:** https://docs.google.com/spreadsheets/d/1yw2gUt-vHdQgDLHr3HVKf0IkPzLwgsDrnQURhy9vFBo/edit
+- **Google Sheet:** https://app.requestdesk.ai (DELETED - now use RequestDesk backlog)
 - **Planning SOP:** `Dashboard/SOPs/000-planning-sop.md`
 - **Priority List:** `Dashboard/Planning/PRIORITY-LIST.md`
 - **Skill:** `.claude/skills/brent-workspace/`
