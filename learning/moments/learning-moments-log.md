@@ -2,7 +2,16 @@
 
 Running log of expectation gaps between what Claude did and what Brent wanted. Not violations (those go in `.claude/violations/`). These are calibration moments.
 
-**Total Moments:** 1
+**Total Moments:** 2
+
+---
+
+## 2026-02-03 - Document Core Systems Before Using (#2)
+
+**Severity:** Always
+**Trigger:** WordPress wizard failed with "Name or service not known". Claude immediately claimed "no LLM providers configured" and started investigating wrong database, when Chat was working fine with same providers. This pattern has happened repeatedly.
+**Expected:** Before claiming something is broken, check how the working implementation does it. Document core systems (like LLMService) so they can be reused correctly across features.
+**Resolution:** Created `/documentation/docs/technical/api/LLM-SERVICE-USAGE.md` with full usage guide. Pending CLAUDE.md rule.
 
 ---
 

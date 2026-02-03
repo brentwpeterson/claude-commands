@@ -3,33 +3,57 @@
 ## IMMEDIATE SETUP
 1. **Directory:** `cd /Users/brent/scripts/CB-Workspace/.claude`
 2. **Branch:** `git checkout main`
-3. **Last Commit:** `7d9233d Command system overhaul: optimize saves, add comms start, add trash, full inventory`
+3. **Last Commit:** `888df3e Add canva-design skill with prompt patterns and workflows`
 5. **Verify:** `git status`
 
+## WORKSPACES TOUCHED
+| Shortcode | What was done |
+|-----------|---------------|
+| `cc` | Created canva-design skill (3 files), upgraded /canva command |
+| `brent` | Created workshop booklet HTML in Obsidian vault (MMFL26 folder) |
+| `astro` | Read Shopify integration content for one-pager |
+
+## CURRENT TODO
+**Sprint Task:** `6965527f8ec76c1a0ce36525` - "Need Shopify one pager as a PDF for downloads"
+**Sprint:** S3
+**Status:** Ready to generate, blocked by Canva MCP auth
+
 ## WHAT YOU WERE WORKING ON
-Command system maintenance and optimization session. Reviewed, trimmed, and created commands.
+1. Created canva-design skill with brand mapping, workflows, prompt patterns (DONE, committed)
+2. Started Shopify one-pager task from S3 sprint
+3. Gathered all content from astro-sites Shopify integration pages
+4. Attempted to generate flyer in Canva but got "Access token is invalid" error
 
 ## CURRENT STATE
-- **Files modified:** 87 files in commit (mostly archived context/comms files)
-- **Key changes:**
-  - `/claude-save` overhauled: 917 -> 236 lines, emergency mode moved to top
-  - `/claude-comms` updated: added `start` subcommand for initiating conversations
-  - `/claude-trash` created: quick window cleanup (archive context, comms, remove from registries)
-  - `/brent-finish` Step 8 updated: smart end-of-day cleanup (archive stale context, comms, prune sessions/names, keeps today's active)
-  - `command-readme.md` rewritten: all 55 commands documented in 13 categories
-  - 3 proprietary commands moved to `.claude-local/` with symlinks (create-social, start-work, respond-email)
-  - 14 stale comms files archived to `claude-comms/archive/`
-  - 4 stale context files archived to `branch-context/archived/`
-  - `active-claude-names.json` cleared (was 22 stale names)
-  - `active-sessions.json` resumable cleared (was 4 stale entries)
+- **Canva skill:** Created and committed (3 files, 632 lines)
+- **Canva command:** Upgraded in `.claude-local/commands/canva.md` (not in git)
+- **Shopify one-pager:** Content gathered, prompt ready, blocked by Canva auth
+
+## SHOPIFY ONE-PAGER CONTENT (READY TO USE)
+**Design type:** `flyer`
+**Brand kit:** RequestDesk (`kAGxHGjjgl0`)
+
+**Content gathered from astro-sites:**
+- Headline: "Turn Your Products Into Blog Content"
+- Subheadline: "AI-powered content that knows your inventory"
+- Problem: Competitors have blogs ranking for product keywords
+- Features: Product descriptions, blog publishing, collection pages, featured images, brand voice
+- How it works: Sync > Generate > Publish
+- Result: "Average 105% traffic increase within 6 months"
+- Modes: DIY or Managed
+- CTA: "Start Your Free Beta" - requestdesk.ai/integrations/shopify
 
 ## NEXT ACTIONS
-1. **Review /brent-start** for similar bloat/optimization opportunities
-2. **Review /claude-start** to ensure it pairs well with the new slim /claude-save
-3. **Consider pruning the SKILL.md** in `skills/communicate-claude/` since /claude-comms now handles initiation
-4. **Test /claude-comms start** in a multi-window scenario
+1. **FIRST:** Re-authenticate Canva MCP (restart Claude Code or re-auth in MCP settings)
+2. **THEN:** Run the generate-design call with the prepared prompt
+3. **THEN:** Save candidate, export as PDF
+4. **THEN:** Update sprint task status to completed
 
 ## CONTEXT NOTES
-- The root cause of the 8% save failure was the 917-line prompt consuming all remaining context before any work could begin
-- The brent-finish cleanup uses "keep today, archive older" logic so it doesn't kill other active windows
-- The pre-commit hook scans ALL files in commands/ (not just staged), so proprietary files must be symlinks to .claude-local/
+- Canva MCP error: "Access token is invalid (Request ID: 9c7f97e73017ed38)"
+- The full prompt for Canva is in conversation history, ready to re-run
+- Sprint task ID for backlog update: `6965527f8ec76c1a0ce36525`
+- Content source files in astro-sites:
+  - `/sites/requestdesk-ai/src/pages/integrations/shopify.astro`
+  - `/sites/requestdesk-ai/src/content/integrations/shopify.md`
+  - `/sites/contentbasis-ai/src/pages/shopify.astro`
