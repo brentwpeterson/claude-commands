@@ -91,6 +91,43 @@ These fields exist on backlog items for sprint integration:
 
 ---
 
+## Recurring Story Fields
+
+These fields enable parent stories that spawn child tasks each sprint:
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `type` | string | "task" | `task` \| `story` \| `bug` \| `spike` |
+| `is_recurring` | bool | false | True if spawns child tasks on a schedule |
+| `recurring_period` | string | null | `sprint` \| `2-weeks` \| `monthly` \| `quarterly` |
+| `recurring_count` | int | null | How many times this has recurred |
+| `is_parent` | bool | false | True if this is a parent story |
+| `is_child` | bool | false | True if spawned from a parent |
+| `parent_id` | string | null | ID of parent story (for child tasks) |
+| `child_ids` | string[] | [] | IDs of spawned child tasks |
+
+### Recurring Story Rules
+
+1. **Parent stories** (`is_parent: true`):
+   - Never assigned to a sprint directly
+   - Status stays `backlog` forever
+   - Points represent per-occurrence estimate
+   - `child_ids` tracks all spawned tasks
+
+2. **Child tasks** (`is_child: true`):
+   - Created during sprint planning
+   - Assigned to specific sprint
+   - Title format: `S[N]: [specific deliverable]`
+   - `parent_id` links to parent story
+   - Completable and counts toward velocity
+
+3. **Sprint planning query** for recurring stories:
+   ```bash
+   GET /api/backlog?is_recurring=true&is_parent=true
+   ```
+
+---
+
 ## Sprint Summary Object
 
 Returned by `GET /api/sprints/{id}/summary`:

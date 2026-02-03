@@ -90,6 +90,25 @@ See `patterns/enqueue-patterns.md`.
 | `templates/style-css.md` | style.css structure template |
 | `workflows/local-to-production.md` | Deployment workflow |
 
+### GenerateBlocks V2 Skills
+
+Skills for building and converting layouts using the GenerateBlocks V2 plugin.
+
+**Local repo:** `/Users/brent/scripts/CB-Workspace/Claude-Skills/generateblocks-skills/`
+**Source:** [wpgaurav/generateblocks-skills](https://github.com/wpgaurav/generateblocks-skills)
+**Update:** `cd /Users/brent/scripts/CB-Workspace/Claude-Skills/generateblocks-skills && git pull`
+
+| Document | Purpose |
+|----------|---------|
+| `skills/generateblocks-layouts/SKILL.md` | Core layout builder. Four block types, styling approach, responsive patterns |
+| `skills/html-to-generateblocks/SKILL.md` | Convert HTML/CSS to GenerateBlocks V2 block markup |
+| `skills/elementor-to-generateblocks/SKILL.md` | Migrate Elementor layouts to clean GenerateBlocks (eliminate DIVception) |
+| `skills/figma-to-generateblocks/SKILL.md` | Convert Figma designs to GenerateBlocks blocks |
+| `skills/generateblocks-layouts/references/` | Block types, CSS patterns, SVG icons, responsive, troubleshooting, performance |
+| `examples/` | 14 section types (hero, pricing, cards, FAQ, etc.) with prompts and output variations |
+
+All paths relative to the local repo root.
+
 ---
 
 ## Content Cucumber Specifics

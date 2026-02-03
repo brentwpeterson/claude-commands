@@ -47,9 +47,37 @@ Standard sprint = 2 weeks (12 days excluding weekends)
             = 10 * 5 * 0.8 = 40-50 points
    ```
 
-3. **Assign Backlog Items:**
+3. **🚨 MANDATORY: Create Recurring Item Tickets:**
+   Before assigning any other items, generate fresh tickets for ALL recurring items.
+   ```bash
+   # Query all recurring parent stories
+   curl -s "https://app.requestdesk.ai/api/backlog" \
+     -H "Authorization: Bearer $KEY" | \
+     jq '[.items[] | select(.is_recurring == true and .type == "story" and .is_parent == true)]'
+   ```
+   For EACH recurring story, create a new child task for this sprint:
+   ```bash
+   curl -X POST "https://app.requestdesk.ai/api/backlog" \
+     -H "Authorization: Bearer $KEY" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "title": "S[N]: [deliverable]",
+       "type": "task",
+       "parent_id": "[parent_story_id]",
+       "is_child": true,
+       "is_recurring": true,
+       "recurring_period": "month",
+       "sprint_name": "S[N]",
+       "estimated_points": [pts],
+       "category": "Content",
+       "status": "backlog"
+     }'
+   ```
+   **This is non-negotiable. Recurring items that don't get fresh tickets don't show up in the sprint.**
+
+4. **Assign Backlog Items:**
    - Pull from P0/P1 items in backlog
-   - Set `sprint: "S3"` and `committed: true`
+   - Set `sprint_name: "S3"` and `committed: true`
    - Calculate total committed_points
 
 4. **Update Sprint Totals:**
@@ -70,6 +98,133 @@ Standard sprint = 2 weeks (12 days excluding weekends)
    - Committed items table
    - Risk items
    - Dependencies
+
+---
+
+## 1b. Recurring Stories
+
+**What:** A story that spawns a concrete task each sprint (e.g., "New integration every 2 weeks")
+
+**When:** During sprint planning, after calculating capacity
+
+### Identifying Recurring Stories
+
+A backlog item is a recurring story when:
+- `type: "story"` (not task)
+- `is_recurring: true`
+- `is_parent: true`
+- Has a defined `recurring_period` (e.g., "sprint", "2-weeks", "monthly")
+
+### Parent Story Setup
+
+Mark the parent story once:
+```bash
+curl -X PATCH "https://app.requestdesk.ai/api/backlog/{parent_id}" \
+  -H "Authorization: Bearer $KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "story",
+    "is_recurring": true,
+    "is_parent": true,
+    "recurring_period": "sprint",
+    "notes": "Spawns one concrete task per sprint"
+  }'
+```
+
+### Spawning Child Tasks
+
+During each sprint planning, create a child task from the parent:
+
+```bash
+curl -X POST "https://app.requestdesk.ai/api/backlog" \
+  -H "Authorization: Bearer $KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "S2: Add Magento integration",
+    "type": "task",
+    "parent_id": "{parent_story_id}",
+    "is_child": true,
+    "sprint": "S2",
+    "estimated_points": 2,
+    "priority": 0,
+    "committed": true
+  }'
+```
+
+### Sprint Planning Checklist for Recurring Stories
+
+1. **Query recurring stories:**
+   ```bash
+   curl -s "https://app.requestdesk.ai/api/backlog?is_recurring=true&is_parent=true" \
+     -H "Authorization: Bearer $KEY" | jq '.items[] | {id, title, recurring_period}'
+   ```
+
+2. **For each recurring story, ASK the user:**
+   - "What is the specific deliverable for [story title] this sprint?"
+   - Example prompt: "New integration every 2 weeks - which integration for S3?"
+   - User might say: "Magento" or "Skip this sprint" or "TBD"
+
+3. **Create child task with specific scope:**
+   - Title format: `S[N]: [specific deliverable from user]`
+   - If user says "TBD": `S[N]: [parent title] (TBD)`
+   - If user says "Skip": Don't create child, note in sprint plan
+
+4. **Parent story stays in backlog** (never completed, never assigned to sprint)
+
+5. **Child task gets completed** each sprint
+
+### Frequency Reference
+
+| Recurring Period | Child Tasks Per Sprint | Per Month |
+|------------------|------------------------|-----------|
+| sprint | 1 | 2 |
+| 2-weeks | 1 | 2 |
+| weekly | 2 (W1 + W2) | 4 |
+| monthly | 0.5 (every other sprint) | 1 |
+| quarterly | Plan ahead, 1 per quarter | ~0.33 |
+
+### Naming Convention for Child Tasks
+
+**Sprint-level (one per sprint):**
+```
+S2: [Specific deliverable]
+S2: New RequestDesk integration
+S2: TWC Article - Commands vs Skills
+```
+
+**Weekly (two per sprint):**
+```
+S2-W1: [Task] (Day)
+S2-W2: [Task] (Day)
+
+S2-W1: My EO Journey post (Thursday)
+S2-W2: My EO Journey post (Thursday)
+```
+
+**W1 = first week of sprint, W2 = second week of sprint**
+
+### Example: "New integration every 2 weeks"
+
+**Parent Story (d95d45):**
+- Title: "RequestDesk - new integration every 2 weeks"
+- Type: story
+- is_recurring: true
+- is_parent: true
+- Status: backlog (always)
+
+**Child Tasks (one per sprint):**
+| Sprint | Child Task | Points | Status |
+|--------|------------|--------|--------|
+| S2 | S2: Add Magento integration | 2 | in_progress |
+| S3 | S3: Add BigCommerce integration | 2 | pending |
+| S4 | S4: Add Shopware integration | 2 | pending |
+
+### Benefits
+
+- Parent story captures the commitment ("we ship an integration every sprint")
+- Child tasks are specific and completable
+- Velocity tracking works correctly (child points count)
+- Clear audit trail of what shipped when
 
 ---
 

@@ -84,6 +84,30 @@ Nice! Before we move on: How long did [TASK] actually take?
 - Shows where time actually goes (vs. where we think it goes)
 - Friday retro needs real data, not guesses
 
+### Rule 6: Documents Require User Confirmation
+
+When Claude creates any planning/review document (retrospective, sprint plan, summary):
+
+**NEVER mark as complete until user confirms:**
+```
+I've drafted the [DOCUMENT TYPE].
+
+Please review: [file path]
+
+Let me know if changes are needed, or confirm it's accurate.
+```
+
+**Documents requiring confirmation:**
+- Sprint retrospectives
+- Sprint plans
+- Weekly summaries
+- Process changes
+- Any document that will be referenced later
+
+**Why:** Claude doesn't have full context. User must validate before it becomes "official."
+
+---
+
 ## Exceptions
 
 **Don't enforce accountability when:**

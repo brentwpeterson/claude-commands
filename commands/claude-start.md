@@ -140,7 +140,36 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
    # rd=requestdesk, rd-test=requestdesk-testing, astro=astro-sites, shop=shopify, wpp=wordpress-plugin, wps=wordpress-sites, mage=magento, juno=junogo, job=jobs, brent=brent-workspace, bt=brent-timekeeper, cc=claude-commands, doc=documentation
    ```
 
-2. **Initialize or update session tracking file:**
+2. **Generate your unique Claude identifier:**
+   Pick a famous person's name to distinguish yourself from other Claude instances (two Claudes might work in the same workspace).
+
+   **Step A: Check which names are taken:**
+   ```bash
+   cat /Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json 2>/dev/null || echo "[]"
+   ```
+
+   **Step B: Pick ANY famous person's name not on that list.** Examples:
+   - Scientists: Edison, Tesla, Curie, Darwin, Hopper, Turing, Lovelace, Feynman, Hawking
+   - Artists: DaVinci, Picasso, Mozart, Beethoven, VanGogh
+   - Explorers: Shackleton, Earhart, Armstrong, Cousteau
+   - Writers: Hemingway, Austen, Twain, Tolkien
+   - Or anyone else famous!
+
+   **Step C: Register your name IMMEDIATELY (before anything else):**
+   ```bash
+   NAMES_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json"
+   CURRENT=$(cat "$NAMES_FILE" 2>/dev/null || echo "[]")
+   echo "$CURRENT" | jq '. + ["Claude-YourName"]' > "$NAMES_FILE"
+   ```
+
+   **Step D: Display:** "🤖 I am: Claude-[YourChosenName]"
+
+   **Use this identifier when:**
+   - Responding to inter-Claude communication files in `.claude/claude-comms/`
+   - The user asks you to communicate with another Claude instance
+   - Signing messages in shared log files
+
+3. **Initialize or update session tracking file:**
    ```bash
    SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
    SHORTCODE="[resolved-shortcode]"

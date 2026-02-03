@@ -6,18 +6,25 @@
 
 | Resource | Location |
 |----------|----------|
-| **Priority List (Source of Truth)** | [Google Sheet](https://docs.google.com/spreadsheets/d/1yw2gUt-vHdQgDLHr3HVKf0IkPzLwgsDrnQURhy9vFBo/edit) |
-| **Free Joke Project** | [Google Sheet](https://docs.google.com/spreadsheets/d/1JsuBHilQ0506K0yXNWbC1hrXOCX8rka_rdLIhZF5w2U/edit) |
-| **Jokes (Local Cache)** | `.claude/local/free-joke-project.csv` |
-| **Priority List (MD View)** | `Dashboard/Planning/PRIORITY-LIST.md` |
+| **Backlog (Source of Truth)** | [RequestDesk Backlog](https://app.requestdesk.ai/api/backlog) via `/add-backlog` |
+| **Free Joke Project** | `.claude/local/free-joke-project.csv` |
 | **Q1 Rocks** | `Dashboard/Planning/Q1-2026/ROCKS.md` |
-| **Sprint Plan** | `Dashboard/Planning/2026/Q1/S1/sprint-plan.md` |
-| **Work Log** | `Dashboard/Daily/WORK-LOG.md` |
+| **Sprint Plan** | `Dashboard/Planning/2026/Q1/S[N]/sprint-plan.md` |
+| **Work Log** | `Dashboard/Daily/WORK-LOG.md` (current sprint) |
+| **Sprint Archive** | `Dashboard/Sprints/S[N]/` (completed sprints) |
 | **Weekly Scorecard** | `Dashboard/Daily/WEEKLY-SCORECARD.md` |
 | **Workflows** | `Dashboard/Planning/WORKFLOWS.md` |
 | **Weekend Projects** | `Dashboard/WEEKEND-PROJECTS.md` |
+| **LinkedIn Newsletter (Calendar)** | `LinkedIn Articles/README.md` |
+| **LinkedIn Article Promotion** | `.claude/skills/brent-workspace/linkedin-article-promotion.md` |
+| **HubSpot Contact Workflow** | `.claude/skills/brent-workspace/hubspot-contact-workflow.md` |
 
 **Base Path:** `/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/`
+
+**Backlog API:**
+- Endpoint: `https://app.requestdesk.ai/api/backlog`
+- Auth: `Authorization: Bearer MNRcaklW3XF7UpKX4VrxPV7wo2L7xsWg`
+- Add items: `/add-backlog <description> --priority N --tags tag1,tag2`
 
 ---
 
@@ -80,11 +87,11 @@ Apply this skill automatically when Brent:
 
 ## Core Philosophy
 
-1. **Google Sheet = Source of truth** for priorities (easier to sort/filter)
-2. **Markdown = Report/view** synced from sheet
+1. **RequestDesk backlog = Source of truth** for all work items
+2. **Every hour worked = backlog item** with points (velocity calibration)
 3. **Two articles per week** - completely different content
 4. **Lead time matters** - write ahead, not day-of
-5. **Separate tasks from instructions** - Actionable items vs. reference workflows
+5. **Sprint-based work logs** - archived at sprint end with summary calculations
 
 ---
 
@@ -108,7 +115,11 @@ Brent's writing must contain elements that AI would typically smooth over, hedge
 
 **Terms to AVOID (AI tells on itself):**
 - "actually"
-- "Here's the thing"
+- "Here's the thing" / "And here's what" / "Here's something"
+- "The Real [X]" (e.g., "The Real Cost", "The Real Problem")
+- "Here's Why It Matters"
+- "The Reality Check"
+- "The Contrarian Bet"
 - "leverage" / "utilize"
 - "game-changer" / "deep dive"
 - "unpack" / "robust"
@@ -116,6 +127,7 @@ Brent's writing must contain elements that AI would typically smooth over, hedge
 - "Worth Watching"
 - "I worked with..." (most overused AI phrase of 2025)
 - Excessive hedging ("it might be worth considering...")
+- Colons before explanations (use periods instead)
 
 ---
 

@@ -8,6 +8,8 @@
 - `/claude-debug --log --fail [description]` - Log failed attempt with analysis
 - `/claude-debug --deploy` - Debug deployment/production issues
 - `/claude-debug --docker` - Show Docker logs and container status
+- `/claude-debug --sentry` - Check Sentry for RequestDesk errors (prod & dev)
+- `/claude-debug --sentry --prod` - Check production Sentry errors only
 
 **Arguments**:
 - `<project>` (required): Project to debug - any Git repository in your workspace (per `.claude/local/workspace.env` configuration)
@@ -196,6 +198,10 @@ Ready to execute attempt? [Y/n/modify]
 - `/claude-debug --log`: Add entry to debug log (see below)
 - `/claude-debug --deploy`: Deployment debugging mode (see below)
 - `/claude-debug --docker`: Docker diagnostics (see below)
+- `/claude-debug --sentry`: Check Sentry errors for RequestDesk (see below)
+- `/claude-debug --sentry --prod`: Production Sentry errors only
+- `/claude-debug --sentry --dev`: Development Sentry errors only
+- `/claude-debug --sentry --analyze <ID>`: AI root cause analysis for issue
 
 ---
 
@@ -371,11 +377,107 @@ docker volume ls
 - [Any problems found]
 ```
 
+---
+
+## 🔴 SENTRY MODE (`--sentry` flag) - RequestDesk Only
+
+**Purpose**: Check Sentry for RequestDesk application errors in production and development.
+
+**Note**: Sentry is currently only configured for RequestDesk (backend and frontend).
+
+**Usage**:
+```
+/claude-debug --sentry              # Show all environments
+/claude-debug --sentry --prod       # Production errors only (PRIORITY)
+/claude-debug --sentry --dev        # Development errors only
+/claude-debug --sentry --analyze REQUESTDESK-BACKEND-1Z  # AI root cause analysis
+```
+
+**Sentry Configuration**:
+| Setting | Value |
+|---------|-------|
+| Organization | `content-basis-llc` |
+| Region URL | `https://us.sentry.io` |
+| Backend Project | `requestdesk-backend` |
+| Frontend Project | `requestdesk-frontend` |
+
+**Sentry MCP Tools Used**:
+
+1. **Environment Summary** - Get error counts by environment:
+```
+mcp__sentry__search_events:
+  organizationSlug: content-basis-llc
+  regionUrl: https://us.sentry.io
+  projectSlug: requestdesk-backend
+  naturalLanguageQuery: "errors grouped by environment from last 7 days"
+```
+
+2. **Issue Search** - Get unresolved issues:
+```
+mcp__sentry__search_issues:
+  organizationSlug: content-basis-llc
+  regionUrl: https://us.sentry.io
+  projectSlugOrId: requestdesk-backend
+  naturalLanguageQuery: "unresolved issues in [environment] from the last 7 days"
+  limit: 10
+```
+
+3. **AI Analysis** - Deep dive into specific issue:
+```
+mcp__sentry__analyze_issue_with_seer:
+  organizationSlug: content-basis-llc
+  regionUrl: https://us.sentry.io
+  issueId: [ISSUE-ID]
+```
+
+**Output Format**:
+```
+## 🔴 SENTRY STATUS - RequestDesk
+
+### Environment Summary (Last 7 Days)
+| Environment | Errors | Priority |
+|-------------|--------|----------|
+| production | 61 | HIGH |
+| development | 231 | Normal |
+
+### Production Issues (PRIORITY)
+| Issue ID | Error | Events | Last Seen |
+|----------|-------|--------|-----------|
+| REQUESTDESK-BACKEND-1Z | HTTP 401 login error | 695 | 1 hour ago |
+| REQUESTDESK-BACKEND-PF | Password verification | 43 | 1 hour ago |
+
+### Development Issues (Top 5)
+| Issue ID | Error | Events | Last Seen |
+|----------|-------|--------|-----------|
+| REQUESTDESK-BACKEND-T4 | Integration types error | 4 | 53 min ago |
+
+### Recommended Actions
+1. [PROD] Fix login 401 errors - 695 events affecting users
+2. [PROD] Investigate password verification failures
+3. [DEV] Clean up integration type validation before deploy
+
+### Quick Commands
+- Analyze issue: `/claude-debug --sentry --analyze ISSUE-ID`
+- View in Sentry: https://content-basis-llc.sentry.io
+```
+
+**Integration with Debug Workflow**:
+
+When debugging RequestDesk issues, ALWAYS check Sentry first:
+1. Run `/claude-debug --sentry --prod` to see production errors
+2. If issue matches a Sentry error, use `--analyze` for AI root cause
+3. Link Sentry issue ID in debug log for tracking
+4. After fix, verify error stops appearing in Sentry
+
+---
+
 ### INTEGRATION WITH OTHER COMMANDS:
 
 - Automatically called by `/claude-start` if debug session exists
 - Links to `/claude-violation-log` for process violations
 - Updates `/zsolutely.md` principles during debugging
+- **Sentry Integration**: Use `/claude-debug --sentry` to check for related errors in RequestDesk
+- Links to `/sentry-report` for full Sentry reporting capabilities
 
 ### EXAMPLE SESSION:
 

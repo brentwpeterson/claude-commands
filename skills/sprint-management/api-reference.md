@@ -68,6 +68,27 @@ Content-Type: application/json
 
 **Required fields:** `id`, `name`, `start_date`, `end_date`, `capacity_points`
 
+**Response:**
+```json
+{
+  "_id": "...",
+  "id": "S3",
+  "name": "Sprint 3 (Jan 31 - Feb 11, 2026)",
+  "status": "planned",
+  "capacity_points": 50,
+  "recurring_items": {
+    "items_created": 2,
+    "total_points": 3,
+    "titles": [
+      "TWC Article (S3)",
+      "Weekly content review (S3)"
+    ]
+  }
+}
+```
+
+**Automatic Recurring Items:** When a sprint is created, all backlog items with `is_recurring: true` are automatically cloned into the new sprint. The sprint name is appended to each title (e.g., "TWC Article" becomes "TWC Article (S3)"). Clones are linked to originals via `parent_id` and marked as `is_child: true`. Duplicate detection prevents re-creating items if they already exist for that sprint.
+
 ---
 
 ### Update Sprint

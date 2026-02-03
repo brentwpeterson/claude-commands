@@ -288,7 +288,7 @@ take on it - not copy their pitch.
 ### Obsidian Draft Location
 
 ```
-/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/RequestDesk/Blog Draft Review/
+/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Company Websites/RequestDesk/Blog Draft Review/
 ```
 
 ### Draft File Template
