@@ -104,6 +104,18 @@ SESSIONS_REG   = /Users/brent/scripts/CB-Workspace/.claude/local/active-sessions
 
 **Phase 2: Write context file**
 - Get Claude identity from session (e.g., "Tesla", "Shackleton")
+- **Check for legacy file without Claude name and RENAME it:**
+  ```bash
+  # If a file exists without the Claude name, rename it to include the name
+  LEGACY=$(ls .claude/branch-context/[workspace]-$(date +%Y-%m-%d)-context.md 2>/dev/null)
+  NAMED=".claude/branch-context/[workspace]-$(date +%Y-%m-%d)-[claude-name]-context.md"
+  if [ -n "$LEGACY" ] && [ ! -f "$NAMED" ]; then
+    # Check if the legacy file belongs to this Claude (grep for Identity)
+    if grep -q "Identity.*Claude-[Name]" "$LEGACY" 2>/dev/null || ! grep -q "Identity.*Claude-" "$LEGACY" 2>/dev/null; then
+      mv "$LEGACY" "$NAMED"
+    fi
+  fi
+  ```
 - Check for existing from THIS Claude today: `ls .claude/branch-context/[workspace]-$(date +%Y-%m-%d)-[claude-name]-context.md`
 - Update existing or create `[workspace]-[date]-[claude-name]-context.md`
 - Use quick template (below)
@@ -155,6 +167,18 @@ Quick template:
 
 **Phase 3: Write context file**
 - Get Claude identity from session (e.g., "Tesla", "Shackleton")
+- **Check for legacy file without Claude name and RENAME it:**
+  ```bash
+  # If a file exists without the Claude name, rename it to include the name
+  LEGACY=$(ls /Users/brent/scripts/CB-Workspace/.claude/branch-context/[workspace]-$(date +%Y-%m-%d)-context.md 2>/dev/null)
+  NAMED="/Users/brent/scripts/CB-Workspace/.claude/branch-context/[workspace]-$(date +%Y-%m-%d)-[claude-name]-context.md"
+  if [ -n "$LEGACY" ] && [ ! -f "$NAMED" ]; then
+    # Check if the legacy file belongs to this Claude (grep for Identity) or has no Identity yet
+    if grep -q "Identity.*Claude-[Name]" "$LEGACY" 2>/dev/null || ! grep -q "Identity.*Claude-" "$LEGACY" 2>/dev/null; then
+      mv "$LEGACY" "$NAMED"
+    fi
+  fi
+  ```
 - Filename: `[workspace]-[date]-[claude-name]-context.md` (e.g., `brent-2026-02-05-tesla-context.md`)
 - Check for existing from THIS Claude today (update, don't duplicate)
 - Use full template (below)

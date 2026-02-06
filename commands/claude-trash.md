@@ -13,6 +13,41 @@ Quick cleanup when closing a Claude window. Archives context and comms, removes 
 
 ## Instructions
 
+### Step 0: Pre-flight Check - Unresolved Items
+
+Before trashing, scan your current session for open work:
+
+1. **Check context file for this session** (if it exists):
+   - Look for `## NEXT ACTIONS` - are there pending items?
+   - Look for `## TODO LIST STATE` - are there in-progress or pending items?
+   - Look for `## WHAT YOU WERE WORKING ON` - is there unfinished work described?
+
+2. **Check conversation memory:**
+   - Were there any unanswered questions from the user?
+   - Were there open tasks you didn't finish?
+   - Were there items the user asked about but you didn't address?
+
+3. **If unresolved items found, present them:**
+   ```
+   ⚠️ Before closing, I found unresolved items in this session:
+
+   - [item 1 description]
+   - [item 2 description]
+   - [item 3 description]
+
+   Options:
+   1. `/claude-later` - Park this session to resume later (preserves everything)
+   2. Continue with `/claude-trash` - Archive and discard (items will be lost)
+
+   What would you prefer?
+   ```
+
+4. **If no unresolved items:** Proceed to Step 1.
+
+5. **If user confirms trash:** Continue. If user picks later: run `/claude-later` instead and stop.
+
+---
+
 ### Step 1: Identify yourself
 
 1. If name argument passed: use it (e.g., `galileo` -> `Claude-Galileo`)

@@ -17,6 +17,27 @@ If argument looks like a Claude name (not a shortcode or path):
 1. Search for context files matching `*-[name]-context.md` (e.g., `*-curie-context.md`)
 2. If found, use that file directly
 3. Inherit the identity from the file
+4. **FALLBACK:** If filename search finds nothing, grep inside context files for the identity:
+   ```bash
+   # Sort by modification time (newest first) to pick the most recent match
+   grep -rl "Identity.*Claude-[Name]" /Users/brent/scripts/CB-Workspace/.claude/branch-context/*.md 2>/dev/null | xargs ls -t 2>/dev/null | head -1
+   # Also check later/ directory
+   grep -rl "Identity.*Claude-[Name]" /Users/brent/scripts/CB-Workspace/.claude/branch-context/later/*.md 2>/dev/null | xargs ls -t 2>/dev/null | head -1
+   ```
+   If found, use that file (the Claude name is inside the file but not in the filename - legacy format).
+   If multiple matches, the newest file (by modification time) is used.
+
+   **AUTO-RENAME:** When a file is found via fallback grep, rename it to include the Claude name so future lookups work by filename:
+   ```bash
+   # Extract workspace and date from old filename, construct new name
+   OLD_FILE="[found file path]"
+   NEW_FILE=$(echo "$OLD_FILE" | sed 's/-context\.md$/-[claude-name]-context.md/')
+   # Only rename if the new name doesn't already exist
+   if [ ! -f "$NEW_FILE" ]; then
+     mv "$OLD_FILE" "$NEW_FILE"
+     echo "📝 Renamed context file to include Claude name: $(basename $NEW_FILE)"
+   fi
+   ```
 
 **🗂️ WORKSPACE SHORTCODES & DIRECTORY MAPPING:**
 
@@ -62,12 +83,32 @@ Context files now include the Claude identity to prevent session collisions.
 
 **2. If argument looks like a Claude name (e.g., `curie`, `tesla`):**
 ```bash
-# Search for context file by Claude name (case-insensitive)
+# Search for context file by Claude name in filename (case-insensitive)
 ls -t /Users/brent/scripts/CB-Workspace/.claude/branch-context/*-[name]-context.md 2>/dev/null | head -1
 # Also check later/ directory
 ls -t /Users/brent/scripts/CB-Workspace/.claude/branch-context/later/*-[name]-context.md 2>/dev/null | head -1
 ```
 If found, use that file and inherit the identity.
+
+**FALLBACK - If filename search finds nothing, search inside file contents:**
+```bash
+# Search for Identity header inside context files (handles legacy filenames)
+# Sort by modification time (newest first) to pick the most recent match
+grep -rl "Identity.*Claude-[Name]" /Users/brent/scripts/CB-Workspace/.claude/branch-context/*.md 2>/dev/null | xargs ls -t 2>/dev/null | head -1
+# Also check later/ directory
+grep -rl "Identity.*Claude-[Name]" /Users/brent/scripts/CB-Workspace/.claude/branch-context/later/*.md 2>/dev/null | xargs ls -t 2>/dev/null | head -1
+```
+If found via content search, use that file. The Claude name exists inside the file but not in the filename (legacy format from before the naming convention was enforced). If multiple matches, the newest file (by modification time) is used.
+
+**AUTO-RENAME on fallback find:** When a file is found via content grep, rename it to include the Claude name so future lookups work by filename:
+```bash
+OLD_FILE="[found file path]"
+NEW_FILE=$(echo "$OLD_FILE" | sed 's/-context\.md$/-[claude-name]-context.md/')
+if [ ! -f "$NEW_FILE" ]; then
+  mv "$OLD_FILE" "$NEW_FILE"
+  echo "📝 Renamed context file to include Claude name: $(basename $NEW_FILE)"
+fi
+```
 
 **3. If argument is a workspace shortcode (e.g., `brent`, `rd`):**
 - List all matching files: `ls -t .claude/branch-context/[workspace]-$(date +%Y-%m-%d)-*-context.md`
