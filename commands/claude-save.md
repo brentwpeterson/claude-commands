@@ -1,12 +1,27 @@
 Claude Session Save - Create Resume Instructions + Preserve Work
 
+# SESSION STATUS SYSTEM
+
+**Context files now include a Session Status header that tracks:**
+- **Identity:** Your Claude name (e.g., Claude-Curie)
+- **Status:** SAVED | ACTIVE | LATER
+- **Last Saved:** Timestamp when saved
+- **Last Started:** Timestamp when last started (if resumed)
+
+**This enables:**
+- Other Claudes to see if a session is in use (ACTIVE) before claiming it
+- `/brent-start` to inventory all sessions across workspaces
+- `/claude-resume` to list and resume parked sessions
+
+---
+
 # EMERGENCY MODE (<8% context) - READ THIS FIRST
 
 If a percentage was passed and it is <8%, OR if `--emergency` flag is set, do ONLY this:
 
 1. Run ONE command: `git branch --show-current`
 2. Write this file from conversation memory (NO other commands):
-   - Path: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[project]-emergency-context.md`
+   - Path: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[project]-[date]-[claude-name]-emergency-context.md`
 3. Output: "Emergency context saved to: [path]" and STOP.
 
 Emergency template:
@@ -30,7 +45,7 @@ DO NOT commit, DO NOT run MCP, DO NOT validate anything. Just write and stop.
 
 1. **NEVER ask questions during save.** No time tracking, no task status, no clarification. Save and exit. Defer questions to /claude-start.
 2. **NEVER claim completion.** Say "ready for testing" not "complete."
-3. **One context file per workspace per day.** Update existing, don't create duplicates.
+3. **One context file per workspace per Claude per day.** Filename MUST include Claude identity to prevent collisions between sessions.
 
 ---
 
@@ -73,6 +88,7 @@ Percentage parsing: `9%` -> extract `9` -> QUICK mode. `5%` -> EMERGENCY. No % p
 ```
 WORKSPACE_ROOT = /Users/brent/scripts/CB-Workspace
 CONTEXT_DIR    = /Users/brent/scripts/CB-Workspace/.claude/branch-context/
+CONTEXT_FILE   = [workspace]-[date]-[claude-name]-context.md  (e.g., brent-2026-02-05-tesla-context.md)
 SESSION_FILE   = /Users/brent/scripts/CB-Workspace/.claude/local/active-session.json
 SESSIONS_REG   = /Users/brent/scripts/CB-Workspace/.claude/local/active-sessions.json
 ```
@@ -87,8 +103,9 @@ SESSIONS_REG   = /Users/brent/scripts/CB-Workspace/.claude/local/active-sessions
 - Commit: `git commit -m "[description] Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"`
 
 **Phase 2: Write context file**
-- Check for existing today: `ls .claude/branch-context/[workspace]-*$(date +%Y-%m-%d)*.md`
-- Update existing or create `[workspace]-[date]-context.md`
+- Get Claude identity from session (e.g., "Tesla", "Shackleton")
+- Check for existing from THIS Claude today: `ls .claude/branch-context/[workspace]-$(date +%Y-%m-%d)-[claude-name]-context.md`
+- Update existing or create `[workspace]-[date]-[claude-name]-context.md`
 - Use quick template (below)
 
 **Phase 3: Show path and exit**
@@ -97,6 +114,12 @@ SESSIONS_REG   = /Users/brent/scripts/CB-Workspace/.claude/local/active-sessions
 Quick template:
 ```markdown
 # Resume Instructions for Claude
+
+## SESSION STATUS
+**Identity:** Claude-[Name]
+**Status:** SAVED
+**Last Saved:** [YYYY-MM-DD HH:MM]
+**Last Started:** [YYYY-MM-DD HH:MM or "New session"]
 
 ## IMMEDIATE SETUP
 1. **Directory:** `cd [path]`
@@ -131,7 +154,9 @@ Quick template:
 - If multiple workspaces: note in context file
 
 **Phase 3: Write context file**
-- Check for existing today (update, don't duplicate)
+- Get Claude identity from session (e.g., "Tesla", "Shackleton")
+- Filename: `[workspace]-[date]-[claude-name]-context.md` (e.g., `brent-2026-02-05-tesla-context.md`)
+- Check for existing from THIS Claude today (update, don't duplicate)
 - Use full template (below)
 
 **Phase 4: Commit context + link to todo**
@@ -152,7 +177,20 @@ Quick template:
 - Set `context_file`, `last_active`, `task_summary`
 
 **Phase 7: Show path and exit**
-- Context file path
+
+Display this exact format for easy resume:
+```
+📁 Context saved: [full path to context file]
+🤖 Identity: Claude-[Name]
+📋 Status: SAVED
+
+To resume this session:
+  /claude-start [name]
+
+Example: /claude-start curie
+```
+
+Also show:
 - Whether MCP memory saved
 - Whether progress.log linked
 
@@ -160,12 +198,17 @@ Full template:
 ```markdown
 # Resume Instructions for Claude
 
+## SESSION STATUS
+**Identity:** Claude-[Name]
+**Status:** SAVED
+**Last Saved:** [YYYY-MM-DD HH:MM]
+**Last Started:** [YYYY-MM-DD HH:MM or "New session"]
+
 ## IMMEDIATE SETUP
 1. **Directory:** `cd [path]`
-2. **Identity:** Claude-[Name]
-3. **Branch:** `git checkout [branch]`
-4. **Last Commit:** `[hash] [message]`
-5. **Verify:** `git status`
+2. **Branch:** `git checkout [branch]`
+3. **Last Commit:** `[hash] [message]`
+4. **Verify:** `git status`
 
 ## WORKSPACES TOUCHED
 | Shortcode | What was done |

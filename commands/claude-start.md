@@ -6,9 +6,17 @@ Claude Session Start - Read Resume Instructions and Execute
 
 **USAGE:**
 - `/claude-start <project>` - Read instruction file from save command and resume exactly where left off
+- `/claude-start <claude-name>` - Resume by Claude name (e.g., `/claude-start curie`)
+- `/claude-start <full-path>` - Resume from specific context file path
 
 **Arguments**:
-- `<project>` (required): Project name (used to find context file)
+- `<project>` (required): Project name, Claude name, or full path to context file
+
+**NAME-BASED LOOKUP:**
+If argument looks like a Claude name (not a shortcode or path):
+1. Search for context files matching `*-[name]-context.md` (e.g., `*-curie-context.md`)
+2. If found, use that file directly
+3. Inherit the identity from the file
 
 **🗂️ WORKSPACE SHORTCODES & DIRECTORY MAPPING:**
 
@@ -41,12 +49,40 @@ Read the instruction file created by `/claude-save` or `/claude-save-fast` and f
 ```
 WORKSPACE_ROOT = /Users/brent/scripts/CB-Workspace
 CONTEXT_DIR    = /Users/brent/scripts/CB-Workspace/.claude/branch-context/
-CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[branch-name]-context.md
+CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[workspace]-[date]-[claude-name]-context.md
 ```
 **⚠️ ALWAYS use absolute paths. The `.claude/` directory is at WORKSPACE ROOT, NOT inside individual project directories.**
 
+**📁 CONTEXT FILE RESOLUTION:**
+Context files now include the Claude identity to prevent session collisions.
+
+**Resolution order:**
+
+**1. If argument is a full file path:** Use it directly.
+
+**2. If argument looks like a Claude name (e.g., `curie`, `tesla`):**
+```bash
+# Search for context file by Claude name (case-insensitive)
+ls -t /Users/brent/scripts/CB-Workspace/.claude/branch-context/*-[name]-context.md 2>/dev/null | head -1
+# Also check later/ directory
+ls -t /Users/brent/scripts/CB-Workspace/.claude/branch-context/later/*-[name]-context.md 2>/dev/null | head -1
+```
+If found, use that file and inherit the identity.
+
+**3. If argument is a workspace shortcode (e.g., `brent`, `rd`):**
+- List all matching files: `ls -t .claude/branch-context/[workspace]-$(date +%Y-%m-%d)-*-context.md`
+- If ONE file found: use it automatically
+- If MULTIPLE files found: show the list and ask user which to load
+- If NONE found for today: fall back to `ls -t .claude/branch-context/[workspace]-*-context.md | head -5` and ask user
+- Legacy files without Claude name (e.g., `brent-2026-02-05-context.md`) still work if matched
+
+**How to detect argument type:**
+- Contains `/` → file path
+- Matches shortcode list (rd, brent, etc.) → workspace shortcode
+- Otherwise → Claude name (try name-based lookup first)
+
 **⚡ SIMPLE WORKFLOW:**
-1. **Find instruction file:** `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[current-branch]-context.md`
+1. **Find instruction file:** Resolve using the context file resolution rules above
 2. **Read instructions:** Load the handoff document
 3. **Check for emergency flag:** If file contains "EMERGENCY CONTEXT SAVE", trigger deep recovery
 4. **Follow instructions:** Execute exactly what the previous Claude documented
@@ -130,69 +166,85 @@ When the context file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE", t
 
 **Why this exists:** Claude's training data can cause year confusion. This step ensures correct dates.
 
-**Step 0.5: Session Tracking Initialization (MANDATORY)**
+**Step 0.5: Session Status Check & Identity (MANDATORY)**
 
-**Purpose:** Track which workspaces are touched during this session for multi-workspace awareness.
+**Purpose:** Check if session is already in use, inherit identity from context file, track workspaces.
 
-1. **Get the shortcode for the starting workspace:**
-   ```bash
-   # Map project argument to shortcode
-   # rd=requestdesk, rd-test=requestdesk-testing, astro=astro-sites, shop=shopify, wpp=wordpress-plugin, wps=wordpress-sites, mage=magento, juno=junogo, job=jobs, brent=brent-workspace, bt=brent-timekeeper, cc=claude-commands, doc=documentation
-   ```
+**1. Check Session Status in Context File:**
 
-2. **Generate your unique Claude identifier:**
-   Pick a famous person's name to distinguish yourself from other Claude instances (two Claudes might work in the same workspace).
+After locating the context file (Step 0), read the `## SESSION STATUS` section:
+```bash
+grep -A 4 "## SESSION STATUS" [context-file]
+```
 
-   **Step A: Check which names are taken:**
-   ```bash
-   cat /Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json 2>/dev/null || echo "[]"
-   ```
+**Parse the status:**
+- **Status: ACTIVE** → ⚠️ Warn user: "This session appears to be in use by another window. Continue anyway? (y/n)"
+- **Status: SAVED** → Safe to resume
+- **Status: LATER** → This is a parked session being resumed
+- **No status section** → Legacy file, proceed normally
 
-   **Step B: Pick ANY famous person's name not on that list.** Examples:
-   - Scientists: Edison, Tesla, Curie, Darwin, Hopper, Turing, Lovelace, Feynman, Hawking
-   - Artists: DaVinci, Picasso, Mozart, Beethoven, VanGogh
-   - Explorers: Shackleton, Earhart, Armstrong, Cousteau
-   - Writers: Hemingway, Austen, Twain, Tolkien
-   - Or anyone else famous!
+**2. Inherit Identity from Context File:**
 
-   **Step C: Register your name IMMEDIATELY (before anything else):**
-   ```bash
-   NAMES_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json"
-   CURRENT=$(cat "$NAMES_FILE" 2>/dev/null || echo "[]")
-   echo "$CURRENT" | jq '. + ["Claude-YourName"]' > "$NAMES_FILE"
-   ```
+If the context file has `**Identity:** Claude-[Name]`:
+```bash
+INHERITED_NAME=$(grep "^\*\*Identity:\*\*" [context-file] | sed 's/.*Claude-//' | tr -d ' ')
+```
 
-   **Step D: Display:** "🤖 I am: Claude-[YourChosenName]"
+**If identity found:** Use it (e.g., if file says `Claude-Curie`, you become Claude-Curie)
+**If no identity found:** Pick a new name (see examples below)
 
-   **Use this identifier when:**
-   - Responding to inter-Claude communication files in `.claude/claude-comms/`
-   - The user asks you to communicate with another Claude instance
-   - Signing messages in shared log files
+**Name examples (if picking new):**
+- Scientists: Edison, Tesla, Curie, Darwin, Hopper, Turing, Lovelace, Feynman, Hawking
+- Artists: DaVinci, Picasso, Mozart, Beethoven, VanGogh
+- Explorers: Shackleton, Earhart, Armstrong, Cousteau
+- Writers: Hemingway, Austen, Twain, Tolkien
 
-3. **Initialize or update session tracking file:**
-   ```bash
-   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
-   SHORTCODE="[resolved-shortcode]"
-   NOW=$(date -u +"%Y-%m-%dT%H:%M:%S")
+**3. Register Name (whether inherited or new):**
+```bash
+NAMES_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json"
+CURRENT=$(cat "$NAMES_FILE" 2>/dev/null || echo "[]")
+# Add name if not already present
+echo "$CURRENT" | jq '. + ["Claude-[Name]"] | unique' > "$NAMES_FILE"
+```
 
-   # Create session file (or reset if new day)
-   cat > "$SESSION_FILE" << EOF
-   {
-     "started": "$NOW",
-     "startWorkspace": "$SHORTCODE",
-     "workspacesTouched": ["$SHORTCODE"],
-     "lastActivity": "$NOW"
-   }
-   EOF
-   ```
+**4. Update Context File Status to ACTIVE:**
 
-3. **Display session initialized:**
-   ```
-   🚀 Session started: [SHORTCODE] ([full-project-name])
-   📁 Tracking workspaces in: .claude/local/active-session.json
-   ```
+Use the Edit tool to update the context file:
+- Change `**Status:** SAVED` → `**Status:** ACTIVE`
+- Update `**Last Started:** [YYYY-MM-DD HH:MM]` with current timestamp
 
-**Why this exists:** Enables `/claude-save` and `/claude-complete` to know ALL workspaces touched during a session, preventing accidental context loss when multiple projects are modified.
+**5. Display Identity:**
+```
+🤖 I am: Claude-[Name] (inherited from context file)
+```
+or
+```
+🤖 I am: Claude-[Name] (new identity)
+```
+
+**6. Initialize session tracking file:**
+```bash
+SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
+SHORTCODE="[resolved-shortcode]"
+NOW=$(date -u +"%Y-%m-%dT%H:%M:%S")
+
+cat > "$SESSION_FILE" << EOF
+{
+  "started": "$NOW",
+  "startWorkspace": "$SHORTCODE",
+  "workspacesTouched": ["$SHORTCODE"],
+  "lastActivity": "$NOW"
+}
+EOF
+```
+
+**7. Display session initialized:**
+```
+🚀 Session started: [SHORTCODE] ([full-project-name])
+📁 Tracking workspaces in: .claude/local/active-session.json
+```
+
+**Why this exists:** Enables identity inheritance across sessions, prevents session collisions, and tracks workspaces touched.
 
 **Step 1: Read Work Log for Day Context**
 1. **Get today's date** from Step 0 (format: YYYY-MM-DD)
@@ -316,7 +368,7 @@ Display: "📁 Added workspace: [SHORTCODE] to session tracking"
      ```
 
 **Step 4: File-Based Context & Emergency Detection**
-1. **Locate context file:** `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[branch-name]-context.md`
+1. **Locate context file:** Use the Context File Resolution rules from above. Files now use format `[workspace]-[date]-[claude-name]-context.md`. Legacy files without Claude name are still supported.
 2. **Read instruction file:** Load the handoff document if it exists
 3. **🚨 CHECK FOR EMERGENCY FLAG:**
    - If file contains "EMERGENCY CONTEXT SAVE" or "LOW CONTEXT SAVE":
