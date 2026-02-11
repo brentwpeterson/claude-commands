@@ -49,7 +49,7 @@ One-off pricing. For ongoing blog programs, see content retainer packages or Con
 | Add-On | Description | Price |
 |--------|-------------|-------|
 | Content Refresh | Update existing posts for SEO | $200/post |
-| Social Snippets | 3 social posts per blog article | $[NEED: price]/post |
+| Social Snippets | 3 social posts per blog article | +$75/post |
 | Rush Delivery | 3 business days instead of 7 | +50% |
 
 **What We Need From You:**
@@ -102,9 +102,9 @@ Flat monthly retainer. Scoped per client based on volume and complexity. Not sol
 
 | Package | Includes | Monthly Fee |
 |---|---|---|
-| SEO Starter | Keyword map, 2-4 articles/mo, monthly reporting | $[NEED: flat monthly] |
-| SEO Growth | Full strategy, 4-8 articles/mo, content briefs, reporting | $[NEED: flat monthly] |
-| SEO Scale | Full program, 8+ articles/mo, technical SEO, dedicated strategist | $[NEED: flat monthly] |
+| SEO Starter | Keyword map, 2-4 articles/mo, monthly reporting | $1,500/mo |
+| SEO Growth | Full strategy, 4-8 articles/mo, content briefs, reporting | $3,000/mo |
+| SEO Scale | Full program, 8+ articles/mo, technical SEO, dedicated strategist | $5,000/mo |
 
 Reference: CC brand bible says "Weekly Blog + Social: $2K-$5K/month"
 
@@ -121,10 +121,10 @@ Reference: CC brand bible says "Weekly Blog + Social: $2K-$5K/month"
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Competitor Analysis | Deep dive on top 3 competitors | +$[NEED: price] |
-| Link Building Outreach | Manual outreach for backlinks | +$[NEED: price]/mo |
+| Competitor Analysis | Deep dive on top 3 competitors | +$500 |
+| Link Building Outreach | Manual outreach for backlinks | +$750/mo |
 | Content Refresh | Update + re-optimize existing pages | +$200/page |
-| Schema Markup | FAQ, HowTo, Article schema | +$[NEED: price]/page |
+| Schema Markup | FAQ, HowTo, Article schema | +$100/page |
 
 **What We Need From You:**
 1. Google Analytics and Search Console access (read-only)
@@ -176,10 +176,10 @@ Flat project fee. Scoped per site, not sold per-page.
 
 | Scope | Pages | Project Fee |
 |---|---|---|
-| Small (landing page, about, contact) | 3-5 pages | $[NEED: flat fee] |
-| Standard (full brochure site) | 6-10 pages | $[NEED: flat fee] |
-| Large (enterprise site or redesign) | 11-20 pages | $[NEED: flat fee] |
-| Enterprise (20+ pages) | Custom scoped | $[NEED: flat fee] |
+| Small (landing page, about, contact) | 3-5 pages | $1,500 |
+| Standard (full brochure site) | 6-10 pages | $3,000 |
+| Large (enterprise site or redesign) | 11-20 pages | $5,000 |
+| Enterprise (20+ pages) | Custom scoped | $5,000+ |
 
 **Investment (proposal template):**
 
@@ -194,9 +194,9 @@ Flat project fee. Scoped per site, not sold per-page.
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| A/B Test Variants | Alternate headline/CTA sets | +$[NEED: price] |
-| UX Copy Review | Microcopy, forms, error states | +$[NEED: price] |
-| Brand Messaging Guide | Core messages, value props, tone | +$[NEED: price] |
+| A/B Test Variants | Alternate headline/CTA sets | +$500 |
+| UX Copy Review | Microcopy, forms, error states | +$750 |
+| Brand Messaging Guide | Core messages, value props, tone | +$2,000 |
 
 **What We Need From You:**
 1. Sitemap or list of pages needed
@@ -217,7 +217,7 @@ Flat project fee. Scoped per site, not sold per-page.
 | 5. Final copy deck delivery | Week 4-5 |
 
 **Billing Model:** one-time
-**Terms:** 50% deposit to start, 50% upon final delivery. One round of revisions per page included. Additional revisions billed at $X,XXX/hour.
+**Terms:** 50% deposit to start, 50% upon final delivery. One round of revisions per page included. Additional revisions billed at $200/hour.
 
 ---
 
@@ -249,16 +249,16 @@ Flat monthly retainer for ongoing programs. One-time project fee for sequences. 
 
 | Package | Includes | Monthly Fee |
 |---|---|---|
-| Email Starter | 4 emails/mo, newsletter or campaign | $[NEED: flat monthly] |
-| Email Growth | 8 emails/mo, mixed campaigns + A/B testing | $[NEED: flat monthly] |
-| Email Scale | 12+ emails/mo, full program management | $[NEED: flat monthly] |
+| Email Starter | 4 emails/mo, newsletter or campaign | $1,000/mo |
+| Email Growth | 8 emails/mo, mixed campaigns + A/B testing | $2,500/mo |
+| Email Scale | 12+ emails/mo, full program management | $5,000/mo |
 
 | One-Time Projects | Includes | Project Fee |
 |---|---|---|
-| Drip Sequence | 5-7 email automated sequence | $[NEED: flat fee] |
-| Welcome Series | 3-5 email onboarding flow | $[NEED: flat fee] |
-| Win-Back Campaign | Re-engagement sequence | $[NEED: flat fee] |
-| Email Audit | Review existing campaigns + recommendations | $[NEED: flat fee] |
+| Drip Sequence | 5-7 email automated sequence | $1,500 |
+| Welcome Series | 3-5 email onboarding flow | $1,000 |
+| Win-Back Campaign | Re-engagement sequence | $1,000 |
+| Email Audit | Review existing campaigns + recommendations | $500 |
 
 **Investment (proposal template):**
 
@@ -273,10 +273,10 @@ Flat monthly retainer for ongoing programs. One-time project fee for sequences. 
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Drip Sequence | 5-7 email automated sequence (one-time) | +$[NEED: price] |
-| Welcome Series | 3-5 email onboarding flow (one-time) | +$[NEED: price] |
-| Win-Back Campaign | Re-engagement sequence (one-time) | +$[NEED: price] |
-| Email Audit | Review existing campaigns + recommendations | +$[NEED: price] |
+| Drip Sequence | 5-7 email automated sequence (one-time) | +$1,500 |
+| Welcome Series | 3-5 email onboarding flow (one-time) | +$1,000 |
+| Win-Back Campaign | Re-engagement sequence (one-time) | +$1,000 |
+| Email Audit | Review existing campaigns + recommendations | +$500 |
 
 **What We Need From You:**
 1. Email platform access (or we can set up)
@@ -328,10 +328,10 @@ Flat monthly retainer. Scoped per client based on platforms and volume. Not sold
 
 | Package | Includes | Monthly Fee |
 |---|---|---|
-| Social Starter | 1 platform, 12 posts/mo (3/wk), content calendar | $[NEED: flat monthly] |
-| Social Growth | 2 platforms, 20 posts/mo (5/wk), calendar + strategy | $[NEED: flat monthly] |
-| Social Scale | 3 platforms, 40 posts/mo, full program | $[NEED: flat monthly] |
-| Full Program | 4+ platforms, 60+ posts/mo, dedicated manager | $[NEED: flat monthly] |
+| Social Starter | 1 platform, 12 posts/mo (3/wk), content calendar | $1,000/mo |
+| Social Growth | 2 platforms, 20 posts/mo (5/wk), calendar + strategy | $2,000/mo |
+| Social Scale | 3 platforms, 40 posts/mo, full program | $4,000/mo |
+| Full Program | 4+ platforms, 60+ posts/mo, dedicated manager | $6,000/mo |
 
 Reference: CC brand bible says "Weekly Blog + Social: $2K-$5K/month"
 
@@ -348,10 +348,10 @@ Reference: CC brand bible says "Weekly Blog + Social: $2K-$5K/month"
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Community Management | Daily monitoring + responses | +$[NEED: price]/mo |
-| Paid Social Copy | Ad copy for campaigns | +$[NEED: price]/campaign |
-| Video Scripts | Short-form video scripts (Reels, TikTok) | +$[NEED: price]/script |
-| Analytics Reporting | Monthly performance report | +$[NEED: price]/mo |
+| Community Management | Daily monitoring + responses | +$1,000/mo |
+| Paid Social Copy | Ad copy for campaigns | +$500/campaign |
+| Video Scripts | Short-form video scripts (Reels, TikTok) | +$150/script |
+| Analytics Reporting | Monthly performance report | +$300/mo |
 
 **What We Need From You:**
 1. Platform login access (or scheduling tool access)
@@ -375,46 +375,73 @@ Reference: CC brand bible says "Weekly Blog + Social: $2K-$5K/month"
 
 ---
 
-## aeo - AEO Optimization
+## aeo-geo - AEO/GEO: AI Search Optimization
 
 **Category:** Content Creation
 **Brand:** Content Cucumber
 
-**Description:** Answer Engine Optimization. Structure your content so AI assistants, featured snippets, and voice search find and cite your brand. The next evolution of SEO.
+**Description:** Answer Engine Optimization (AEO) + Generative Engine Optimization (GEO). AEO formats your content so search engines extract and display it in featured snippets, AI Overviews, and voice search. GEO builds your authority so generative AI tools (ChatGPT, Perplexity, Gemini, Claude) cite your brand in their responses. Two sides of the same coin, delivered as one service. The next evolution of SEO.
+
+**Relationship to LLM Discovery:** The `llm-discovery` service is the one-time audit that shows how AI models currently see your brand. AEO/GEO is the ongoing optimization that improves that visibility month over month. LLM Discovery is the diagnosis, AEO/GEO is the treatment.
 
 **Discovery Questions:**
 1. What questions do your customers ask most frequently?
-2. Are you currently appearing in any AI-generated answers or featured snippets?
+2. Are you currently appearing in any AI-generated answers, featured snippets, or AI Overviews?
 3. Do you have existing FAQ or knowledge base content?
+4. Have you run an LLM Discovery audit? (If not, recommend starting there.)
+5. Who are your top 3 competitors in your space?
 
 **Deliverables:**
 
+### AEO (Answer Engine) Deliverables
 | Item | Description |
 |------|-------------|
-| AEO Audit | Current AI visibility assessment |
 | Question Map | Priority questions your content should answer |
-| Optimized Content | Restructured or new content for AI citation |
-| Schema Markup | FAQ, HowTo, QAPage structured data |
-| AI Visibility Report | Tracking citations in ChatGPT, Perplexity, Google AI |
+| Content Restructuring | Reformat existing pages for answer extraction (75-300 word answer blocks) |
+| Schema Markup | FAQ, HowTo, QAPage, Article, Product structured data |
+| Featured Snippet Targeting | Content optimized to win Google's featured snippet positions |
+| Voice Search Optimization | Content formatted for Alexa, Siri, Google Assistant |
 
-**Investment:**
+### GEO (Generative Engine) Deliverables
+| Item | Description |
+|------|-------------|
+| Entity Optimization | Build clear entity identity across the web so AI models recognize your brand |
+| Topical Authority Content | Expert-level, citation-worthy content that AI models reference |
+| Third-Party Mentions | Placements on authoritative sites that AI models train on and cite |
+| AI Citation Monitoring | Track how ChatGPT, Perplexity, Gemini, Claude reference your brand |
+| Monthly AI Visibility Report | Share-of-voice in AI responses, citation tracking, prompt testing results |
 
-| Item | Quantity | Rate | Total |
-|------|----------|------|-------|
-| AEO audit + strategy | 1 | $X,XXX | $X,XXX |
-| Content optimization | X pages/mo | $X,XXX/page | $X,XXX/mo |
-| Schema implementation | Included | - | - |
-| Monthly reporting | Included | - | - |
-| | | **Monthly Total** | **$X,XXX** |
+**Internal Fee Grid:**
+
+Monthly retainer. Ongoing optimization, not one-time. For the initial audit, see `llm-discovery`.
+
+| Package | Includes | Monthly Fee |
+|---|---|---|
+| AEO/GEO Starter | AI visibility monitoring, quarterly content updates (2-3 pages), schema maintenance, basic reporting | $2,000/mo |
+| AEO/GEO Growth | Monthly content sprints (4-6 pages optimized), entity work, multi-platform monitoring, monthly reporting | $4,000/mo |
+| AEO/GEO Scale | Full program: 8+ pages/mo, PR coordination, review management, directory optimization, executive reporting | $7,500/mo |
+
+Recommended pairing: LLM Discovery audit ($1,500-$2,500) as the entry point, then transition to AEO/GEO retainer.
+
+**Investment (proposal template):**
+
+| Item | Scope | Total |
+|------|-------|-------|
+| AEO/GEO optimization program | Flat monthly retainer | $X,XXX/mo |
+| Schema implementation | Included | - |
+| AI citation monitoring | Included | - |
+| Monthly reporting | Included | - |
+| | **Monthly Total** | **$X,XXX** |
 
 **Add-Ons:**
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| New AEO Content | Net-new articles optimized for AI | +$X,XXX/article |
-| Competitor AEO Analysis | How competitors appear in AI answers | +$X,XXX |
-| Voice Search Optimization | Specific optimization for voice assistants | +$X,XXX |
-| Quarterly AEO Review | Deep dive re-assessment | +$X,XXX |
+| LLM Discovery Audit | One-time AI visibility assessment (see `llm-discovery`) | $1,500-$2,500 |
+| Net-New AEO Content | New articles structured for AI extraction | +$200/article |
+| Competitor AI Analysis | How competitors appear in AI answers vs. your brand | +$500 |
+| Quarterly Deep Review | Full re-audit of AI visibility with updated action plan | +$1,000/quarter |
+| PR Placements | Authoritative media placements for GEO authority building | +$1,500/mo |
 
 **What We Need From You:**
 1. Website URL and sitemap
@@ -422,19 +449,23 @@ Reference: CC brand bible says "Weekly Blog + Social: $2K-$5K/month"
 3. List of priority topics/questions
 4. Current FAQ or help center content
 5. Competitor URLs
+6. LLM Discovery audit results (if previously completed)
+7. Brand guidelines and key messaging
 
 **Process:**
 
 | Step | Timeline |
 |------|----------|
-| 1. AEO audit + AI visibility scan | Week 1-2 |
+| 1. LLM Discovery audit (if not done) | Week 1-2 |
 | 2. Question map + content strategy | Week 2-3 |
-| 3. First optimized content delivery | Week 3-4 |
-| 4. Schema implementation | Week 4 |
-| 5. Monthly optimization + reporting | Ongoing |
+| 3. Schema implementation + first content restructuring | Week 3-4 |
+| 4. Entity optimization + authority building begins | Week 4+ |
+| 5. Monthly optimization + AI visibility reporting | Ongoing |
 
-**Billing Model:** hybrid
-**Terms:** One-time audit fee + monthly optimization retainer. Billed on the 1st. 30-day cancellation notice after initial 3-month commitment.
+Results timeline: 90-180 days before measurable AI visibility improvements, with compounding benefits over time.
+
+**Billing Model:** monthly-retainer
+**Terms:** Monthly retainer, billed on the 1st. 30-day cancellation notice after initial 3-month commitment. LLM Discovery audit billed separately as one-time project if needed.
 
 ---
 
@@ -474,9 +505,9 @@ Scoped per store. Project fee based on audit findings. Not sold per-product or p
 
 | Scope | Approximate Scale | Project Fee |
 |---|---|---|
-| Small Store | Under 50 products, under 10 categories | $[NEED: flat fee] |
-| Medium Store | 50-200 products, 10-30 categories | $[NEED: flat fee] |
-| Large Store | 200-500 products, 30+ categories | $[NEED: flat fee] |
+| Small Store | Under 50 products, under 10 categories | $3,000 |
+| Medium Store | 50-200 products, 10-30 categories | $7,500 |
+| Large Store | 200-500 products, 30+ categories | $15,000 |
 | Enterprise | 500+ products, complex taxonomy | Custom scoped |
 
 Ongoing content maintenance available as monthly retainer after initial optimization.
@@ -486,25 +517,25 @@ Ongoing content maintenance available as monthly retainer after initial optimiza
 | Item | Scope | Total |
 |------|-------|-------|
 | Store content audit | Included | - |
-| Product descriptions | Scoped per store | $X,XXX |
-| Category + subcategory pages | Scoped per store | $X,XXX |
+| Product descriptions | Scoped per store | Included |
+| Category + subcategory pages | Scoped per store | Included |
 | SEO metadata (all pages) | Included | - |
-| Blog content (supporting) | Scoped per store | $X,XXX |
-| | **Project Total** | **$X,XXX** |
+| Blog content (supporting) | Scoped per store | Included |
+| | **Project Total** | **$3,000-$15,000** |
 
 **Add-Ons:**
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Product Launch Package | Fast-track 20 new products | +$[NEED: price] |
+| Product Launch Package | Fast-track 20 new products | +$1,500 |
 | Rush Delivery | 50% faster turnaround | +50% |
-| A/B Variants | Alternate descriptions for testing | +$[NEED: price] |
-| Translation | Localized content (per language) | +$[NEED: price] |
-| Image Alt Text | SEO alt text for all product images | +$[NEED: price] |
-| Buying Guides | Long-form guide per category | +$[NEED: price]/guide |
-| FAQ Sections | Category-specific FAQs with schema | +$[NEED: price] |
-| Schema + Rich Snippets | Product schema for all pages | +$[NEED: price] |
-| Ongoing Content Retainer | Monthly content maintenance after launch | +$[NEED: price]/mo |
+| A/B Variants | Alternate descriptions for testing | +$50/product |
+| Translation | Localized content (per language) | +60% of project fee |
+| Image Alt Text | SEO alt text for all product images | +$5/image |
+| Buying Guides | Long-form guide per category | +$500/guide |
+| FAQ Sections | Category-specific FAQs with schema | +$300/category |
+| Schema + Rich Snippets | Product schema for all pages | +$500 |
+| Ongoing Content Retainer | Monthly content maintenance after launch | +$1,000/mo |
 
 **What We Need From You:**
 1. Product catalog or data feed (CSV, API access, or manual list)
@@ -561,7 +592,7 @@ Ongoing content maintenance available as monthly retainer after initial optimiza
 |---|---|---|---|
 | Fractional CMO (Lite) | 10 hrs/mo | Strategy, quarterly plan, monthly reporting | $2,000/mo |
 | Fractional CMO (Standard) | 20 hrs/mo | Everything in Lite + campaign management, weekly calls | $4,000/mo |
-| Full Marketing Department | 40+ hrs/mo | Full outsourced marketing team, daily management | $[NEED: price]/mo |
+| Full Marketing Department | 40+ hrs/mo | Full outsourced marketing team, daily management | $8,000/mo |
 
 Brent confirmed current marketing management rate is $2,000/mo.
 
@@ -581,7 +612,7 @@ Brent confirmed current marketing management rate is $2,000/mo.
 |--------|-------------|-------|
 | Content Production | Blog, email, social (see individual service types) | + per service retainer |
 | Paid Media Management | Google Ads, Meta Ads, etc. | + per paid-media fee grid |
-| Event Marketing | Trade show, webinar, event planning | +$[NEED: price]/event |
+| Event Marketing | Trade show, webinar, event planning | +$2,500/event |
 | Brand Strategy | Positioning, messaging, visual identity | + per brand-strategy fee grid |
 
 **What We Need From You:**
@@ -642,19 +673,19 @@ Reference: CC brand bible says "Content Flywheel starting at $1,000/month"
 
 | Item | Quantity | Rate | Total |
 |------|----------|------|-------|
-| Content flywheel strategy | 1 | $[NEED: price] | $[NEED: price] |
+| Content flywheel strategy | 1 | $1,500 | $1,500 |
 | 90-day content plan | Included | - | - |
 | Measurement framework | Included | - | - |
-| | | **Project Total** | **$X,XXX** |
+| | | **Project Total** | **$1,500** |
 
 **Add-Ons:**
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Execution Support | We execute the plan (monthly retainer) | +$[NEED: price]/mo |
-| Quarterly Review | Re-assess and adjust the flywheel | +$[NEED: price]/quarter |
-| Team Training | Train your team to run the flywheel | +$[NEED: price] |
-| Tool Setup | Configure scheduling, analytics, workflow tools | +$[NEED: price] |
+| Execution Support | We execute the plan (monthly retainer) | +$2,000/mo |
+| Quarterly Review | Re-assess and adjust the flywheel | +$500/quarter |
+| Team Training | Train your team to run the flywheel | +$500/session |
+| Tool Setup | Configure scheduling, analytics, workflow tools | +$500 |
 
 **What We Need From You:**
 1. Access to all current content channels
@@ -684,7 +715,7 @@ Reference: CC brand bible says "Content Flywheel starting at $1,000/month"
 **Category:** Commerce
 **Brand:** Content Basis
 
-**Description:** Find out how AI models (ChatGPT, Perplexity, Claude, Gemini) talk about your products, brand, and category. Discover gaps, correct misinformation, and position your brand for AI-driven commerce.
+**Description:** Find out how AI models (ChatGPT, Perplexity, Claude, Gemini) talk about your products, brand, and category. Discover gaps, correct misinformation, and position your brand for AI-driven commerce. This is the one-time audit. For ongoing optimization, see `aeo-geo`.
 
 **Discovery Questions:**
 1. What are your top products or product categories?
@@ -705,19 +736,23 @@ Reference: CC brand bible says "Content Flywheel starting at $1,000/month"
 
 | Item | Quantity | Rate | Total |
 |------|----------|------|-------|
-| LLM discovery audit | 1 | $X,XXX | $X,XXX |
+| LLM discovery audit | 1 | $1,500-$2,500 | $1,500-$2,500 |
 | Competitor analysis | Up to 3 competitors | Included | - |
 | Action plan | Included | - | - |
-| | | **Project Total** | **$X,XXX** |
+| | | **Project Total** | **$1,500-$2,500** |
+
+Scoped based on number of products/categories to scan and complexity of the competitive landscape.
+
+**Gateway to AEO/GEO:** After the audit, recommend transitioning to the `aeo-geo` monthly retainer for ongoing optimization.
 
 **Add-Ons:**
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Additional Competitors | Beyond initial 3 | +$X,XXX/competitor |
-| Content Execution | Create the recommended content | +$X,XXX/mo |
-| Quarterly Re-Scan | Updated LLM discovery report | +$X,XXX/quarter |
-| Multi-Market | Scan in multiple languages/regions | +$X,XXX/market |
+| Additional Competitors | Beyond initial 3 | +$500/competitor |
+| Content Execution | Create the recommended content (see `aeo-geo`) | AEO/GEO retainer |
+| Quarterly Re-Scan | Updated LLM discovery report | +$1,000/quarter |
+| Multi-Market | Scan in multiple languages/regions | +$750/market |
 
 **What We Need From You:**
 1. Brand name, URL, and product catalog overview
@@ -870,11 +905,11 @@ Ad spend is paid directly by the client to the platform. Management fee is separ
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Additional Platform | Add a platform beyond the first | +$X,XXX/mo |
-| Landing Page Copy | Conversion-optimized landing page per campaign | +$X,XXX/page |
-| Creative Production | Custom ad graphics or video | +$X,XXX/asset |
-| Competitor Ad Analysis | Review competitor ad strategies | +$X,XXX |
-| Conversion Tracking Setup | Pixel, tag, and event configuration | +$X,XXX (one-time) |
+| Additional Platform | Add a platform beyond the first | +$300/mo |
+| Landing Page Copy | Conversion-optimized landing page per campaign | +$750/page |
+| Creative Production | Custom ad graphics or video | +$200/hr (scoped) |
+| Competitor Ad Analysis | Review competitor ad strategies | +$500 |
+| Conversion Tracking Setup | Pixel, tag, and event configuration | +$500 (one-time) |
 
 **What We Need From You:**
 1. Ad platform access (admin or partner access to ad accounts)
@@ -939,10 +974,10 @@ Project-based pricing available. Hourly rate: $200/hr.
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Logo Design | Custom logo + variations | +$X,XXX |
-| Brand Guidelines Document | Full PDF brand book | +$X,XXX |
-| Internal Launch Kit | Presentation + training for team adoption | +$X,XXX |
-| Quarterly Brand Review | Ongoing brand health check | +$X,XXX/quarter |
+| Logo Design | Custom logo + variations | +$2,000 |
+| Brand Guidelines Document | Full PDF brand book | +$1,500 |
+| Internal Launch Kit | Presentation + training for team adoption | +$1,000 |
+| Quarterly Brand Review | Ongoing brand health check | +$1,000/quarter |
 
 **What We Need From You:**
 1. Any existing brand materials (logo, guidelines, past campaigns)
@@ -1089,18 +1124,18 @@ All projects include revisions (up to 2 rounds). Design delivered via Canva or e
 
 | Scope | Tests/Month | Monthly Fee |
 |---|---|---|
-| Starter | 1-2 tests | $X,XXX/mo |
-| Growth | 3-4 tests | $X,XXX/mo |
-| Scale | 5+ tests | $X,XXX/mo |
+| Starter | 1-2 tests | $2,000/mo |
+| Growth | 3-4 tests | $4,000/mo |
+| Scale | 5+ tests | $7,500/mo |
 
 **Add-Ons:**
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Landing Page Build | Net-new optimized landing page | +$X,XXX/page |
-| Heatmap Tool Setup | Hotjar/Clarity installation + configuration | +$X,XXX (one-time) |
-| Checkout Optimization | E-commerce specific checkout flow analysis | +$X,XXX |
-| Personalization | Dynamic content based on audience segments | +$X,XXX/mo |
+| Landing Page Build | Net-new optimized landing page | +$1,500/page |
+| Heatmap Tool Setup | Hotjar/Clarity installation + configuration | +$500 (one-time) |
+| Checkout Optimization | E-commerce specific checkout flow analysis | +$2,000 |
+| Personalization | Dynamic content based on audience segments | +$1,500/mo |
 
 **What We Need From You:**
 1. Google Analytics access (GA4, admin preferred)
@@ -1174,18 +1209,18 @@ All projects include revisions (up to 2 rounds). Design delivered via Canva or e
 
 | Scope | Monthly Fee |
 |---|---|
-| Maintenance (monitoring + minor tweaks) | $[NEED: price]/mo |
-| Active (maintenance + 1-2 new workflows/mo) | $[NEED: price]/mo |
-| Full management (dedicated automation support) | $[NEED: price]/mo |
+| Maintenance (monitoring + minor tweaks) | $1,000/mo |
+| Active (maintenance + 1-2 new workflows/mo) | $2,500/mo |
+| Full management (dedicated automation support) | $5,000/mo |
 
 **Add-Ons:**
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Platform Migration | Migrate from one platform to another | +$X,XXX (scoped) |
-| CRM Cleanup | Deduplicate, tag, and organize contacts | +$X,XXX |
-| Custom Integrations | API connections between platforms | +$X,XXX/integration |
-| Team Training | Train your team on the platform | +$X,XXX/session |
+| Platform Migration | Migrate from one platform to another | +$200/hr (scoped) |
+| CRM Cleanup | Deduplicate, tag, and organize contacts | +$1,500 |
+| Custom Integrations | API connections between platforms | +$2,000/integration |
+| Team Training | Train your team on the platform | +$500/session |
 
 **What We Need From You:**
 1. Admin access to marketing automation platform
@@ -1230,12 +1265,12 @@ All projects include revisions (up to 2 rounds). Design delivered via Canva or e
 | Asset Type | Description | Per Asset |
 |---|---|---|
 | Case Study | 1-2 page customer success story (problem, solution, results) | $1,500 |
-| Pitch Deck | 10-15 slide sales presentation | $[NEED: price] |
-| One-Pager / Sell Sheet | Single-page service or product overview | $[NEED: price] |
-| Battle Card | Competitive comparison for sales team | $[NEED: price] |
-| Proposal Template | Reusable proposal framework per service | $[NEED: price] |
-| Email Sequences | 3-5 email sales outreach sequences | $[NEED: price]/sequence |
-| ROI Calculator | Interactive or spreadsheet-based ROI tool | $[NEED: price] |
+| Pitch Deck | 10-15 slide sales presentation | $3,000 |
+| One-Pager / Sell Sheet | Single-page service or product overview | $750 |
+| Battle Card | Competitive comparison for sales team | $1,000 |
+| Proposal Template | Reusable proposal framework per service | $1,500 |
+| Email Sequences | 3-5 email sales outreach sequences | $1,000/sequence |
+| ROI Calculator | Interactive or spreadsheet-based ROI tool | $3,000 |
 | Comparison Paper | Product/service comparison whitepaper | $1,500 - $4,000 |
 
 Reference: CC brand bible says "Case studies ($1,500 each), comparison papers ($1,500-$4,000)"
@@ -1245,12 +1280,12 @@ Reference: CC brand bible says "Case studies ($1,500 each), comparison papers ($
 | Asset Type | Description | Per Asset |
 |---|---|---|
 | Case Study | 1-2 page customer success story (problem, solution, results) | $1,500 |
-| Pitch Deck | 10-15 slide sales presentation | $X,XXX |
-| One-Pager / Sell Sheet | Single-page service or product overview | $X,XXX |
-| Battle Card | Competitive comparison for sales team | $X,XXX |
-| Proposal Template | Reusable proposal framework per service | $X,XXX |
-| Email Sequences | 3-5 email sales outreach sequences | $X,XXX/sequence |
-| ROI Calculator | Interactive or spreadsheet-based ROI tool | $X,XXX |
+| Pitch Deck | 10-15 slide sales presentation | $3,000 |
+| One-Pager / Sell Sheet | Single-page service or product overview | $750 |
+| Battle Card | Competitive comparison for sales team | $1,000 |
+| Proposal Template | Reusable proposal framework per service | $1,500 |
+| Email Sequences | 3-5 email sales outreach sequences | $1,000/sequence |
+| ROI Calculator | Interactive or spreadsheet-based ROI tool | $3,000 |
 
 **Investment:**
 
@@ -1262,18 +1297,18 @@ Priced individually. See deliverables table above.
 
 | Package | Includes | Total |
 |---|---|---|
-| Starter | 2 case studies + 1 pitch deck + 2 one-pagers | $X,XXX |
-| Growth | 4 case studies + 2 pitch decks + 4 one-pagers + 2 battle cards | $X,XXX |
-| Full Arsenal | 6 case studies + 2 pitch decks + 6 one-pagers + 4 battle cards + 3 email sequences | $X,XXX |
+| Starter | 2 case studies + 1 pitch deck + 2 one-pagers | $7,500 |
+| Growth | 4 case studies + 2 pitch decks + 4 one-pagers + 2 battle cards | $16,000 |
+| Full Arsenal | 6 case studies + 2 pitch decks + 6 one-pagers + 4 battle cards + 3 email sequences | $25,000 |
 
 **Add-Ons:**
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Customer Interview | We interview your customer for case study content | +$X,XXX/interview |
-| Video Testimonial | Pair with video service for video case study | +$X,XXX/video |
-| Quarterly Refresh | Update all sales content quarterly | +$X,XXX/quarter |
-| Sales Team Training | Workshop on using the content effectively | +$X,XXX/session |
+| Customer Interview | We interview your customer for case study content | +$250/interview |
+| Video Testimonial | Pair with video service for video case study | +$1,500/video |
+| Quarterly Refresh | Update all sales content quarterly | +$2,000/quarter |
+| Sales Team Training | Workshop on using the content effectively | +$500/session |
 
 **What We Need From You:**
 1. Sales team input (common objections, deal stages, buyer personas)
@@ -1322,25 +1357,38 @@ Priced individually. See deliverables table above.
 | Monthly Intelligence Report | Summary of changes, threats, and opportunities |
 | Strategic Recommendations | Actionable insights based on competitor activity |
 
-**Investment:**
+**Internal Fee Grid:**
 
-| Competitors Tracked | Monthly Fee |
-|---|---|
-| Up to 3 | $X,XXX/mo |
-| 4-6 | $X,XXX/mo |
-| 7-10 | $X,XXX/mo |
-| 10+ | Custom pricing |
+Monthly retainer, tiered by number of competitors tracked. Includes content, SEO, social, and ad monitoring plus monthly intelligence report with strategic recommendations.
 
-Initial setup includes competitor profiling (first month may have additional setup fee).
+| Competitors Tracked | Monthly Fee | Includes |
+|---|---|---|
+| Up to 3 | $1,500/mo | Monthly intel report, SEO + content + social monitoring, strategic recommendations |
+| 4-6 | $3,000/mo | Everything above + ad monitoring, quarterly executive briefing |
+| 7-10 | $5,000/mo | Everything above + LLM/AI visibility monitoring, sales battlecards, weekly alerts |
+| 10+ | Custom pricing | Dedicated analyst time, custom dashboards |
+
+Initial setup fee: $1,000 (competitor profiling, tool configuration, baseline report). Waived if paired with LLM Discovery audit.
+
+**Investment (proposal template):**
+
+| Item | Scope | Total |
+|------|-------|-------|
+| Competitive intelligence program | Flat monthly retainer | $X,XXX/mo |
+| Competitor profiling + setup | One-time | $1,000 |
+| Monthly intelligence report | Included | - |
+| Strategic recommendations | Included | - |
+| | **Monthly Total** | **$X,XXX** |
 
 **Add-Ons:**
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Initial Deep Dive | Comprehensive one-time competitive analysis | +$X,XXX |
-| Ad Creative Library | Monthly collection of competitor ad creative | +$X,XXX/mo |
-| Pricing Monitoring | Track competitor pricing changes | +$X,XXX/mo |
-| Win/Loss Analysis | Interview lost deals to understand competitive dynamics | +$X,XXX/quarter |
+| Initial Deep Dive | Comprehensive one-time competitive analysis (standalone report) | +$2,500 |
+| Ad Creative Library | Monthly collection of competitor ad creative with analysis | +$500/mo |
+| Pricing Monitoring | Track competitor pricing changes, alert on shifts | +$500/mo |
+| Win/Loss Analysis | Interview lost deals to understand competitive dynamics | +$1,500/quarter |
+| LLM Monitoring Add-On | AI visibility tracking (included in 7-10 tier, add-on for lower tiers) | +$750/mo |
 
 **What We Need From You:**
 1. Competitor list with URLs
@@ -1389,32 +1437,53 @@ Initial setup includes competitor profiling (first month may have additional set
 
 **Internal Fee Grid:**
 
-One-off pricing. Deliverables and scope need to be defined per engagement. Packages available for multi-webinar commitments.
+One-off pricing per webinar. Multi-webinar packages discount per-event cost. Talk Commerce handles strategy through delivery, leveraging existing production infrastructure (Canon EOS R, Rode Wireless Go II, professional editing workflow).
 
-**NOTE:** Deliverables for webinar production need further definition. What's included in "full production" vs. lighter support varies significantly.
+### What "Full Production" Includes
+
+| Phase | Deliverables |
+|---|---|
+| **Pre-Production** | Topic strategy, script/talking points, slide deck (branded), landing page copy, 2-3 promotional emails, social promotion posts |
+| **Live Production** | Platform setup, tech rehearsal, live moderation, Q&A management, recording (double backup) |
+| **Post-Production** | Edited on-demand recording (delivered within 3 business days), blog post recap, email recap to attendees |
 
 ### Per Webinar
 
 | Item | Price |
 |---|---|
-| Single webinar (full production) | $[NEED: one-off price] |
+| Single webinar (full production) | $2,500 |
+| Webinar (lighter touch: no strategy/script, client provides slides) | $1,500 |
 
-### Multi-Webinar Packages (if applicable)
+### Multi-Webinar Packages
 
-| Package | Webinars | Includes | Total |
-|---|---|---|---|
-| 3-Pack | 3 webinars | Strategy, script, slides, promotion, production, recording | $[NEED: price] |
-| 6-Month | 6 webinars (1/mo) | Everything in 3-Pack + repurposed content per webinar | $[NEED: price] |
+| Package | Webinars | Per Webinar | Total | Includes |
+|---|---|---|---|---|
+| 3-Pack | 3 webinars | $2,000/ea | $6,000 | Full production for all 3 |
+| 6-Month | 6 webinars (1/mo) | $1,750/ea | $10,500 | Full production + content repurposing per webinar |
+| 12-Month | 12 webinars (1/mo) | $1,500/ea | $18,000 | Full production + repurposing + quarterly strategy review |
+
+### Content Repurposing Bundle (per webinar)
+
+Included in 6-Month and 12-Month packages. Add-on for single and 3-Pack.
+
+| Asset | Quantity | Notes |
+|---|---|---|
+| Short video clips | 3-5 clips (30-90 sec) | Vertical + landscape, captioned |
+| Blog post | 1 (1,000-1,500 words) | SEO-optimized recap |
+| Social posts | 5-8 posts | Platform-specific for LinkedIn, X, etc. |
+| Email recap | 1 | Sent to attendees + no-shows |
+| Audiogram clip | 1 | Audio with waveform for social |
 
 **Add-Ons:**
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Speaker Sourcing | Identify and recruit guest speakers | +$X,XXX/webinar |
-| Paid Promotion | Ad spend management for webinar registration | +$X,XXX + ad spend |
-| On-Demand Hub | Set up evergreen webinar library on your site | +$X,XXX (one-time) |
-| Attendee Follow-Up | Post-webinar email sequence to attendees | +$X,XXX/webinar |
-| Social Clips | 3-5 short video clips per webinar | +$X,XXX/webinar |
+| Content Repurposing Bundle | Full bundle above (for single/3-Pack purchases) | +$750/webinar |
+| Speaker Sourcing | Identify and recruit guest speakers | +$500/webinar |
+| Paid Promotion | Ad spend management for webinar registration | +$500 + ad spend |
+| On-Demand Hub | Set up evergreen webinar library on your site | +$1,500 (one-time) |
+| Attendee Follow-Up Sequence | 3-5 email drip sequence post-webinar | +$750/webinar |
+| Speaker Coaching | 1-hour prep session with each speaker | +$250/speaker |
 
 **What We Need From You:**
 1. Topics or themes (or let us recommend based on your audience)
@@ -1484,10 +1553,10 @@ Project-based pricing available after scoping.
 | Add-On | Description | Price |
 |--------|-------------|-------|
 | Custom Plugin / Module | Platform-specific custom functionality | +$200/hr (scoped) |
-| E-commerce Setup | Product catalog, checkout, payment gateway | +$X,XXX (scoped) |
-| Multi-Language Setup | WPML, Weglot, or platform-native i18n | +$X,XXX |
-| Performance Optimization | Speed, caching, CDN configuration | +$X,XXX |
-| Ongoing Maintenance | Post-launch support (see wp-maintenance) | +$X,XXX/mo |
+| E-commerce Setup | Product catalog, checkout, payment gateway | +$3,000 (scoped) |
+| Multi-Language Setup | WPML, Weglot, or platform-native i18n | +$1,500 |
+| Performance Optimization | Speed, caching, CDN configuration | +$1,000 |
+| Ongoing Maintenance | Post-launch support (see wp-maintenance) | +$200/mo |
 
 **What We Need From You:**
 1. Current website access (CMS admin, FTP/SSH if applicable)
@@ -1558,12 +1627,12 @@ Content writing included in all tiers. If client provides content, price is redu
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| E-commerce (WooCommerce) | Product catalog, cart, checkout, payments | +$X,XXX |
-| Membership / Gated Content | User accounts, restricted content areas | +$X,XXX |
-| Multi-Language | WPML or Weglot setup | +$X,XXX |
-| Blog Content | Launch with 5-10 blog posts | +$X,XXX |
-| Ongoing Maintenance | Post-launch care (see wp-maintenance) | +$X,XXX/mo |
-| Photography / Stock Images | Curated or custom imagery | +$X,XXX |
+| E-commerce (WooCommerce) | Product catalog, cart, checkout, payments | +$3,000 |
+| Membership / Gated Content | User accounts, restricted content areas | +$2,000 |
+| Multi-Language | WPML or Weglot setup | +$1,500 |
+| Blog Content | Launch with 5-10 blog posts | +$1,500 |
+| Ongoing Maintenance | Post-launch care (see wp-maintenance) | +$200/mo |
+| Photography / Stock Images | Curated or custom imagery | +$500 |
 
 **What We Need From You:**
 1. Business overview and goals for the site
@@ -1635,11 +1704,11 @@ Content writing included in all tiers. If client provides content, price is redu
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Headless CMS Integration | ButterCMS, Contentful, or Sanity for content editing | +$[NEED: price] |
-| Blog Setup | Markdown or CMS-powered blog with RSS | +$[NEED: price] |
-| Multi-Language | i18n routing with language switcher | +$[NEED: price] |
-| Blog Content | Launch with 5-10 blog posts | +$[NEED: price] |
-| Ongoing Maintenance | Post-launch care | +$[NEED: price]/mo |
+| Headless CMS Integration | ButterCMS, Contentful, or Sanity for content editing | +$2,000 |
+| Blog Setup | Markdown or CMS-powered blog with RSS | +$1,000 |
+| Multi-Language | i18n routing with language switcher | +$1,500 |
+| Blog Content | Launch with 5-10 blog posts | +$1,500 |
+| Ongoing Maintenance | Post-launch care | +$200/mo |
 | Performance Audit | Lighthouse audit + optimization report | Included |
 
 **What We Need From You:**
@@ -1722,12 +1791,12 @@ ButterCMS subscription cost is separate (paid by client directly to ButterCMS).
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Custom Content Types | Beyond standard pages/blog (case studies, team, FAQs, etc.) | +$[NEED: price]/type |
-| Multi-Language | ButterCMS localization setup | +$[NEED: price] |
-| Blog Content | Launch with 5-10 blog posts | +$[NEED: price] |
+| Custom Content Types | Beyond standard pages/blog (case studies, team, FAQs, etc.) | +$500/type |
+| Multi-Language | ButterCMS localization setup | +$1,500 |
+| Blog Content | Launch with 5-10 blog posts | +$1,500 |
 | Content Migration | Migrate from WordPress or other CMS | +$200/hr (scoped) |
-| Ongoing Maintenance | Post-launch care | +$[NEED: price]/mo |
-| CMS Training (Extended) | Additional training sessions for team | +$[NEED: price]/session |
+| Ongoing Maintenance | Post-launch care | +$200/mo |
+| CMS Training (Extended) | Additional training sessions for team | +$500/session |
 
 **What We Need From You:**
 1. Business overview and goals for the site
@@ -1808,10 +1877,10 @@ Larger projects scoped separately at $200/hr.
 | Add-On | Description | Price |
 |--------|-------------|-------|
 | Additional Dev Hours | Beyond plan allocation | +$200/hr |
-| Emergency Support | Same-day response for critical issues | +$X,XXX/mo |
-| Staging Environment | Dedicated staging site for testing changes | +$X,XXX/mo |
-| CDN Setup | CloudFlare or similar CDN configuration | +$X,XXX (one-time) |
-| Annual Security Audit | Deep security review + hardening | +$X,XXX/year |
+| Emergency Support | Same-day response for critical issues | +$300/mo |
+| Staging Environment | Dedicated staging site for testing changes | +$100/mo |
+| CDN Setup | CloudFlare or similar CDN configuration | +$500 (one-time) |
+| Annual Security Audit | Deep security review + hardening | +$1,500/year |
 
 **What We Need From You:**
 1. WordPress admin access
@@ -1883,10 +1952,10 @@ Larger projects scoped separately at $200/hr.
 
 | Add-On | Description | Price |
 |--------|-------------|-------|
-| Ongoing Monitoring | Monthly monitoring + maintenance of integrations | +$X,XXX/mo |
+| Ongoing Monitoring | Monthly monitoring + maintenance of integrations | +$500/mo |
 | Data Migration | One-time historical data transfer | +$200/hr (scoped) |
-| Webhook Setup | Real-time event triggers between platforms | +$X,XXX/webhook |
-| Rate Limit Management | Handle API throttling for high-volume syncs | +$X,XXX |
+| Webhook Setup | Real-time event triggers between platforms | +$500/webhook |
+| Rate Limit Management | Handle API throttling for high-volume syncs | +$1,000 |
 
 **What We Need From You:**
 1. Admin/API access to all platforms involved
@@ -1961,10 +2030,10 @@ Larger projects scoped separately at $200/hr.
 | Add-On | Description | Price |
 |--------|-------------|-------|
 | AI Agent Build | Custom AI agent that uses the MCP server | +$200/hr (scoped) |
-| Hosting + Infrastructure | We host and manage the MCP server | +$X,XXX/mo |
-| Additional Data Source | Connect another system to the MCP server | +$X,XXX/source |
-| Training | Train your team to extend and maintain the MCP server | +$X,XXX/session |
-| Quarterly Updates | Keep MCP server current with platform API changes | +$X,XXX/quarter |
+| Hosting + Infrastructure | We host and manage the MCP server | +$300/mo |
+| Additional Data Source | Connect another system to the MCP server | +$2,000/source |
+| Training | Train your team to extend and maintain the MCP server | +$500/session |
+| Quarterly Updates | Keep MCP server current with platform API changes | +$1,500/quarter |
 
 **What We Need From You:**
 1. API access to all systems the MCP server will connect to
