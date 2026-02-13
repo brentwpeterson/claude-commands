@@ -1,3 +1,8 @@
+> **PARKED SESSION: Case Study Wizard feature build + frontend component inventory analysis**
+> **Workspace:** brent | **Branch:** feature/case-study (rd) | **Parked:** 2026-02-06
+> **Why parked:** End of day
+> **To resume:** Read the full context below, then ask user what to work on first.
+
 # Resume Instructions for Claude
 
 ## SESSION STATUS

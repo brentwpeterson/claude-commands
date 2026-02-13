@@ -249,7 +249,11 @@ After LinkedIn drafts are approved, create tailored versions. NOT copy-paste.
 - Each platform version should feel native to that platform
 - Threads for posts 3+ (persona/demo type content) should work as X threads
 - Bluesky can be more casual/lowercase
-- Links always go in first comment (Vista Social `comments` parameter), not message body
+- **Link placement is platform-specific:**
+  - **LinkedIn:** Links go in first comment (Vista Social `comments` parameter). LinkedIn suppresses reach for posts with external links in the body.
+  - **X/Twitter:** Links go in the post body. Social card (preview image + title) renders automatically. URLs are wrapped to 23 chars by t.co.
+  - **Bluesky:** Links go in the post body. Social card renders automatically. Full URL counts against 300 char limit.
+  - **Threads:** Links go in the post body. Social card renders automatically. Full URL counts against 500 char limit.
 - **CHARACTER COUNT VALIDATION (MANDATORY):** After writing each platform version, count the characters. If over the limit, rewrite shorter. Do NOT submit to Vista Social without validating.
   - **Bluesky: 300 characters MAX.** This is the tightest limit. Write Bluesky posts LAST and keep them SHORT. If a Bluesky post is over 300 chars, cut it down before moving on. Count newlines as 1 char each.
   - **X: 280 characters MAX** per tweet (threads: 280 per tweet).

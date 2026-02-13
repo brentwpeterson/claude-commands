@@ -20,6 +20,18 @@ Friday inbox is usually lighter. Don't let admin eat writing time.
 
 ---
 
+## Friday LinkedIn Dad Joke
+
+**Every Friday, post a dad joke video to LinkedIn (profile 22469).**
+
+- Pick a joke from `free-joke-project.csv` that hasn't been posted to LinkedIn (check `posted_linkedin` column)
+- Add `#FridayFunny #DadJokes` hashtags
+- Post via Vista Social API with video
+- Update CSV `posted_linkedin` column with today's date
+- Same 90-day rotation rule as other platforms
+
+---
+
 ## Content Tasks
 
 ### 1. Write NEXT Tuesday's Tuesdays with Claude Article

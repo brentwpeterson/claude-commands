@@ -51,7 +51,21 @@ DO NOT commit, DO NOT run MCP, DO NOT validate anything. Just write and stop.
 
 # MODE DETECTION
 
-Parse arguments: `/claude-save <project> [flags] [X%]`
+Parse arguments: `/claude-save [project] [flags] [X%]`
+
+**No-argument resolution:**
+When no project argument is provided:
+1. Read `active-session.json`:
+   ```bash
+   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
+   ```
+2. Extract `name` and `startWorkspace` from the JSON
+3. If both `name` and `startWorkspace` are present: use them (no argument needed)
+   - `name` becomes the Claude identity for the save
+   - `startWorkspace` becomes the project shortcode
+4. If file is missing, unreadable, or missing `name` field:
+   - Error: "No active session found. Run `/claude-start` first or pass a project: `/claude-save rd`"
+   - STOP. Do not proceed with save.
 
 | Context % | Mode | What to do |
 |-----------|------|------------|
@@ -103,7 +117,12 @@ SESSIONS_REG   = /Users/brent/scripts/CB-Workspace/.claude/local/active-sessions
 - Commit: `git commit -m "[description] Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"`
 
 **Phase 2: Write context file**
-- Get Claude identity from session (e.g., "Tesla", "Shackleton")
+- Get Claude identity: **Primary source** is `active-session.json` `name` field. Fallback to conversation memory.
+  ```bash
+  # Read identity from session file (primary source)
+  CLAUDE_NAME=$(cat /Users/brent/scripts/CB-Workspace/.claude/local/active-session.json 2>/dev/null | jq -r '.name // empty')
+  # If empty, fall back to conversation memory (e.g., "Tesla", "Shackleton")
+  ```
 - **Check for legacy file without Claude name and RENAME it:**
   ```bash
   # If a file exists without the Claude name, rename it to include the name
@@ -166,7 +185,12 @@ Quick template:
 - If multiple workspaces: note in context file
 
 **Phase 3: Write context file**
-- Get Claude identity from session (e.g., "Tesla", "Shackleton")
+- Get Claude identity: **Primary source** is `active-session.json` `name` field. Fallback to conversation memory.
+  ```bash
+  # Read identity from session file (primary source)
+  CLAUDE_NAME=$(cat /Users/brent/scripts/CB-Workspace/.claude/local/active-session.json 2>/dev/null | jq -r '.name // empty')
+  # If empty, fall back to conversation memory (e.g., "Tesla", "Shackleton")
+  ```
 - **Check for legacy file without Claude name and RENAME it:**
   ```bash
   # If a file exists without the Claude name, rename it to include the name

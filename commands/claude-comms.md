@@ -113,41 +113,29 @@ To trigger the other Claude to read this:
 
 ## MODE: START NEW CONVERSATION (`/claude-comms start`)
 
-### Step 2: Show available recipients
+**CRITICAL: No back-and-forth. The user already knows what they want to say. Your job is to write the file and give them ONE copy-paste block. That's it.**
 
-Read active names:
-```bash
-cat /Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json
-```
+### Step 2: Understand the message from context
 
-Display:
-```
-Active Claude instances:
-  - Claude-Nightingale
-  - Claude-Galileo
+The user will tell you what they want to communicate (either in the same message as `/claude-comms start` or you ask ONCE: "What do you need to tell them?"). That's the only question you ask.
 
-Who do you want to message? (or type a name if recipient isn't listed)
-```
+**Do NOT ask:**
+- Who the recipient is (use `to-other` for broadcast, recipient identifies themselves)
+- What the topic is (derive it from the message)
+- Any clarifying questions about format or delivery
 
-If only one other Claude is active, suggest them as default.
+### Step 3: Write the comms file and produce the copy-paste block
 
-### Step 3: Get message details
+1. Register your name if you haven't already (silently)
+2. Write the comms file:
 
-Ask the user:
-```
-What is the topic? (used for filename)
-What do you need from them? (I'll write the message)
-```
-
-### Step 4: Write the comms file
-
-Filename: `[my-name]-to-[their-name]-[topic-kebab-case].md`
+Filename: `[my-name]-to-other-[topic-kebab-case].md`
 
 ```markdown
 # Claude Communication: [Topic]
 **Started:** [YYYY-MM-DD HH:MM]
 **From:** Claude-[MyName]
-**To:** Claude-[TheirName]
+**To:** Any active Claude instance
 
 ---
 
@@ -156,20 +144,24 @@ Filename: `[my-name]-to-[their-name]-[topic-kebab-case].md`
 [Message content - self-contained, includes all context needed]
 
 **Action Requested:** [What you need from the recipient]
+**Reply to:** [full path to this file]
 
 ---
 ```
 
-### Step 5: Give user the handoff
+3. **Immediately give the user a single copy-paste block:**
 
 ```
-Message created: [full path to file]
-
-To deliver this to Claude-[Recipient]:
-  1. Switch to their terminal window
-  2. Paste this: /claude-comms [their-lowercase-name]
-  3. They will see your message in their inbox
+Paste this into the other Claude's window:
 ```
+
+Then output a fenced code block containing:
+
+```
+I am Claude-[MyName]. Brent wants you to know: [concise message with all necessary context and paths]. Reply by appending to: [full path to comms file]
+```
+
+**That's it. One block. Done. No follow-up questions, no delivery instructions, no extra steps.**
 
 ---
 

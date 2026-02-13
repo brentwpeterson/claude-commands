@@ -5,12 +5,13 @@ Claude Session Start - Read Resume Instructions and Execute
 🚨 **CRITICAL DEVELOPMENT ENVIRONMENT RULE**: This project uses DOCKER containers for development. DO NOT look for local dev servers (npm, python, etc.). ALL development happens in Docker containers. If you can't find the expected Docker containers running, ASK THE USER immediately instead of spending time troubleshooting. The user will guide you to start the correct containers.
 
 **USAGE:**
-- `/claude-start <project>` - Read instruction file from save command and resume exactly where left off
+- `/claude-start` - Fresh session: detect workspace from `pwd`, pick a name, register, present status
+- `/claude-start <project>` - Resume from saved context file for a project shortcode
 - `/claude-start <claude-name>` - Resume by Claude name (e.g., `/claude-start curie`)
 - `/claude-start <full-path>` - Resume from specific context file path
 
 **Arguments**:
-- `<project>` (required): Project name, Claude name, or full path to context file
+- `<project>` (optional): Project name, Claude name, or full path to context file. If omitted, starts a fresh session in the current workspace.
 
 **NAME-BASED LOOKUP:**
 If argument looks like a Claude name (not a shortcode or path):
@@ -58,6 +59,36 @@ If argument looks like a Claude name (not a shortcode or path):
 | `doc` | documentation | `/Users/brent/scripts/CB-Workspace/documentation` |
 
 **SESSION TRACKING FILE:** `/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json`
+
+**🔍 WORKSPACE DETECTION FROM PWD (No-Argument Mode):**
+
+When `/claude-start` is called with NO arguments, detect the workspace from the current working directory:
+
+```bash
+CWD=$(pwd)
+# Reverse lookup: match CWD against shortcode directory mapping
+case "$CWD" in
+  /Users/brent/scripts/CB-Workspace/requestdesk-app-testing*) SHORTCODE="rd-test" ;;
+  /Users/brent/scripts/CB-Workspace/requestdesk-app*) SHORTCODE="rd" ;;
+  /Users/brent/scripts/CB-Workspace/astro-sites*) SHORTCODE="astro" ;;
+  /Users/brent/scripts/CB-Workspace/cb-shopify*) SHORTCODE="shop" ;;
+  /Users/brent/scripts/CB-Workspace/requestdesk-wordpress*) SHORTCODE="wpp" ;;
+  /Users/brent/scripts/CB-Workspace/wordpress-sites*) SHORTCODE="wps" ;;
+  /Users/brent/scripts/CB-Workspace/cb-magento-integration*) SHORTCODE="mage" ;;
+  /Users/brent/scripts/CB-Workspace/cb-junogo*) SHORTCODE="juno" ;;
+  /Users/brent/scripts/CB-Workspace/jobs*) SHORTCODE="job" ;;
+  /Users/brent/scripts/CB-Workspace/brent-workspace*) SHORTCODE="brent" ;;
+  /Users/brent/scripts/CB-Workspace/brent-timekeeper*) SHORTCODE="bt" ;;
+  /Users/brent/scripts/CB-Workspace/.claude*) SHORTCODE="cc" ;;
+  /Users/brent/scripts/CB-Workspace/documentation*) SHORTCODE="doc" ;;
+  /Users/brent/scripts/CB-Workspace) SHORTCODE="" ;;  # At workspace root, ask user
+  *) SHORTCODE="" ;;  # Not in a known workspace, ask user
+esac
+```
+
+- If `SHORTCODE` is found: use it as the workspace for the fresh session
+- If `SHORTCODE` is empty (at workspace root or unknown directory): ask user "Which workspace are you working in?" and list available shortcodes
+- **Note:** Match `requestdesk-app-testing` BEFORE `requestdesk-app` to avoid false match (or use exact match logic)
 
 **🚨 CRITICAL: Always use this mapping to resolve project names to full paths!**
 - If project name not in mapping, ASK USER for the correct path
@@ -118,9 +149,43 @@ fi
 - Legacy files without Claude name (e.g., `brent-2026-02-05-context.md`) still work if matched
 
 **How to detect argument type:**
+- No argument → fresh session (use workspace detection from pwd)
 - Contains `/` → file path
 - Matches shortcode list (rd, brent, etc.) → workspace shortcode
 - Otherwise → Claude name (try name-based lookup first)
+
+---
+
+**🆕 NO-ARGUMENT FLOW (Fresh Session):**
+
+When `/claude-start` is called with NO arguments:
+
+1. **Detect workspace from pwd** using the "Workspace Detection from pwd" reverse lookup above
+2. **Pick a new Claude name** (do NOT try to resume an existing session)
+3. **Register name** in `active-claude-names.json`
+4. **Write `active-session.json`** with `name` field included
+5. **Register in `active-sessions.json`** registry
+6. **Skip context file loading** (this is a fresh session, no context to resume)
+7. **Run Step 0 (date verification)** and **Step 1 (work log)** and **Step 2 (navigate)**
+8. **Skip Steps 3-5** (no MCP context to load, no context file, no setup instructions)
+9. **Go to Step 6** (present status, ask for direction)
+
+**Display for fresh session:**
+```
+📅 Today is: [YYYY-MM-DD] ([Day of week])
+🤖 I am: Claude-[Name] (new identity)
+🚀 Fresh session started: [SHORTCODE] ([full-project-name])
+📁 Tracking workspaces in: .claude/local/active-session.json
+
+⏱️ Day Status: [from work log]
+
+📁 Working in: [SHORTCODE] ([path])
+🌿 Branch: [current branch]
+
+Ready for direction. What should I work on?
+```
+
+---
 
 **⚡ SIMPLE WORKFLOW:**
 1. **Find instruction file:** Resolve using the context file resolution rules above
@@ -267,17 +332,20 @@ or
 ```bash
 SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
 SHORTCODE="[resolved-shortcode]"
+CLAUDE_NAME="[resolved-claude-name]"  # e.g., "Earhart", "Tesla" - from inherited or newly picked name
 NOW=$(date -u +"%Y-%m-%dT%H:%M:%S")
 
 cat > "$SESSION_FILE" << EOF
 {
   "started": "$NOW",
+  "name": "$CLAUDE_NAME",
   "startWorkspace": "$SHORTCODE",
   "workspacesTouched": ["$SHORTCODE"],
   "lastActivity": "$NOW"
 }
 EOF
 ```
+**CRITICAL:** The `name` field MUST be written in ALL cases (fresh session, resume, inherited). This is what `/claude-save` reads when called without arguments.
 
 **7. Display session initialized:**
 ```

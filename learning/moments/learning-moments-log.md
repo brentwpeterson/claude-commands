@@ -2,7 +2,16 @@
 
 Running log of expectation gaps between what Claude did and what Brent wanted. Not violations (those go in `.claude/violations/`). These are calibration moments.
 
-**Total Moments:** 4
+**Total Moments:** 5
+
+---
+
+## 2026-02-07 - Claude Comms Must Be One Copy-Paste Block (#5)
+
+**Severity:** Always
+**Trigger:** User ran `/claude-comms start` to message another Claude about using the wrong directory. Claude asked which recipient, required multiple rounds of back-and-forth, and took 10 minutes for what should have been 30 seconds.
+**Expected:** Immediately produce one copy-paste block containing: Claude's own name, the message, and the reply file path. Never ask user to guess recipient names. One block, one paste, done.
+**Resolution:** Pending CLAUDE.md rule for /claude-comms skill update.
 
 ---
 
