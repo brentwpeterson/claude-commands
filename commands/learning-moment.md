@@ -145,15 +145,34 @@ ARCHIVE_FORMAT: learning-moments-YY-MM.md (e.g., learning-moments-26-01.md)
    - "Severity: [Always/Usually/Ask first/Just know]"
    ```
 
-3. **If severity is "Always":**
+3. **Write to Auto Memory (REQUIRED - this is what loads at session start):**
+   ```
+   MEMORY_FILE: ~/.claude/projects/<current-project>/memory/MEMORY.md
+   ```
+
+   Resolve the project path from the git repo root (same logic Claude Code uses internally).
+   Append a concise entry under a `## Learning Moments` section:
+
+   ```markdown
+   ## Learning Moments
+   - [YYYY-MM-DD] [Always/Usually/Ask/Know]: [One-line guidance sentence]
+   ```
+
+   If a `## Learning Moments` section already exists, append to it. If not, create it.
+   Keep entries to ONE LINE each. Auto memory has a 200-line loading limit.
+
+   **Why this step exists:** The log file and MCP Memory don't auto-load at session start. MEMORY.md does. Without this step, new sessions start blind to past learning moments.
+
+4. **If severity is "Always":**
    - Tell the user: "This is marked as 'Always'. Want me to draft a CLAUDE.md rule now, or save it for `/claude-learner --review`?"
    - If user says now: Draft the rule, show the exact diff, wait for approval, apply edit
    - If user says later: Note "Pending CLAUDE.md" in the log entry resolution
 
-4. **Confirm saved:**
+5. **Confirm saved:**
    ```
    Logged as moment #[N] in learning-moments-log.md
-   Stored in memory for future sessions.
+   Stored in MCP memory for cross-session search.
+   Written to auto memory for session-start loading.
 
    [If Always: "Ready for CLAUDE.md update when you approve."]
    [If other: "I'll keep this in mind going forward."]
@@ -210,4 +229,4 @@ When user runs `/learning-moment --log`:
 2. **No defending.** Don't explain why Claude did what it did. Just understand the gap.
 3. **User shapes the guidance.** Claude proposes, user decides.
 4. **Keep it quick.** This should take 2-3 minutes, not 15. It's a capture tool, not therapy.
-5. **MCP memory ensures persistence.** Even if the file is forgotten, the learning lives in memory.
+5. **Three-tier persistence.** Log file is the full record. MCP Memory is searchable cross-session. Auto memory (MEMORY.md) loads automatically at session start. All three are written on every capture.

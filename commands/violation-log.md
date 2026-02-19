@@ -55,8 +55,21 @@ When this command is executed, you must:
    ```
 
 3. **Update the violation counter** at the top of the log
-4. **Acknowledge the violation** with genuine understanding
-5. **Commit to improved behavior** with specific steps
+4. **Write to Auto Memory (REQUIRED - ensures new sessions load this):**
+   ```
+   MEMORY_FILE: ~/.claude/projects/<current-project>/memory/MEMORY.md
+   ```
+   Resolve the project path from the git repo root.
+   Append a concise entry under a `## Violations` section:
+   ```markdown
+   ## Violations
+   - [YYYY-MM-DD] [CATEGORY]: [One-line description of what NOT to do]
+   ```
+   If a `## Violations` section already exists, append to it. If not, create it.
+   Keep entries to ONE LINE each. Auto memory has a 200-line loading limit.
+   **Why:** The violation log file doesn't auto-load at session start. MEMORY.md does.
+5. **Acknowledge the violation** with genuine understanding
+6. **Commit to improved behavior** with specific steps
 
 ## Violation Categories:
 - **DEPLOYMENT_WITHOUT_PERMISSION**: Pushing/deploying code without explicit user approval
