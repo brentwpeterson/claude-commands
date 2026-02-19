@@ -4,19 +4,37 @@
 
 ---
 
-## Morning Checklist (EXTENDED - 75 min)
+## Date Conditionals
 
-Weekend backlog is real. Give yourself extra time.
+Evaluate these using the date from preflight step 5. Only show items that apply today.
 
-| # | Task | Tool | Time |
-|---|------|------|------|
-| 1 | Clear inbox (HEAVY) | Gmail MCP | 25 min |
-| 2 | Scan Slack channels | Slack | 10 min |
-| 3 | Clear HubSpot tasks | HubSpot MCP | 15 min |
-| 4 | Review HubSpot deals | HubSpot MCP | 10 min |
-| 5 | Review/respond to LinkedIn | LinkedIn | 15 min |
+```
+IF: Sprint day 6-9 (second Monday) → Add "Mid-sprint review" to punch list
+IF: P0 event within 7 days → Add "Event prep: [event name]" to punch list
+```
 
-**75 MIN MONDAY EXTENDED. Then move to content/rocks.**
+**How to calculate sprint day:**
+```bash
+# Get sprint start date from API, calculate days elapsed
+KEY="MNRcaklW3XF7UpKX4VrxPV7wo2L7xsWg"
+SPRINT_DATA=$(curl -s "https://app.requestdesk.ai/api/sprints" -H "Authorization: Bearer $KEY")
+# Parse start_date from active sprint, calculate business days elapsed
+```
+
+---
+
+## Punch List
+
+| # | Task | Tool | Time | Pull data? |
+|---|------|------|------|------------|
+| 1 | Clear inbox (HEAVY - weekend backlog) | Gmail MCP | 25 min | On demand |
+| 2 | Scan Slack channels | Slack MCP | 10 min | On demand |
+| 3 | Clear HubSpot tasks | HubSpot MCP | 15 min | On demand |
+| 4 | Review HubSpot deals | HubSpot MCP | 10 min | On demand |
+| 5 | Review/respond to LinkedIn | LinkedIn | 15 min | Manual |
+| 6 | Strety todos confirmation (due today) | Strety MCP | 5 min | On demand |
+
+**75 MIN MAX for morning checklist. Then move to content/rocks.**
 
 ---
 
@@ -30,8 +48,6 @@ Weekend backlog is real. Give yourself extra time.
 - If done: Move to TWC LinkedIn scheduling
 
 ### 2. Schedule TWC LinkedIn Post for Tuesday
-
-**Every Monday, schedule the LinkedIn post for Tuesday's Tuesdays with Claude article.**
 
 1. Read the TWC LinkedIn process doc:
    ```bash
@@ -61,21 +77,12 @@ Weekend backlog is real. Give yourself extra time.
      }'
    ```
 
-6. Report: "TWC LinkedIn post scheduled for Tuesday 9:00 AM"
-
 ---
 
-## Mid-Sprint Review (Week 2 Only)
+## Conditional: Mid-Sprint Review (Week 2 Only)
 
-**Trigger:** If this is days 6-9 of the current sprint (second Monday), run mid-sprint review.
+**Only run if sprint day 6-9.**
 
-**Check:**
-```bash
-# Sprint start date is in sprint-plan.md
-# Calculate if we're in week 2
-```
-
-**If Week 2 Monday:**
 - Calculate velocity so far (pts completed / days elapsed)
 - Calculate remaining velocity needed
 - Flag at-risk stories (remaining > 1.5x current velocity)
@@ -84,24 +91,9 @@ Weekend backlog is real. Give yourself extra time.
 
 ---
 
-## Strety Todos Confirmation (Due Today)
-
-**Strety todos are due Monday. Confirm they're done.**
-
-1. Pull open Strety todos:
-   ```
-   mcp__strety__strety_list_todos
-     assignee: "Brent"
-     showCompleted: false
-   ```
-2. Any still open? Flag them immediately. These are overdue now.
-3. If something was missed from Friday's review, address it first before moving to planning.
-
----
-
 ## Planning
 
-- Review sprint-plan.md status
+- Review sprint board from API (already loaded at startup)
 - Identify top 3 priorities for the week
 - Check Q1 Rocks progress
 

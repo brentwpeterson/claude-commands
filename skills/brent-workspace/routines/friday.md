@@ -4,17 +4,24 @@
 
 ---
 
-## Morning Checklist (Light - 45 min)
+## Date Conditionals
 
-Friday inbox is usually lighter. Don't let admin eat writing time.
+```
+IF: P0 event within 7 days → Add "Event prep: [event name]" to punch list
+IF: Last Friday of month → Add "Monthly review" to punch list
+```
 
-| # | Task | Tool | Time |
-|---|------|------|------|
-| 1 | Clear inbox | Gmail MCP | 10 min |
-| 2 | Clear HubSpot tasks | HubSpot MCP | 15 min |
-| 3 | Review HubSpot deals | HubSpot MCP | 10 min |
-| 4 | Quick CC site check | contentcucumber.com | 10 min |
-| 5 | Review Shoptalk attendees | [Shoptalk Spring 2026](https://app.ingo.me/Shoptalk_Spring_2026/Attendees/attendee?ingo_source=ingo_vs_email) | 10 min |
+---
+
+## Punch List
+
+| # | Task | Tool | Time | Pull data? |
+|---|------|------|------|------------|
+| 1 | Clear inbox | Gmail MCP | 10 min | On demand |
+| 2 | Clear HubSpot tasks | HubSpot MCP | 15 min | On demand |
+| 3 | Review HubSpot deals | HubSpot MCP | 10 min | On demand |
+| 4 | Quick CC site check | contentcucumber.com | 10 min | Manual |
+| 5 | Strety todos review (due Monday) | Strety MCP | 10 min | On demand |
 
 **55 MIN MAX. Protect writing time.**
 
@@ -22,13 +29,12 @@ Friday inbox is usually lighter. Don't let admin eat writing time.
 
 ## Friday LinkedIn Dad Joke
 
-**Every Friday, post a dad joke video to LinkedIn (profile 22469).**
+Post a dad joke video to LinkedIn (profile 22469):
 
-- Pick a joke from `free-joke-project.csv` that hasn't been posted to LinkedIn (check `posted_linkedin` column)
+- Pick a joke from `free-joke-project.csv` where `posted_linkedin` is empty or > 90 days old
 - Add `#FridayFunny #DadJokes` hashtags
 - Post via Vista Social API with video
 - Update CSV `posted_linkedin` column with today's date
-- Same 90-day rotation rule as other platforms
 
 ---
 
@@ -54,7 +60,7 @@ Friday inbox is usually lighter. Don't let admin eat writing time.
 
 ### 2. Capture Ideas
 
-**End of week brain dump:**
+End of week brain dump:
 - What came up this week that could be content?
 - Client conversations worth writing about?
 - Tools or techniques discovered?
@@ -88,24 +94,9 @@ Update `WEEKLY-SCORECARD.md`:
 
 ---
 
-## Strety Todos Review (Due Monday)
-
-**Strety todos are due Monday. Review them now so there are no surprises.**
-
-1. Pull open Strety todos:
-   ```
-   mcp__strety__strety_list_todos
-     assignee: "Brent"
-     showCompleted: false
-   ```
-2. For each todo: Is it done? If not, can you finish it today?
-3. Flag anything that won't be done by Monday. Tell Brent now, not Monday morning.
-
----
-
 ## Prep for Next Week
 
-**Before signing off:**
+Before signing off:
 - Monday's LinkedIn Newsletter: Is it ready or need work?
 - Any calendar conflicts next week?
 - Any prep needed for meetings?

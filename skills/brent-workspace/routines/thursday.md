@@ -4,34 +4,44 @@
 
 ---
 
-## Morning Checklist (Standard - 60 min)
+## Date Conditionals
 
-| # | Task | Tool | Time |
-|---|------|------|------|
-| 1 | Clear inbox | Gmail MCP | 15 min |
-| 2 | Clear HubSpot tasks | HubSpot MCP | 20 min |
-| 3 | Review HubSpot deals | HubSpot MCP | 15 min |
-| 4 | Review CC site | contentcucumber.com | 10 min |
+```
+IF: Week number is even → Add "Content in Commerce LinkedIn Live at noon" to punch list
+IF: P0 event within 7 days → Add "Event prep: [event name]" to punch list
+```
+
+**How to calculate:**
+```bash
+WEEK_NUM=$(date +%V)
+IS_EVEN=$(( WEEK_NUM % 2 ))
+# IS_EVEN == 0 means even week → Content in Commerce week
+```
+
+---
+
+## Punch List
+
+| # | Task | Tool | Time | Pull data? |
+|---|------|------|------|------------|
+| 1 | Clear inbox | Gmail MCP | 15 min | On demand |
+| 2 | Clear HubSpot tasks | HubSpot MCP | 20 min | On demand |
+| 3 | Review HubSpot deals | HubSpot MCP | 15 min | On demand |
+| 4 | Review CC site | contentcucumber.com | 10 min | Manual |
 
 **1 HOUR MAX. Then move to rocks.**
 
 ---
 
-## Content in Commerce (Bi-Weekly)
+## Conditional: Content in Commerce (Even Weeks Only)
 
-**Check:** Is this a Content in Commerce week?
+**Only show if even week number.**
 
-```bash
-# Content in Commerce is bi-weekly on Thursday at noon
-# Check calendar or ask user
-```
-
-**If Content in Commerce day:**
 - Block 11:30 AM - 1:00 PM (prep + show + wind down)
 - Review any prep materials
-- Show link: [Add link here]
+- Check LinkedIn Live link
 
-**If NOT Content in Commerce day:**
+**If NOT Content in Commerce week:**
 - Extra rock work time available
 
 ---

@@ -4,14 +4,24 @@
 
 ---
 
-## Morning Checklist (Standard - 60 min)
+## Date Conditionals
 
-| # | Task | Tool | Time |
-|---|------|------|------|
-| 1 | Clear inbox | Gmail MCP | 15 min |
-| 2 | Clear HubSpot tasks | HubSpot MCP | 20 min |
-| 3 | Review HubSpot deals | HubSpot MCP | 15 min |
-| 4 | Review CC site | contentcucumber.com | 10 min |
+```
+IF: P0 event within 7 days → Add "Event prep: [event name]" to punch list
+```
+
+No recurring Tuesday conditionals currently.
+
+---
+
+## Punch List
+
+| # | Task | Tool | Time | Pull data? |
+|---|------|------|------|------------|
+| 1 | Clear inbox | Gmail MCP | 15 min | On demand |
+| 2 | Clear HubSpot tasks | HubSpot MCP | 20 min | On demand |
+| 3 | Review HubSpot deals | HubSpot MCP | 15 min | On demand |
+| 4 | Review CC site | contentcucumber.com | 10 min | Manual |
 
 **1 HOUR MAX. Then move to content/rocks.**
 
@@ -21,7 +31,7 @@
 
 ### 1. Tuesdays with Claude Publishes Today
 
-**The article should already be scheduled and published automatically on Medium.**
+The article should already be scheduled and published automatically on Medium.
 
 **Morning check:**
 - Go to Medium and get the LIVE article link
@@ -29,9 +39,8 @@
 
 ### 2. Update LinkedIn Post with Medium Link
 
-**Critical:** The LinkedIn post scheduled for 9 AM may have a placeholder link. Update it with the real Medium URL.
+The LinkedIn post scheduled for 9 AM may have a placeholder link. Update it with the real Medium URL.
 
-**Check Vista Social:**
 1. Log into Vista Social
 2. Find today's scheduled LinkedIn post
 3. Update the article link to the live Medium URL
@@ -39,7 +48,7 @@
 
 ### 3. Monitor Engagement
 
-**Throughout the day:**
+Throughout the day:
 - Check Medium stats (reads, claps, highlights)
 - Check LinkedIn post engagement (likes, comments, shares)
 - Respond to any comments
