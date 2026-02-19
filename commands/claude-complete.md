@@ -24,6 +24,78 @@ echo "=== UNCOMMITTED CHANGES ==="
 git status --short
 ```
 
+### Step 1.5: Branch Ownership Verification (HARD STOP - NO EXCEPTIONS)
+
+**🚨 THIS CHECK CANNOT BE SKIPPED, OVERRIDDEN, OR WORKED AROUND 🚨**
+
+You can ONLY complete a branch that YOUR session is actively working on. Jumping onto a pre-existing branch and trying to complete it is forbidden.
+
+**Verification Logic:**
+
+1. **Get current Claude identity and branch:**
+   ```bash
+   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
+   CLAUDE_NAME=$(cat "$SESSION_FILE" 2>/dev/null | grep -o '"name": *"[^"]*"' | cut -d'"' -f4)
+   CURRENT_BRANCH=$(git branch --show-current)
+   echo "Claude Identity: $CLAUDE_NAME"
+   echo "Current Branch: $CURRENT_BRANCH"
+   ```
+
+2. **Check for a context file linking THIS Claude to THIS branch:**
+   ```bash
+   CONTEXT_DIR="/Users/brent/scripts/CB-Workspace/.claude/branch-context"
+   # Search active context files for this Claude + this branch
+   MATCH=$(grep -rl "$CURRENT_BRANCH" "$CONTEXT_DIR"/*.md 2>/dev/null | xargs grep -l "$CLAUDE_NAME" 2>/dev/null | head -1)
+   echo "Context file match: ${MATCH:-NONE}"
+   ```
+
+3. **Check if this session started the branch (via /start-work):**
+   ```bash
+   # Look for todo directory matching the branch
+   BRANCH_SHORT=$(echo "$CURRENT_BRANCH" | sed 's|.*/||')
+   TODO_DIR=$(find todo/current -maxdepth 2 -type d -name "*${BRANCH_SHORT}*" 2>/dev/null | head -1)
+   echo "Todo directory: ${TODO_DIR:-NONE}"
+   ```
+
+4. **HARD STOP if ownership cannot be verified:**
+
+   If ALL of the following are true, **STOP IMMEDIATELY**:
+   - No context file links this Claude identity to this branch
+   - The branch was not created in this session
+   - The branch is not `master` or `main` (direct-to-master work is allowed)
+
+   ```
+   ╔══════════════════════════════════════════════════════════════════╗
+   ║           🛑 HARD STOP: BRANCH OWNERSHIP FAILED 🛑              ║
+   ╠══════════════════════════════════════════════════════════════════╣
+   ║                                                                   ║
+   ║  Claude-[Name] does NOT own branch: [branch-name]               ║
+   ║                                                                   ║
+   ║  This branch belongs to another session or was pre-existing      ║
+   ║  active work. You cannot complete a branch you didn't start.     ║
+   ║                                                                   ║
+   ║  What you CAN do:                                                ║
+   ║  • /claude-save to save YOUR work from this session              ║
+   ║  • Commit your changes (they'll merge when the branch completes) ║
+   ║  • Switch to a branch you own and complete that instead          ║
+   ║                                                                   ║
+   ║  What you CANNOT do:                                             ║
+   ║  • Complete this branch                                           ║
+   ║  • Merge this branch to master                                    ║
+   ║  • Delete this branch                                             ║
+   ║  • Archive this branch's todo directory                          ║
+   ║                                                                   ║
+   ╚══════════════════════════════════════════════════════════════════╝
+
+   /claude-complete ABORTED. No further phases will execute.
+   ```
+
+   **DO NOT continue to Step 2 or any other phase. The command is done.**
+
+**Why this exists:** Claude-Darwin committed log cleanup work onto `feature/feed-aggregator` (an active branch owned by another session) and then tried to `/claude-complete` it, which would have merged, archived, and deleted someone else's active work.
+
+---
+
 ### Step 2: Multi-Workspace Detection
 **CRITICAL:** Check session tracking file for workspaces touched this session.
 

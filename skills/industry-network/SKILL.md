@@ -10,6 +10,17 @@ When writing LinkedIn posts (especially commerce reports), check this directory 
 3. **Relationship context** so mentions feel natural, not random
 4. **Company context** to avoid outdated references
 
+### Deep Profiles
+
+Each expert has a detailed contact file in `contacts/[name].md` with:
+- What they're known for, content & publications
+- How they think about key topics
+- Interaction history with Brent
+- Engagement notes and real quotes
+
+**Read a contact file before referencing someone in long-form content.**
+The tables below are for quick lookup only.
+
 ### Mention Rules
 
 - Only mention someone if the post topic aligns with their expertise

@@ -49,6 +49,7 @@ Brent doesn't sell services directly under his personal brand. He does commerce 
 - "That changes everything"
 - "The problem nobody talks about"
 - Excessive adverbs and adjectives
+- Vague hook openings ("X just did something big," "Most people missed this," "Something interesting happened at Y"). Open with the fact. Say what happened, when, and where. Let the reader decide if it's interesting.
 
 ### Always Use
 - First person voice

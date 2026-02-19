@@ -20,9 +20,12 @@ Claude Session Save - Create Resume Instructions + Preserve Work
 If a percentage was passed and it is <8%, OR if `--emergency` flag is set, do ONLY this:
 
 1. Run ONE command: `git branch --show-current`
-2. Write this file from conversation memory (NO other commands):
-   - Path: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[project]-[date]-[claude-name]-emergency-context.md`
-3. Output: "Emergency context saved to: [path]" and STOP.
+2. **Get YOUR identity from conversation memory.** You know your name. Do NOT read `active-session.json` (shared file, could be another session's data).
+3. Write this file from conversation memory (NO other commands):
+   - Path: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[project]-[date]-[claude-name]-context.md`
+   - **Same filename as normal saves.** The emergency flag is INSIDE the file (`EMERGENCY CONTEXT SAVE` header), not in the filename.
+   - `[claude-name]` = YOUR name from this conversation, lowercase (e.g., `turing`, `earhart`)
+4. Output: "Emergency context saved to: [path]" and STOP.
 
 Emergency template:
 ```markdown
@@ -54,18 +57,47 @@ DO NOT commit, DO NOT run MCP, DO NOT validate anything. Just write and stop.
 Parse arguments: `/claude-save [project] [flags] [X%]`
 
 **No-argument resolution:**
-When no project argument is provided:
+When no project argument is provided, resolve identity and workspace in this order:
+
+**Step 1: Use YOUR OWN identity from conversation memory (PRIMARY)**
+- You know your Claude name. You picked it (or inherited it) at `/claude-start` or `/brent-start`.
+- You know which workspace you're working in from the session.
+- **If you know both: use them. Do NOT read `active-session.json`.**
+
+**Step 2: Fall back to `active-session.json` ONLY if you don't know your own identity**
+(This should rarely happen. If it does, something went wrong at session start.)
 1. Read `active-session.json`:
    ```bash
    SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
    ```
 2. Extract `name` and `startWorkspace` from the JSON
-3. If both `name` and `startWorkspace` are present: use them (no argument needed)
-   - `name` becomes the Claude identity for the save
-   - `startWorkspace` becomes the project shortcode
-4. If file is missing, unreadable, or missing `name` field:
-   - Error: "No active session found. Run `/claude-start` first or pass a project: `/claude-save rd`"
-   - STOP. Do not proceed with save.
+3. **VERIFY** the name matches your conversation context. If it doesn't match, WARN:
+   ```
+   ⚠️ active-session.json says [X] but I am Claude-[Y]. Using my own identity.
+   ```
+
+**Step 3: If neither works, AUTO-GENERATE a name:**
+- Pick a name from the standard list that is NOT already in use:
+  - Scientists: Edison, Tesla, Curie, Darwin, Hopper, Turing, Lovelace, Feynman, Hawking
+  - Artists: DaVinci, Picasso, Mozart, Beethoven, VanGogh
+  - Explorers: Shackleton, Earhart, Armstrong, Cousteau
+  - Writers: Hemingway, Austen, Twain, Tolkien
+- Check existing names to avoid collisions:
+  ```bash
+  # Read active names
+  NAMES_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json"
+  EXISTING=$(cat "$NAMES_FILE" 2>/dev/null || echo "[]")
+  # Also check today's context files for names in use
+  ls /Users/brent/scripts/CB-Workspace/.claude/branch-context/*-$(date +%Y-%m-%d)-*-context.md 2>/dev/null
+  ```
+- Pick a name not in either list
+- Register the name in `active-claude-names.json`
+- Write/update `active-session.json` with the new name and detected workspace
+- Detect workspace from pwd using the shortcode mapping (same as `/claude-start`)
+- Log: `Auto-assigned identity: Claude-[Name] (no /claude-start was run)`
+- Continue with the save using the new name
+
+🚨 **WHY THIS ORDER MATTERS:** `active-session.json` is a shared file. If two Claude windows are open, the last one to start overwrites it. Reading it at save time could give you another session's identity, causing you to write to the wrong context file. Your own conversation memory is always authoritative.
 
 | Context % | Mode | What to do |
 |-----------|------|------------|

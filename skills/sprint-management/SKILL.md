@@ -25,15 +25,25 @@ Then filter by `status` field: `completed`, `backlog`, `in_progress`, `archived`
 |----------|----------|
 | **Sprints API** | `https://app.requestdesk.ai/api/sprints` |
 | **Backlog API** | `https://app.requestdesk.ai/api/backlog` |
-| **Sprint Plans** | `brent-workspace/ob-notes/Brent Notes/Projects/ContentBasis/Sprints/S[N]/sprint-plan.md` |
-| **Retrospectives** | `brent-workspace/ob-notes/Brent Notes/Projects/ContentBasis/Sprints/S[N]/S[N]-retrospective.md` |
-| **Work Log** | `brent-workspace/ob-notes/Brent Notes/Dashboard/Daily/WORK-LOG.md` |
+| **Sprint Directory** | `brent-workspace/ob-notes/Brent Notes/Dashboard/Sprints/2026/Q1/S[N]/` |
+| **Current Sprint** | `brent-workspace/ob-notes/Brent Notes/Dashboard/Sprints/current/` |
+
+**Base path:** `/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Sprints/2026/Q1/`
 
 **API Authentication:**
 ```
 Authorization: Bearer MNRcaklW3XF7UpKX4VrxPV7wo2L7xsWg
 ```
 (Same key for both backlog and sprints APIs)
+
+---
+
+## 🚨 SPRINT DIRECTORY STANDARD 🚨
+
+**The single source of truth for sprint process is the Planning SOP:**
+`brent-workspace/ob-notes/Brent Notes/Dashboard/SOPs/000-planning-sop.md`
+
+**Key rule:** Every sprint directory has 5 files (sprint-plan, work-log, scorecard, retro, retro-notes). All created at planning time. Sprint is not planned until all 5 exist. See the SOP for the full checklist.
 
 ---
 
@@ -163,28 +173,43 @@ Story: "RequestDesk - new integration every 2 weeks" (NOT in sprint)
    - Update committed_points and committed_items
    - Recurring items auto-created on sprint creation
 
-2. START (status: active)
+2. COMMIT (mandatory gate between PLAN and START)
+   - SEE "SPRINT COMMIT & VERIFY GATE" SECTION BELOW
+   - PATCH sprint_name on EVERY committed backlog item
+   - Create any missing items (recurring, new tasks)
+   - Run verification query
+   - Sprint is NOT ready until verify passes
+
+3. START (status: active)
    POST /api/sprints/{id}/start
    - Timestamps all items as committed
    - Sets sprint_committed_at on backlog items
 
-3. EXECUTE (during sprint)
+4. EXECUTE (during sprint)
    PATCH /api/sprints/{id}
    - Track total_hours_worked daily
    - Note scope changes (added_items, removed_points)
    - Update backlog item statuses
 
-4. CLOSE (status: completed)
+5. CLOSE (status: completed)
    POST /api/sprints/{id}/close
    - Auto-calculates velocity and hours_per_point
    - Identifies carryover items
    - Optional: assigns carryover to next sprint
 
-5. ASSESS (post-sprint)
+6. ASSESS (post-sprint)
    PATCH /api/sprints/{id}
    - Set rating (1-5)
    - Link retrospective_file
 ```
+
+---
+
+## SPRINT COMMIT & VERIFY GATE
+
+**Full checklist:** See `000-planning-sop.md` Steps 9-10 in `Dashboard/SOPs/` (single source of truth)
+
+**Summary:** After planning, PATCH every committed item with `sprint_name` and `committed=true`, remove sprint_name from non-committed items, then verify API counts match the plan. Claude CANNOT say "sprint is ready" until the verify gate passes.
 
 ---
 
@@ -250,11 +275,20 @@ Apply this skill automatically when Brent:
   - No burndown, no daily checklist, no file discipline rules led to drift.
   - Morning /brent-start was inconsistent. Things got missed.
 
-### S3 (Feb 2-13, 2026) - CURRENT
+### S3 (Feb 2-13, 2026)
 - **Capacity:** 24 points, 16 items
+- **Completed:** 14.5 pts, 60% completion rate
 - **Working Days:** 4 (Feb 2, 6, 9, 13) - conference travel limits availability
 - **New rules:** 1pt=1hr, max 2pts per task, stories carry 0pts in sprint
 - **Goals:** Launch paid acquisition, keep content engine running, clear S2 carryover
+- **Key issue:** Sprint items not tagged with sprint_name in backlog API (same as S2). Led to commit/verify gate being added to skill.
+
+### S4 (Feb 16-27, 2026) - CURRENT
+- **Capacity:** 36 points (6 working days x 6 pts/day)
+- **Committed:** 23 items, ~35 pts (includes 1pt CC homepage added mid-sprint)
+- **Working Days:** 6 (Feb 16-20 + Feb 23 at eTail)
+- **Goals:** Activate Rock 1 (ICPs + campaigns), ship eTail prep, keep content engine running
+- **Note:** First sprint using commit/verify gate. All items properly tagged.
 
 ---
 

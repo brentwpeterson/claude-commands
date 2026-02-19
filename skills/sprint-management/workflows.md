@@ -16,7 +16,7 @@ Standard sprint = 2 weeks (12 days excluding weekends)
 
 **When:** Friday before sprint starts
 **Duration:** 1-2 hours
-**Output:** sprint-plan.md
+**Full checklist:** See `000-planning-sop.md` in `Dashboard/SOPs/` (single source of truth)
 
 ### Steps
 
@@ -93,11 +93,7 @@ Standard sprint = 2 weeks (12 days excluding weekends)
      }'
    ```
 
-5. **Create sprint-plan.md** with:
-   - Sprint goals
-   - Committed items table
-   - Risk items
-   - Dependencies
+5. **Create all 5 sprint directory files** (see 000-planning-sop.md Step 1 for details)
 
 ---
 
@@ -346,35 +342,42 @@ curl -X PATCH https://app.requestdesk.ai/api/sprints/S2 \
 
 ### Steps
 
-1. **Create Retrospective Document:**
-   - Location: `Sprints/S2/S2-retrospective.md`
-   - Template: What went well, What didn't, Action items
+1. **Fill retro.md** (already exists in sprint directory from planning):
+   - Location: `S[N]/retro.md`
+   - Sections: Metrics, What went well, What didn't, Improvements, Process changes
+   - ASK Brent directly for each section. Wait for real answers.
 
-2. **Update Sprint:**
+2. **Fill scorecard.md** with actual vs estimated points, KPI actuals.
+
+3. **Review retro-notes.md** - synthesize running observations into retro discussion.
+
+4. **Update Sprint API:**
    ```bash
    curl -X PATCH https://app.requestdesk.ai/api/sprints/S2 \
      -H "Authorization: Bearer $KEY" \
      -H "Content-Type: application/json" \
      -d '{
        "rating": 3,
-       "retrospective_file": "Sprints/S2/S2-retrospective.md",
+       "retrospective_file": "Sprints/2026/Q1/S2/retro.md",
        "retrospective_hours": 1.0
      }'
    ```
 
-3. **Archive Sprint Materials:**
-   - Move work log section to `Sprints/S2/`
-   - Ensure all docs linked
+5. **Retro is a GATE.** Sprint planning for S[N+1] cannot begin until retro.md is filled.
 
 ---
 
 ## File Locations
 
+**Base:** `/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Sprints/2026/Q1/`
+
+**Every sprint directory contains 5 files (see SKILL.md for full standard):**
+
 | Document | Path |
 |----------|------|
-| Sprint Plan | `brent-workspace/.../Sprints/S[N]/sprint-plan.md` |
-| Retrospective | `brent-workspace/.../Sprints/S[N]/S[N]-retrospective.md` |
-| Work Log | `brent-workspace/.../Dashboard/Daily/WORK-LOG.md` |
-| Archived Log | `brent-workspace/.../Sprints/S[N]/WORK-LOG-S[N].md` |
-
-Base: `/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Projects/ContentBasis/`
+| Sprint Plan | `S[N]/sprint-plan.md` |
+| Work Log | `S[N]/work-log.md` |
+| Scorecard | `S[N]/scorecard.md` |
+| Retrospective | `S[N]/retro.md` |
+| Retro Notes | `S[N]/retro-notes.md` |
+| Current Sprint | `../current/` (updated to match active sprint) |

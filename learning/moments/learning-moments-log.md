@@ -2,7 +2,25 @@
 
 Running log of expectation gaps between what Claude did and what Brent wanted. Not violations (those go in `.claude/violations/`). These are calibration moments.
 
-**Total Moments:** 5
+**Total Moments:** 7
+
+---
+
+## 2026-02-18 - Sprint API Must Match Plan File After Planning (#7)
+
+**Severity:** Always
+**Trigger:** Every morning for 3 sprints (S2, S3, S4), /brent-start pulls sprint data from the backlog API and it's broken in a different way. S4: 100 items tagged instead of 22 committed, only 7 have committed=True (wrong ones), points show 0, file paths wrong. An entire planning day was wasted because the API was never reconciled with the plan file.
+**Expected:** After sprint planning, the backlog API is reconciled with the plan file before the session ends. committed=True set on actual items, points correct, non-committed items un-tagged. /brent-start reads the API and shows correct committed items every morning without debugging.
+**Resolution:** Pending. Communicated to next Claude session via claude-comms. Needs: (1) S4 data fix, (2) permanent fix to sprint planning workflow and /brent-start. Draft CLAUDE.md rule: "After sprint planning, always reconcile the backlog API with the sprint plan file before the planning session ends."
+
+---
+
+## 2026-02-16 - Todo Directory Must Match Branch and Exist Before Code (#6)
+
+**Severity:** Always
+**Trigger:** RAG centralization work completed Phases 0 and 1 (deployed to production) with no todo directory. When Claude finally created one at Phase 2, it used a made-up name (`rag-vector-centralization`) instead of matching the branch (`feature/feed-aggregator`). Testing checklist (8th standard file) was also missing from the standard todo structure.
+**Expected:** Todo directory created at `/start-work` time, named to match the branch name exactly. All 8 standard files created before any code work: README.md, [branch]-plan.md, progress.log, debug.log, notes.md, architecture-map.md, user-documentation.md, and testing-checklist.md.
+**Resolution:** CLAUDE.md rule added. Folder renamed to `feed-aggregator`. All 8 standard files created.
 
 ---
 

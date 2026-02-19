@@ -206,6 +206,39 @@ When creating new `deployment-iterations.md`:
 
 ---
 
+**🚨 Phase 0.75: Change Scope Detection (MANDATORY - RUNS BEFORE ANYTHING ELSE)**
+
+**This step determines the deployment tag. It is NOT optional. Do NOT skip it.**
+
+```bash
+# Count frontend and backend files changed on this branch vs master
+FRONTEND_COUNT=$(git diff --name-only origin/master...HEAD -- frontend/ | wc -l | tr -d ' ')
+BACKEND_COUNT=$(git diff --name-only origin/master...HEAD -- backend/ | wc -l | tr -d ' ')
+OTHER_COUNT=$(git diff --name-only origin/master...HEAD -- ':!frontend/' ':!backend/' | wc -l | tr -d ' ')
+```
+
+**Display this EVERY time (no exceptions):**
+```
+📊 CHANGE SCOPE:
+   Frontend files changed: [FRONTEND_COUNT]
+   Backend files changed:  [BACKEND_COUNT]
+   Other files changed:    [OTHER_COUNT]
+```
+
+**Tag decision is AUTOMATIC based on counts:**
+- `FRONTEND_COUNT == 0` → **backend-v[VERSION]-[description]** (no frontend rebuild needed)
+- `BACKEND_COUNT == 0` → **frontend-v[VERSION]-[description]** (no backend rebuild needed)
+- Both > 0 → **matrix-v[VERSION]-[description]** (both need rebuilding)
+
+**Claude CANNOT override this decision.** If frontend count is 0, the tag MUST be `backend-v*`. Period.
+
+**WHY THIS EXISTS (Violation #100, #107, #109, #113):**
+- Claude has used `matrix-v*` for backend-only deploys FOUR times
+- Each time wastes ~19 minutes of paid GitHub Actions time
+- The data was always available, Claude just didn't check it
+
+---
+
 **🚨 CRITICAL: Pre-Deployment Auto-Commit**
 1. **Automatic Commit of All Changes:**
    - Check git status: `git status --porcelain`
@@ -355,15 +388,11 @@ When creating new `deployment-iterations.md`:
    - **Read current version from `VERSION` file** (e.g., content is "0.26.4")
    - **🚫 CRITICAL: DO NOT MODIFY `VERSION` file** - Use existing version as-is
 
-   **🔍 CHANGE DETECTION (NEW):**
-   - **Check what changed:** `git diff --name-only HEAD~1..HEAD` (or since last deployment)
-   - **Frontend only:** Changes only in `frontend/` directory (relative path)
-     - Ask: "Only frontend changed. Deploy frontend-only? (Y/N/F=Full)"
-     - If Y: Use `frontend-v[VERSION]-[description]` tag (~15 min deployment)
-   - **Backend only:** Changes only in `backend/` directory (relative path)
-     - Ask: "Only backend changed. Deploy backend-only? (Y/N/F=Full)"
-     - If Y: Use `backend-v[VERSION]-[description]` tag (~20 min deployment)
-   - **Both changed:** Deploy both (use existing patterns below)
+   **🔍 CHANGE DETECTION: Already determined in Phase 0.75 above.**
+   **Use the tag prefix decided there. Do NOT reconsider or override it.**
+   - Frontend 0 files → `backend-v*` (LOCKED)
+   - Backend 0 files → `frontend-v*` (LOCKED)
+   - Both > 0 → `matrix-v*` (LOCKED)
 
    **🚀 DEPLOYMENT TAG OPTIONS (Choose Best For Situation):**
    

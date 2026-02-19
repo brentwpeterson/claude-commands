@@ -158,8 +158,10 @@ Paste this into the other Claude's window:
 Then output a fenced code block containing:
 
 ```
-I am Claude-[MyName]. Brent wants you to know: [concise message with all necessary context and paths]. Reply by appending to: [full path to comms file]
+I am Claude-[MyName]. Brent wants you to know: [concise message with all necessary context and paths]. Full details and context at: [full path to comms file]. Reply by appending to that file.
 ```
+
+**REQUIREMENT: The copy-paste block MUST include the full absolute path to the comms file.** Brent pastes this into other Claude windows and needs the path so the recipient can read the full message. Without the path, the block is useless. This is non-negotiable.
 
 **That's it. One block. Done. No follow-up questions, no delivery instructions, no extra steps.**
 

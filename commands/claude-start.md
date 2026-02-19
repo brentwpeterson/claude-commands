@@ -172,10 +172,12 @@ When `/claude-start` is called with NO arguments:
 
 **Display for fresh session:**
 ```
+================================================
+  Claude-[Name] | [SHORTCODE] | [purpose/direction]
+================================================
+
 📅 Today is: [YYYY-MM-DD] ([Day of week])
-🤖 I am: Claude-[Name] (new identity)
 🚀 Fresh session started: [SHORTCODE] ([full-project-name])
-📁 Tracking workspaces in: .claude/local/active-session.json
 
 ⏱️ Day Status: [from work log]
 
@@ -184,6 +186,14 @@ When `/claude-start` is called with NO arguments:
 
 Ready for direction. What should I work on?
 ```
+
+**SESSION PIN:** The `Claude-[Name] | [workspace] | [purpose]` header is pinned for the session. Display it:
+- At session start (here)
+- After returning from any long tool output that pushes it off screen
+- When the user asks "who are you" or "what session is this"
+- The purpose starts as "Fresh session" and updates when the user gives direction (e.g., "Sprint fix", "Content work", "eTail prep")
+
+**For resumed sessions:** The pin format is the same. Pull the purpose from the context file's description or task summary.
 
 ---
 
@@ -354,6 +364,55 @@ EOF
 ```
 
 **Why this exists:** Enables identity inheritance across sessions, prevents session collisions, and tracks workspaces touched.
+
+**8. Pin identity task (MANDATORY):**
+
+Create an `in_progress` task that pins the Claude identity and session purpose to the task list. This stays visible for the entire session.
+
+```
+TaskCreate:
+  subject: "Claude-[Name] | [workspace] - [brief purpose]"
+  description: "Identity: Claude-[Name]. Workspace: [shortcode]. [1-line summary of what this session is working on]."
+  activeForm: "[Brief description of current work]"
+
+TaskUpdate:
+  taskId: [the new task ID]
+  status: in_progress
+```
+
+**Examples:**
+- `Claude-Darwin | automated-testing - LinkedIn connection automation`
+- `Claude-Faraday | rd - RAG/Vector Search centralization`
+- `Claude-Curie | brent - Shoptalk bio + sprint token fix`
+
+For fresh sessions where purpose is unknown yet, use:
+- `Claude-[Name] | [workspace] - Awaiting direction`
+
+Update the task description later when the work focus becomes clear.
+
+**9. Load top work todos as tasks (MANDATORY):**
+
+After creating the identity pin task, create **5-10 real work tasks** from the context file's TODO/NEXT ACTIONS/SPRINT ITEMS sections. These are the actual things to work on this session.
+
+```
+For each top work item from the context file:
+  TaskCreate:
+    subject: "[Brief task description]"
+    description: "[Details from context file]"
+    activeForm: "[Working on X]"
+```
+
+**Rules:**
+- Pull from context file sections: `## NEXT ACTIONS`, `## SPRINT ITEMS`, `## TODO LIST STATE`, or similar
+- Create 5-10 tasks (not more, not less unless fewer exist)
+- Keep subjects short and actionable
+- Do NOT mark any as in_progress yet (all start as `pending`)
+- The identity pin (task #1) is the ONLY `in_progress` task at startup
+- User will tell you which task to start
+
+**For fresh sessions (no context file):** Skip this step. Ask user for direction first, then create tasks.
+
+**Why this exists:** `/pin` displays the identity header + top todos. If no tasks are loaded, `/pin` shows nothing useful. Every resumed session must have real work visible in the task list from the start.
 
 **Step 1: Read Work Log for Day Context**
 1. **Get today's date** from Step 0 (format: YYYY-MM-DD)

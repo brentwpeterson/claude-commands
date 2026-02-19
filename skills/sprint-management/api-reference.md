@@ -5,7 +5,7 @@
 All endpoints require agent API key authentication:
 
 ```
-Authorization: Bearer wO1lEF5NC3BuCtQSHB5JSFXxTWfw5iwdyTruIEA0Quc
+Authorization: Bearer MNRcaklW3XF7UpKX4VrxPV7wo2L7xsWg
 ```
 
 ## Base URL
