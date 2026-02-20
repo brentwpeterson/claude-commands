@@ -2,7 +2,25 @@
 
 Running log of expectation gaps between what Claude did and what Brent wanted. Not violations (those go in `.claude/violations/`). These are calibration moments.
 
-**Total Moments:** 9
+**Total Moments:** 11
+
+---
+
+## 2026-02-20 - Push Submodules Before Deploying Astro Sites (#11)
+
+**Severity:** Always
+**Trigger:** Deploy tag `sites-v2026.02.20-cross-linking-brand-footer` was pushed to GitHub. GitHub Actions failed in 27 seconds because submodule commits for `contentbasis-ai` and `requestdesk-ai` existed locally but were never pushed to their own remotes. The parent repo pointed to commit hashes that didn't exist on GitHub.
+**Expected:** Before creating any deployment tag for astro-sites, verify all submodules have their commits pushed to their own remotes. Run `git submodule foreach 'git log --oneline origin/main..HEAD'` as a pre-deploy check.
+**Resolution:** Created `astro-sites/CLAUDE.md` with deployment rules and submodule checklist. Added to deploy-project command awareness.
+
+---
+
+## 2026-02-20 - Overcorrection: "You're right" + doing nothing (#10)
+
+**Severity:** Always
+**Trigger:** Claude was corrected mid-routine for running /brent-start when it was already done. Instead of adjusting and continuing, Claude said "You're right" and abandoned the entire routine, asking user "what do you need?"
+**Expected:** When corrected, acknowledge the correction, adjust, and continue doing the work. Never respond by abandoning the task and putting the burden back on the user.
+**Resolution:** Logged as Always rule. Pending CLAUDE.md update.
 
 ---
 

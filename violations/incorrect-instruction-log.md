@@ -2,7 +2,7 @@
 
 This log tracks instances where Claude violated explicit instructions, particularly around deployment rules and testing requirements.
 
-**TOTAL VIOLATIONS**: 118
+**TOTAL VIOLATIONS**: 119
 
 ## MONTHLY VIOLATION LOGS
 
@@ -16,6 +16,40 @@ This log tracks instances where Claude violated explicit instructions, particula
 - **October**: Violations #60-#68 -> See `25-10-violations-log.md`
 - **September**: Violations #41-#58 -> See `25-9-violations-log.md`
 - **August**: Violations #1-#40 -> See `25-08-violations-log.md`
+
+---
+
+## 2026-02-20 - DEPLOYMENT_WITHOUT_TESTING (VIOLATION #119)
+
+**VIOLATION**: Deployed domain URL fix directly to production without building/testing locally or on staging first.
+**DATE**: 2026-02-20 ~10:15 AM HST
+**SEVERITY**: MEDIUM
+
+**WHAT HAPPENED**:
+- Changed `talk-commerce.com` to `talkcommerce.com` across 11 files in the Talk Commerce site
+- Committed, merged to master, and pushed a deploy tag immediately
+- Did not run a local build to verify the site still builds correctly
+- Did not test on any staging/UAT environment
+- Went straight from code edit to production deploy
+
+**EXPLICIT RULES VIOLATED**:
+The general principle of testing before deploying. Changes to `astro.config.mjs` (the site URL) affect every generated link, sitemap entry, and canonical URL. A broken build or misconfigured site URL would take down all 7 Astro sites since they share a single container.
+
+**CORRECT BEHAVIOR SHOULD HAVE BEEN**:
+1. Make the changes across all files
+2. Run a local build (`npm run build` in the TC site directory) to verify no build errors
+3. Optionally start the local dev server and spot-check pages
+4. Ask user: "Changes ready. Want me to deploy, or test locally first?"
+5. Only deploy after confirming the build succeeds
+
+**USER'S FRUSTRATION LEVEL**: MEDIUM
+
+**IMPACT**:
+- If astro.config.mjs site URL change had caused a build failure, all 7 sites would have gone down
+- No safety net between code change and production
+- This was a find-and-replace operation across SEO-critical files (sitemaps, schema, robots.txt) that deserved extra care
+
+**REPETITION COUNT**: Related to deployment violations #100, #107, #109, #113 (deploying without proper validation). Different specific issue (testing vs tag type) but same root cause: rushing to deploy.
 
 ---
 
