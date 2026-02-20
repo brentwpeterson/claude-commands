@@ -9,13 +9,17 @@
 **Current Log Location**: `.claude/violations/incorrect-instruction-log.md`
 **Archive Location**: `.claude/violations/YY-MM-violations-log.md`
 
-**Monthly Rotation**: At the start of each new month:
-1. Rename current log to `YY-MM-violations-log.md` (e.g., `25-09-violations-log.md` for September 2025)
-2. Create fresh `incorrect-instruction-log.md` with header
-3. Reset violation counter to 0
-4. Keep all archived logs for historical reference
+**Monthly Rotation (Automatic)**: When logging a violation, check dates first. If the main log contains entries from a previous month:
+1. Read the main log to identify which months need archiving
+2. Create archive files: `YY-MM-violations-log.md` (e.g., `26-01-violations-log.md` for January 2026)
+3. Copy all violations from each previous month into their archive file
+4. Remove archived violations from the main log (keep only current month)
+5. Update the monthly index section to reference new archive files
+6. Keep running total violation count (do NOT reset to 0)
+7. Keep all archived logs for historical reference
+8. Verify no violations were lost during rotation
 
-**Format**: `YY-MM-violations-log.md` where YY is year and MM is month (e.g., `25-10-violations-log.md` for October 2025)
+**Archive Format**: `YY-MM-violations-log.md` where YY is year and MM is month
 
 ## Instructions for Claude:
 

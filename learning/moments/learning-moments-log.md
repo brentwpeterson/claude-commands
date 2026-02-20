@@ -2,7 +2,25 @@
 
 Running log of expectation gaps between what Claude did and what Brent wanted. Not violations (those go in `.claude/violations/`). These are calibration moments.
 
-**Total Moments:** 7
+**Total Moments:** 9
+
+---
+
+## 2026-02-19 - Never Renumber Lists Mid-Conversation, Always Check Git Before Deleting (#9)
+
+**Severity:** Always
+**Trigger:** User referenced items by number from a list. Claude renumbered the list after removing items, then deleted the wrong file when user said "delete 5". Claude also didn't check that .claude/ was a git repo despite having committed to it hours earlier. Claimed the repo didn't exist.
+**Expected:** Never renumber a list while the user is actively referencing it by number. Before deleting files, check if the directory is under version control. Never make blanket statements that something doesn't exist without verifying.
+**Resolution:** plan-feature.md recoverable via git restore. Logging as Always.
+
+---
+
+## 2026-02-19 - Write Content Files Immediately, Don't Draft in Chat (#8)
+
+**Severity:** Always
+**Trigger:** Asked to create a MiMS Facebook post. Claude showed the draft in conversation and asked "want me to save it?" User reloaded Obsidian looking for it, asked where it was, Claude admitted it hadn't written the file. Three rounds wasted, 10+ minutes lost.
+**Expected:** When creating content that belongs in an Obsidian folder (MiMS, social posts, articles), write the file immediately. Don't display the draft in conversation and ask. Write first, then confirm what was saved and where. Never duplicate the full content in conversation AND the file.
+**Resolution:** Pending CLAUDE.md rule. Severity: Always.
 
 ---
 
