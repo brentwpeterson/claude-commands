@@ -8,22 +8,31 @@ Media property and production service. The voice of the ecosystem. Podcasts, vid
 |---|---|
 | **Name** | Talk Commerce |
 | **Domain** | talkcommerce.com |
-| **Type** | Media Property / Production Service |
-| **Tagline** | Helping bridge the divide between agency, developer and merchant |
+| **Type** | Media Property |
+| **Word** | Connect |
+| **Tagline** | Connect commerce. |
 | **Primary Color** | #E84E36 (orange-red) |
 | **Contact** | brent@talkcommerce.com |
 
 ## Positioning
 
-Talk Commerce is the media brand. It started as a podcast and has grown into a full media service that produces content for the ecosystem and for clients.
+**Sentence:** Talk Commerce connects the commerce community through podcasts, live event coverage, and commerce news.
 
-Two roles:
-1. **Media property** - Talk Commerce podcast, Running Commerce podcast, Content in Commerce LinkedIn Live. Builds authority and drives top-of-funnel awareness for all brands.
-2. **Production service** - Video production, webinar production, and media services available to Content Basis clients and direct clients.
+**Paragraph:** Talk Commerce connects the commerce community through conversation. A weekly podcast brings real insights from founders, developers, agency leaders, and merchants. Running Commerce does the same for the specialty running and athletic space. Live reporting from events like eTail and Shoptalk puts you on the floor when you can't be there. E-commerce and marketing news keeps you current on what matters in commerce. Every episode and every story bridges the gap between the people building, selling, and running online businesses.
 
-**Key differentiator:** Authentic conversations and professional production from people who actually work in commerce. Not a production house that learns your industry. A media brand that lives in your industry.
+## What It Does
+
+- Weekly podcast (Talk Commerce)
+- Running Commerce podcast (specialty running/athletic industry)
+- At-event reporting
+- E-commerce news
+- Marketing news for commerce
+
+**Key differentiator:** Authentic conversations from people who actually work in commerce. Not a production house that learns your industry. A media brand that lives in your industry.
 
 ## Voice and Tone
+
+> **Baseline writing rules come from `/brand-brent`.** All rules below inherit from brand-brent (no em dashes, no emojis, no vague hooks, active voice, banned phrase list). Brand-specific adjustments below override or extend the baseline where noted.
 
 - Conversational, insightful, industry-focused
 - Interview-style. Let guests shine.

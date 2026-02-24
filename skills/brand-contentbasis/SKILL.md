@@ -9,18 +9,30 @@ Marketing services agency. The strategic arm that delivers marketing, web develo
 | **Name** | Content Basis |
 | **Domain** | contentbasis.ai |
 | **Type** | Agency / Consultancy |
-| **Tagline** | AI Enabled Content Platform with Humans in the Loop |
+| **Word** | Build |
+| **Tagline** | Build your digital foundation. |
 | **Parent** | Content Basis is the parent company of Content Cucumber, RequestDesk, and Talk Commerce |
 
 ## Positioning
 
-Content Basis is the full-service marketing agency that implements strategy, runs campaigns, builds websites, and manages paid media. While Content Cucumber creates the content and Talk Commerce produces the media, Content Basis is where strategy meets execution.
+**Sentence:** We build CMS sites, implement AI solutions, and create the integrations and automations that make your digital business run.
 
-Content Basis is the brand clients hire when they need a marketing department, not just a content vendor. The agency brings together all four brands under one relationship.
+**Paragraph:** Content Basis builds the technical foundation for your digital business. We build CMS sites, implement AI solutions, create integrations across platforms like WordPress and ButterCMS, and consult on workflows and automations. We train AI agents to work the way your business works. Whether you need a site built, systems connected, or AI that actually understands your operations, Content Basis handles the build.
 
-**Key differentiator:** Strategic partner that implements AI-powered marketing solutions with humans always in the loop. Platform-agnostic. Vendor-neutral. Results-focused.
+## What We Do
+
+- Build CMS sites
+- Implement AI solutions
+- Consult on AI
+- Consult on workflows and automations
+- Create integrations (WordPress, ButterCMS, etc.)
+- Train AI agents
+
+**Key differentiator:** Platform-agnostic. Vendor-neutral. We build the technical infrastructure that makes everything else work.
 
 ## Voice and Tone
+
+> **Baseline writing rules come from `/brand-brent`.** All rules below inherit from brand-brent (no em dashes, no emojis, no vague hooks, active voice, banned phrase list). Brand-specific adjustments below override or extend the baseline where noted.
 
 - Strategic, knowledgeable, solutions-oriented
 - Confident authority backed by experience (5x Magento Master, 60K+ projects across the ecosystem)

@@ -1,6 +1,44 @@
 # Content Cucumber - Full Brand Skill
 
-Content creation and WordPress page design for Content Cucumber.
+Human-powered marketing company. Creates written, audio, and video content, builds strategy, and produces marketing assets.
+
+## Brand Identity
+
+| Field | Value |
+|---|---|
+| **Name** | Content Cucumber |
+| **Domain** | contentcucumber.com |
+| **Type** | Marketing Company |
+| **Word** | Create |
+| **Tagline** | Create your marketing. |
+| **Contact** | hello@contentcucumber.com |
+
+## Positioning
+
+**Sentence:** Content Cucumber is a human-powered marketing company that creates written, audio, and video content, builds strategy, and produces the assets your brand needs to grow.
+
+**Paragraph:** Content Cucumber is a full-service marketing company powered by human creativity. We build marketing strategies, create content, and produce the assets that drive your business forward. Our team of 40+ writers handles blogs, articles, web copy, newsletters, and product pages. We produce audio and video content. We create marketing assets and develop the strategy behind all of it. Content Cucumber is not a writing service. It's a marketing company that puts real humans behind your brand.
+
+## What We Do
+
+- Marketing strategy
+- Blog posts and articles
+- Web copy
+- Newsletter copy
+- PDP page updates
+- Marketing assets
+- Audio content
+- Video content
+- Short-form video
+- Human writers (40+)
+
+---
+
+## Writing Baseline
+
+> **Baseline writing rules come from `/brand-brent`.** All Content Cucumber content inherits from brand-brent (no em dashes, no emojis, no vague hooks, active voice, banned phrase list). The CC persona loaded from RequestDesk adds warmth, approachability, and expert-friend tone on top. Brand-brent rules apply unless the CC persona explicitly overrides them.
+
+---
 
 ## Subcommands
 

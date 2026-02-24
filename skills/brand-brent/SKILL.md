@@ -29,6 +29,8 @@ Brent doesn't sell services directly under his personal brand. He does commerce 
 
 ## Voice and Tone
 
+> **This brand IS the baseline for ALL brands.** The writing rules defined here (especially "Never Use" below) apply to Content Cucumber, Content Basis, RequestDesk, and Talk Commerce. Other brands inherit these rules and override only where their specific voice differs. When in doubt, these rules win.
+
 - First person ("I/my"), always
 - Honest, practical, self-deprecating humor
 - Shows real work, admits mistakes
@@ -48,6 +50,10 @@ Brent doesn't sell services directly under his personal brand. He does commerce 
 - "Had an eye-opening conversation"
 - "That changes everything"
 - "The problem nobody talks about"
+- "I've watched"
+- "I've sat through a lot of"
+- "I've seen" (as an opener or credential claim)
+- "Actually" (filler word, adds nothing)
 - Excessive adverbs and adjectives
 - Vague hook openings ("X just did something big," "Most people missed this," "Something interesting happened at Y"). Open with the fact. Say what happened, when, and where. Let the reader decide if it's interesting.
 
@@ -116,6 +122,13 @@ LinkedIn does NOT support markdown. When creating LinkedIn content:
 - No bullet point markdown (use line breaks)
 - Links go in comments, not the post body
 - Hashtags at end, separated by spaces
+
+### Social Scheduling Rules
+- NEVER schedule the same post to multiple platforms on the same day. Stagger across different days (e.g., X on Mon, Threads on Wed, BlueSky on Fri). Each platform gets its own day.
+- All publish_at times must include -06:00 CST offset (bare timestamps = UTC interpretation)
+- Never use :00, :15, :30, :45 minutes (looks automated). Use irregular minutes only.
+- Vista Social API does NOT support DELETE. User must delete posts manually in the UI.
+- Vista Social API format: profile_id (array of numbers), message (not text), publish_at
 
 ## Brand Relationships
 

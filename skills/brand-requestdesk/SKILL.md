@@ -41,6 +41,8 @@ AI-powered brand and content automation platform. The engine that manages your b
 
 ## Voice and Tone
 
+> **Baseline writing rules come from `/brand-brent`.** All rules below inherit from brand-brent (no em dashes, no emojis, no vague hooks, active voice, banned phrase list). Brand-specific adjustments below override or extend the baseline where noted.
+
 - Mentor/guide, clever but professional
 - Focus on outcomes, not features
 - Client is the hero, RequestDesk is the tool that makes them faster
