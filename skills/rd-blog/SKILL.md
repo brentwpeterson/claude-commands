@@ -1,4 +1,12 @@
-# RequestDesk Blog - Create Blog Posts from Terminal
+# DEPRECATED - Use /publish-blog instead
+
+**This skill is deprecated.** Use `/publish-blog rd <filename>` for RequestDesk blog publishing.
+
+The `/publish-blog` command supports all 4 destinations: `rd`, `cc`, `brent`, `tc`.
+
+---
+
+# RequestDesk Blog - Create Blog Posts from Terminal (LEGACY)
 
 **Skill Description:** Create and publish blog posts to requestdesk.ai/blog directly from the terminal using Claude.
 

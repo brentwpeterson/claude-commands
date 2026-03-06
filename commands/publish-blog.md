@@ -1,0 +1,1 @@
+../../.claude-local/commands/publish-blog.md
