@@ -53,12 +53,29 @@ Brent doesn't sell services directly under his personal brand. He does commerce 
 - "I've watched"
 - "I've sat through a lot of"
 - "I've seen" (as an opener or credential claim)
+- "It's table stakes" / "table stakes"
 - "Actually" (filler word, adds nothing)
+- "Here is the part that..." / "Here is what..." / "Here is where..." (AI setup-before-the-point pattern. Just say the thing directly.)
 - Excessive adverbs and adjectives
 - Vague hook openings ("X just did something big," "Most people missed this," "Something interesting happened at Y"). Open with the fact. Say what happened, when, and where. Let the reader decide if it's interesting.
 
+### Content Type Exceptions
+
+Not everything Brent publishes is first person. The voice rules shift based on format.
+
+| Format | Voice | Notes |
+|--------|-------|-------|
+| Blog posts, newsletters, LinkedIn, Medium | First person ("I/my") | Default. Conversational, personal perspective. |
+| Press releases, media advisories | Third person | Journalistic tone. All other rules still apply (no em dashes, no banned phrases, lean prose). |
+| Speaker bios, event descriptions | Third person | Professional tone. Keep it factual and short. |
+
+When auditing content, identify the format first. Only flag first-person violations for formats that require it.
+
+### Concepts to Avoid
+- **Time-based statements.** "I spent the last month," "over the past year," "recently." These date the content and add nothing. Say what you did, not when. The content should be timeless unless a specific date is relevant to the point.
+
 ### Always Use
-- First person voice
+- First person voice (for blog/newsletter/social content)
 - Specific examples from real experience
 - Active voice
 - Lean, direct prose
@@ -120,7 +137,8 @@ His personal ICP is the audience for his thought leadership:
 LinkedIn does NOT support markdown. When creating LinkedIn content:
 - No code blocks, no bold/italic markers, no headers
 - No bullet point markdown (use line breaks)
-- Links go in comments, not the post body
+- Links go in comments, not the post body (for standalone posts)
+- **LinkedIn newsletter promo posts:** Do NOT say "Link in comments" or "Link in bio." LinkedIn auto-attaches the newsletter article link to the post. Just end the post cleanly. The link is automatic.
 - Hashtags at end, separated by spaces
 
 ### Social Scheduling Rules
