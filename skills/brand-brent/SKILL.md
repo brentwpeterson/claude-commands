@@ -54,10 +54,11 @@ Brent doesn't sell services directly under his personal brand. He does commerce 
 - "I've sat through a lot of"
 - "I've seen" (as an opener or credential claim)
 - "It's table stakes" / "table stakes"
-- "Actually" (filler word, adds nothing)
+- "Actually" / "Actual" (filler words, add nothing. "The actual bug" is weaker than "The bug.")
 - "Here is the part that..." / "Here is what..." / "Here is where..." (AI setup-before-the-point pattern. Just say the thing directly.)
 - Excessive adverbs and adjectives
 - Vague hook openings ("X just did something big," "Most people missed this," "Something interesting happened at Y"). Open with the fact. Say what happened, when, and where. Let the reader decide if it's interesting.
+- "The reason is telling." (editorializing filler. State the reason directly and let the reader draw their own conclusion.)
 
 ### Content Type Exceptions
 
