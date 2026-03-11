@@ -284,10 +284,12 @@ Apply this skill when user:
 | Brent Peterson | brent@contentbasis.io | (self) |
 | Mark Sigel | msigel@sofiascookies.com | |
 | Randy Stenger | randy@extremesandbox.com | |
-| Paul Jonas | paulj@breezynotes.com | |
+| Paul Jonas | paulj@breezynotes.com | Departing July 2026 (sold business) |
 | James Boys | james@boyswaterproducts.com | |
 | Kathy Mrozek | kathy@windmillstrategy.com | |
 | Tom Suerth | tom@waterfrontrestoration.com | |
+
+**Google Group (to create):** `dreamweavers@contentbasis.io` - Add all 7 members. Remove Paul after July 2026. Share EO Minnesota folder with this group instead of individual permissions.
 
 **All Recipients (for email):**
 ```

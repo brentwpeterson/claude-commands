@@ -14,7 +14,7 @@ Claude Comms - Inter-Claude Messaging
 | Resource | Location |
 |----------|----------|
 | **Comms Directory** | `/Users/brent/scripts/CB-Workspace/.claude/claude-comms/` |
-| **Active Names** | `/Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json` |
+| **Active Names** | `/Users/brent/scripts/CB-Workspace/.claude/local/names/` (one directory per name) |
 
 ---
 
@@ -23,13 +23,17 @@ Claude Comms - Inter-Claude Messaging
 1. If a name argument was passed (not "start"), use it: `galileo` -> `Claude-Galileo`
 2. If `start <name>` was passed, use that name
 3. If no name and you already have one this session, use it
-4. If no name at all, read the names file, pick a famous person not taken, register it
+4. If no name at all, check names/ directory for taken names, pick a famous person not taken, register it
 
 Register:
 ```bash
-NAMES_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json"
-CURRENT=$(cat "$NAMES_FILE" 2>/dev/null || echo "[]")
-echo "$CURRENT" | jq '. + ["Claude-YourName"] | unique' > "$NAMES_FILE"
+NAMES_DIR="/Users/brent/scripts/CB-Workspace/.claude/local/names"
+mkdir -p "$NAMES_DIR"
+NAME="Claude-YourName"
+if ! mkdir "$NAMES_DIR/$NAME" 2>/dev/null; then
+  # Name taken! Pick another and retry.
+fi
+date -u > "$NAMES_DIR/$NAME/claimed"
 ```
 
 Display: `I am: Claude-[Name]`

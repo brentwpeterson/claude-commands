@@ -2,6 +2,13 @@
 
 **Skill Description:** Complete sprint management system for tracking development velocity, planning capacity, and measuring hours per point across sprints.
 
+## 🚨 SPRINT RULES: Single Source of Truth 🚨
+
+**Canonical sprint rules live in:** `Dashboard/Sprints/README.md`
+That file defines item types, point scale, lifecycle, and all sprint rules. This skill file covers API mechanics and how-to. If there's a conflict, the README wins.
+
+---
+
 ## 🚨 CRITICAL: API IS SOURCE OF TRUTH 🚨
 
 **NEVER read sprint ticket status from markdown files (sprint-plan.md, context files, etc.).**
@@ -43,7 +50,7 @@ Authorization: Bearer MNRcaklW3XF7UpKX4VrxPV7wo2L7xsWg
 **The single source of truth for sprint process is the Planning SOP:**
 `brent-workspace/ob-notes/Brent Notes/Dashboard/SOPs/000-planning-sop.md`
 
-**Key rule:** Every sprint directory has 5 files (sprint-plan, work-log, scorecard, retro, retro-notes). All created at planning time. Sprint is not planned until all 5 exist. See the SOP for the full checklist.
+**Key rule:** Every sprint directory has 4 files (sprint-plan, scorecard, retro, retro-notes). All created at planning time. Sprint is not planned until all 4 exist. Daily work logging goes to the centralized `Dashboard/Daily/WORK-LOG.md` (not a sprint-level file). See the SOP for the full checklist.
 
 ---
 
@@ -138,6 +145,8 @@ Story: "RequestDesk - new integration every 2 weeks" (NOT in sprint)
 ---
 
 ## AUTOMATIC RECURRING ITEMS
+
+**WARNING: When a sprint is created, all `is_recurring: true` backlog items are automatically cloned into the new sprint. If recurring items were already added manually (e.g., during planning before the sprint record was created), the auto-clones are DUPLICATES and must be deleted immediately after sprint creation. Check for items sharing the sprint's creation hash.**
 
 **When a sprint is created, all `is_recurring: true` backlog items are automatically cloned into the new sprint.**
 
@@ -283,12 +292,13 @@ Apply this skill automatically when Brent:
 - **Goals:** Launch paid acquisition, keep content engine running, clear S2 carryover
 - **Key issue:** Sprint items not tagged with sprint_name in backlog API (same as S2). Led to commit/verify gate being added to skill.
 
-### S4 (Feb 16-27, 2026) - CURRENT
+### S4 (Feb 16-27, 2026)
 - **Capacity:** 36 points (6 working days x 6 pts/day)
-- **Committed:** 23 items, ~35 pts (includes 1pt CC homepage added mid-sprint)
+- **Committed:** 23 items, 34 pts
+- **Completed:** 27 pts (79%), 19 items
 - **Working Days:** 6 (Feb 16-20 + Feb 23 at eTail)
 - **Goals:** Activate Rock 1 (ICPs + campaigns), ship eTail prep, keep content engine running
-- **Note:** First sprint using commit/verify gate. All items properly tagged.
+- **Key changes from S4 retro:** Sprint folder standardized to 4 files (removed work-log.md, centralized daily log is source of truth). New daily log format with session stamps and work item tracking.
 
 ---
 

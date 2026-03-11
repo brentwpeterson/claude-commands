@@ -7,8 +7,11 @@ settings.local.json
 Claude.md
 CLAUDE.md
 
-# Exclude any real context files that might contain sensitive info
+# Exclude ALL context files - contain session state and internal workflow details
 branch-context/*-context.md
+branch-context/archived/
+branch-context/later/
+branch-context/tomorrow/
 !branch-context/feature-example-implementation-context.md
 !branch-context/README.md
 
@@ -25,6 +28,27 @@ security-scans/*.md
 # Exclude real violations
 violations/*.md
 !violations/README.md
+
+# Exclude inter-Claude communications (internal operational data)
+claude-comms/*.md
+claude-comms/archive/
+!claude-comms/README.md
+
+# Exclude learning logs (internal operational data)
+learning/moments/*.md
+learning/improvements/
+learning/CLAUDE-LEARNER-PLAN.md
+!learning/README.md
+
+# Exclude database/memory files
+data/*.sqlite
+data/*.sqlite-wal
+data/*.sqlite-shm
+cb-workspace-memory.json
+
+# Exclude issue logs (internal)
+issues/*.md
+!issues/README.md
 
 # Exclude archived directories entirely - may contain sensitive historical data
 archived-contexts/
@@ -47,7 +71,6 @@ local/*.local.*
 *.tmp
 *.temp
 *~
-!branch-context/master-context.md
 
 # =============================================================================
 # PROPRIETARY COMMANDS - Symlinked from .claude-local/commands/

@@ -2,6 +2,27 @@
 
 Personal brand. The face of the ecosystem. Thought leader, speaker, marathon runner, and founder.
 
+## Subcommands
+
+### `/brand-brent rule-update "<rule>"`
+
+Adds a new writing rule to the "Never Use" or "Concepts to Avoid" section below.
+
+**How it works:**
+1. Read the rule from the argument
+2. Categorize it:
+   - If it's a specific word/phrase to avoid, add to **Never Use** (line items)
+   - If it's a broader pattern or concept, add to **Concepts to Avoid**
+3. Append the rule to the appropriate section in THIS file
+4. Confirm what was added and where
+
+**Examples:**
+- `/brand-brent rule-update "Don't use rhetorical questions as transitions"` → Concepts to Avoid
+- `/brand-brent rule-update "The problem?"` → Never Use (AI rhetorical pattern)
+- `/brand-brent rule-update "Stop starting paragraphs with But"` → Never Use
+
+**No discussion. No confirmation prompt. Just add it and confirm.**
+
 ## Brand Identity
 
 | Field | Value |
@@ -59,6 +80,9 @@ Brent doesn't sell services directly under his personal brand. He does commerce 
 - Excessive adverbs and adjectives
 - Vague hook openings ("X just did something big," "Most people missed this," "Something interesting happened at Y"). Open with the fact. Say what happened, when, and where. Let the reader decide if it's interesting.
 - "The reason is telling." (editorializing filler. State the reason directly and let the reader draw their own conclusion.)
+- "The Real Question" (AI dramatic pivot pattern. Just ask the question or make the point directly.)
+- "The pattern is clear." (If the pattern were clear, you wouldn't need to announce it. Show the pattern through evidence and let the reader see it.)
+- "Read that again." (AI emphasis trick. If Brent wants to emphasize a point, use "Let me repeat that." instead. First person, his voice.)
 
 ### Content Type Exceptions
 
@@ -74,6 +98,9 @@ When auditing content, identify the format first. Only flag first-person violati
 
 ### Concepts to Avoid
 - **Time-based statements.** "I spent the last month," "over the past year," "recently." These date the content and add nothing. Say what you did, not when. The content should be timeless unless a specific date is relevant to the point.
+
+### Brent's Coined Terms
+- **"The discovery-transaction gap"** - Brent's term. When referencing this concept, frame it as something we discovered/named. Use "We discovered 'The discovery-transaction gap'" not "The discovery gap is real."
 
 ### Always Use
 - First person voice (for blog/newsletter/social content)

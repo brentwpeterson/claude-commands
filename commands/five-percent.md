@@ -4,6 +4,7 @@ EO 5% Update - Deep reflective practice for preparing Dreamweavers Forum 5% pres
 
 **USAGE:**
 - `/five-percent` - Start interactive 5% reflection for current month
+- `/five-percent prep` - Day-before preparation checklist and guided pre-work
 - `/five-percent review` - Review past updates and spot patterns
 - `/five-percent --help` - Show this help
 
@@ -21,7 +22,115 @@ If arguments contain `--help` or `-h`, show usage above and STOP. Do not execute
 ## MODE DETECTION
 
 1. If argument is `review`: Go to **Review Mode**
-2. Otherwise: Go to **Create Mode** (default, current month)
+2. If argument is `prep`: Go to **Prep Mode**
+3. Otherwise: Go to **Create Mode** (default, current month)
+
+---
+
+## PREP MODE
+
+When user runs `/five-percent prep`:
+
+This is the day-before preparation. Schedule one hour of quiet time and work through this.
+
+### Step 1: Review Last Month
+
+1. Read the history file and the most recent 5% update
+2. Show a quick summary:
+   ```
+   Last month's headlines:
+   - Work: [headline]
+   - Family: [headline]
+   - Personal: [headline]
+
+   Threads that were open: [list unresolved items from last month]
+   ```
+3. Ask: "Any of those threads still active? Anything resolve since then?"
+
+**STOP. Wait for response.**
+
+### Step 2: Surface the Month (Structured Worksheet)
+
+Walk through each area with quick prompts. This is brainstorming, not writing. Capture raw material.
+
+```
+Let's scan the month. Quick answers, don't overthink:
+
+**Work:** What's the most significant thing that happened at work this month?
+**Family:** Where was there tension or warmth?
+**Personal:** What thought or emotion kept coming back?
+**Community/EO:** Anything notable in EO, board work, or community?
+```
+
+**STOP. Wait for response.**
+
+### Step 3: Identify the 5% Stories
+
+From what surfaced, help identify which stories belong in the 5% (vulnerable, emotional, high-impact) vs the 95% (operational updates, daily tasks).
+
+```
+Looking at what you shared, here's what feels like 5% material vs 95%:
+
+**5% (vulnerable, significant):**
+- [list items that have emotional weight]
+
+**95% (operational, surface):**
+- [list items that are status updates]
+
+Does that split feel right? Anything in the 95% column that's actually hiding something deeper?
+```
+
+**STOP. Wait for response.**
+
+### Step 4: Feelings Pre-Check
+
+For each area where there's a 5% story, ask about feelings early:
+
+```
+For each of these, give me the first feeling word that comes to mind:
+- [5% story 1]: ___
+- [5% story 2]: ___
+- [5% story 3]: ___
+```
+
+**STOP. Wait for response.**
+
+### Step 5: Prep Notes
+
+Save prep notes to the month's 5% file as a `## Prep Notes` section at the bottom (below the `---`). These get removed during final save in Create Mode.
+
+```markdown
+## Prep Notes (pre-work, remove before meeting)
+
+**Threads from last month:** [list]
+**Raw material:**
+- Work: [notes]
+- Family: [notes]
+- Personal: [notes]
+**5% stories identified:** [list]
+**Initial feelings:** [list]
+**Open questions to sit with overnight:** [list]
+```
+
+Display:
+```
+Prep notes saved to your 5% file. Sit with these overnight.
+
+When you're ready to write the full update, run `/five-percent` and we'll go deeper.
+```
+
+### Preparation Best Practices (from EO Resources)
+
+These principles guide both prep and create modes:
+
+1. **Use the 5% Reflections Worksheet.** The structured format (event, feelings, impact) prevents surface-level reporting.
+2. **Focus on vulnerability.** The 5% is the highest highs and lowest lows, not operational updates.
+3. **Review all key areas.** Business (turnover, goals, cash flow), personal (health, identity, purpose), family (relationships, dynamics), community.
+4. **Keep it to 3-5 minutes per section.** Concise forces you to find what matters most. If you can't say it in 3 minutes, you haven't found the core yet.
+5. **Focus on feelings, not just events.** "We lost a client" is 95%. "I felt like a failure when we lost that client" is 5%.
+6. **Use first person ("I") and share experiences.** Gestalt language. Not advice, not "you should." What happened to me, how I felt, what I learned about myself.
+7. **Consider visuals.** For life-line updates or deep dives, photos or meaningful items can anchor the story.
+8. **Engage your forum coach** (if assigned) a week before to refine the message.
 
 ---
 
@@ -100,175 +209,146 @@ From the EO Moderator Summit training, Claude should embody the **Four Skills of
 
 ## CREATE MODE (Default)
 
+### Section Order: Personal, Family, Work
+
+Always go in this order: **Personal first, then Family, then Work.** Personal is where the real 5% usually lives. Starting there sets the depth for the whole session.
+
+After all three sections: **30-60 Days**, then **Challenge/Opportunity**.
+
 ### Step 0: Check for Existing File and Read History
 
 ```
-OBSIDIAN_DIR: /Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/EO Material/Dreamweavers 2025-26/
+OBSIDIAN_DIR: /Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/EO Material/Dreamweavers 2025-26/Forum 5%/
 FILE_PATTERN: 5 Percent Update - YYYY-MM Mon.md
+HISTORY_FILE: /Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/EO Material/Dreamweavers 2025-26/Forum 5%/5-percent-history.md
 ```
 
 1. Determine current month and year
-2. Check if file already exists for this month
-3. If exists and has content beyond the template, ask: "You already have a draft for this month. Want to build on it or start fresh?"
-4. If no file exists, create one from the template (see Template section below)
-5. **Read the last 2-3 months of updates.** This gives you context for recurring themes, unresolved threads, and continuity. Don't mention this explicitly, just use it naturally when probing.
+2. **Read the history file first.** This contains all past updates compiled into one reference with recurring themes, life context, and emotional threads. Use this to inform your probing questions. Don't mention the file explicitly, just use the context naturally.
+3. Check if a file already exists for this month
+4. If exists and has content beyond the template, ask: "You already have a draft for this month. Want to build on it or start fresh?"
+5. If no file exists, create one from the template (see Template section below)
+6. **After completing the session**, append the new month's summary to the history file's Summary Table and update any Recurring Themes or Life Context that changed.
 
-### Step 1: Arriving and Grounding
+### Step 1: One Word Opener
 
-```
-## 5% Update - [Month Year]
-
-Before we get into anything, let's land here for a second.
-
-**One word:** How are you arriving right now?
-```
-
-**STOP. Wait for response.**
-
-Reflect the word back and use it as a thread to pull on. Don't just acknowledge it. Dig in:
-- If negative (tired, stressed, overwhelmed): "Tired. What's weighing on you the most right now?"
-- If positive (excited, energized, hopeful): "What's driving that energy?"
-- If neutral (fine, ok, steady): "What's underneath 'fine'? If something's been on your mind this month, what comes up?"
-
-**STOP. Wait for response.**
-
-This opening response often reveals where the real 5% lives. Keep a mental note. You may circle back to it later.
-
-Now set the frame:
-```
-Good. Before we go through Work, Family, and Personal, take a second to think about the last month.
-
-Not just what happened. But what you felt. What surprised you. What you're carrying around that you haven't said to anyone yet.
-
-The 5% isn't a status update. It's the stuff underneath the status update. The significance. What you realize about yourself.
-
-Ready? Let's start with Work.
-```
-
-**STOP. Wait for response (even if it's just "yes" or "ready").**
-
-### Step 2: Work
+Start the section with a single one-word check-in. ONE section at a time. Do NOT ask for all three words at once.
 
 ```
-**Work.** What's the headline this month?
+**Personal.** One word. How do you feel personally this month?
 ```
 
 **STOP. Wait for response.**
 
-Now go beneath the headline using the iceberg model. The headline is the 20% visible story. Your job is to get to the 80% underneath. Ask these ONE AT A TIME across separate messages:
-
-**Layer 1 - The Feelings:**
-Ask about the emotional experience, not the facts. Make it specific to what they shared:
-- "When you say [their word], what does that actually feel like day to day?"
-- "What emotions come up when you think about that?"
-- "What's the hardest part of that for you personally, not for the business?"
+Reflect the word back. Use it as a thread to pull on:
+- If negative (tired, stressed, overwhelmed): "[Word]. What's weighing on you the most right now?"
+- If positive (excited, energized, hopeful): "[Word]. What's driving that energy?"
+- If neutral (fine, ok, steady): "[Word]. What's underneath that? If something's been on your mind, what comes up?"
 
 **STOP. Wait for response.**
 
-**Layer 2 - The Significance:**
-This is the core EO question: "How was this personally significant to me? What do I realize about myself?" Push toward self-discovery:
-- "What does that say about what you need right now?"
-- "Is this more about [the surface thing] or more about what it represents?"
-- "How does this affect how you see yourself?"
-- "How might your own actions be contributing to this challenge?"
+### Step 2: Seed Questions
+
+After the one-word opener and initial thread, present 2-3 seed questions for the current section. These are quick, low-effort questions to surface raw material.
+
+**Personal seeds:**
+- What thought or emotion keeps looping this month?
+- What did you crave more of? (rest, control, freedom, connection, recognition, fun)
+- What did you neglect?
+
+**Family seeds:**
+- Where was there tension, distance, or misunderstanding?
+- Where did you feel warmth, closeness, or support?
+- What went unsaid?
+
+**Work seeds:**
+- What drained you most?
+- What are you avoiding or postponing?
+- What moment made you proud (even small)?
+
+**Shortcut sentence starters (offer these if Brent is stuck):**
+- "I keep thinking about ___ because ___."
+- "I got triggered when ___, and underneath it's about ___."
+- "A small moment that mattered was ___, because it showed me ___."
+
+Present the seeds for the current section only. Ask Brent to answer with short bullets or a few words. Don't overthink it.
 
 **STOP. Wait for response.**
 
-**Layer 3 - The 5% (go here if the first two layers stayed surface):**
-Only ask this if you sense there's more underneath. Sometimes Layer 2 gets there. Don't force it. If it feels right:
-- "What's the thing about this that you haven't said to anyone?"
-- "If you're honest with yourself, what are you really afraid of here?"
-- "What does this connect to that's bigger than just work?"
-- "Where are you stuck? Not the business. You."
+### Step 3: Probing (Up to 10 Questions)
 
-If the first two layers already hit the 5%, skip this and move on. Don't over-dig.
+This is where the real 5% lives. Based on the one-word opener and seed answers, ask follow-up questions ONE AT A TIME. Pull on threads. Go beneath the surface using the Iceberg Model.
 
-**STOP. Wait for response (if asked).**
+**Ask up to 10 probing questions total for the section.** Use the Probing Questions Toolkit below. After each question, wait for a response before asking the next.
 
-**Feelings:**
-Offer 5-6 feeling words based on everything they shared (not just the headline, but what came out in the deeper conversation) and ask them to pick 3 or use their own:
+**Guidelines for probing:**
+- **NEVER repeat a question you already asked.** Track what you've asked. If you're circling back to the same ground, you're done with that thread. Move forward.
+- **NEVER loop on the same emotion.** If Brent says "stressed" and you probe it, and he says "stressed" again, that thread is tapped. Go somewhere new or close the section.
+- Start with the thread that has the most energy (the thing Brent came back to, the word that carried emotion)
+- Move from Story (20%) to Struggle (80%): facts to feelings to significance
+- If a thread goes deep quickly, stay there. Don't hop around.
+- If a thread stays surface after 2-3 questions, try a different angle or move to the next thread
+- Reference past months naturally if relevant ("Last month you talked about [topic]. How's that thread going?")
+
+**After probing, check:** "Is there anything else on Personal before we move on? Anything you almost said but held back?"
+
+**STOP. Wait for response.**
+
+If they share more, probe further. If they're done, move to Step 4.
+
+### Step 4: Feelings
+
+Offer categorized feeling words based on the FULL conversation (not just the headline). Brent picks 3 or uses his own.
+
+**Feeling word categories to draw from:**
+
+Positive/energized: Excited, Proud, Inspired, Hopeful, Engaged, Confident, Energized, Motivated
+Calm/satisfied: Grateful, Fulfilled, Content, Relieved, Peaceful, Settled, Grounded
+Challenging: Frustrated, Overwhelmed, Anxious, Stressed, Uncertain, Irritated, Angry, Conflicted
+Low-energy: Tired, Burnt out, Disappointed, Discouraged, Depleted, Numb, Resigned
+Vulnerable: Scared, Lonely, Lost, Exposed, Raw, Fragile, Grieving
+Searching: Restless, Torn, Curious, Unsettled, Nostalgic, Yearning
+
+Present 5-6 contextually relevant feelings drawn from Brent's actual words and emotional tone. Group them if helpful.
+
 ```
 Based on what you shared, some feelings that might fit:
-[list 5-6 contextually relevant feelings drawn from their actual words and emotional tone]
+[list 5-6 contextually relevant feelings]
 
 Pick 3 that feel right, or use your own.
 ```
 
 **STOP. Wait for response.**
 
-### Step 3: Family
+### Step 5: Headline
+
+Ask Brent for the headline in his own words.
 
 ```
-**Family.** What's the headline?
-```
-
-**STOP. Wait for response.**
-
-Apply the same layered approach as Work. ONE question at a time. Go as deep as the topic warrants. Some months family is light and that's fine. Other months it's the real 5%.
-
-**Pay attention to recurring themes from past updates.** If you read previous months, you can naturally reference them:
-- "Last month you talked about [topic]. How's that thread going?"
-- "You've mentioned [recurring theme] a few times. Anything new there?"
-
-Only reference past months if it's natural and relevant. Don't force continuity.
-
-**Relationship-specific probes (from coaching toolkit):**
-- "How is that affecting your relationship with [person]?"
-- "Have you told them how you feel about it?"
-- "What do you need from them that you're not asking for?"
-
-**STOP after each question. Wait for response.**
-
-After digging in, offer feeling words based on the full conversation and ask them to pick 3.
-
-**STOP. Wait for response.**
-
-### Step 4: Personal
-
-```
-**Personal.** Outside of work and family. Your health, running, where you're living, your inner world. What's going on with YOU?
+Give me a headline for Personal this month. A few words, your words.
 ```
 
 **STOP. Wait for response.**
 
-Same layered approach. Personal is often where the real 5% lives because it's the category people skip or keep shallow. Push gently here.
+### HARD GATE: Before Moving On
 
-**Personal-specific probes (from Johari Hidden Window):**
-- "What do you feel, think, or worry about that you haven't shared with anyone?"
-- "What are you avoiding thinking about?"
-- "What do you need right now that you're not getting?"
-- "What surprised you about yourself this month?"
-- "If you could change one thing about your life right now, what would it be?"
+**Do NOT move to the next section until you have ALL THREE:**
+1. Headline (Brent's words)
+2. 3 Feelings (Brent chose them)
+3. Significance captured (from the probing conversation)
 
-**STOP after each question. Wait for response.**
+If any are missing, go back and get them.
 
-After digging in, offer feeling words and ask them to pick 3.
+### Step 6: Repeat for Next Section
 
-**STOP. Wait for response.**
+Move to Family, then Work. For each section, repeat Steps 1-5:
+1. One word opener
+2. Seed questions
+3. Probing (up to 10 questions)
+4. Feelings (pick 3)
+5. Headline
 
-### Step 5: Depth Check and Johari Exploration
-
-Before moving to the forward-looking sections, pause and use the Johari Window to check for unexplored territory:
-
-```
-We've covered Work, Family, and Personal. Before we look ahead, I want to check a couple things.
-
-Is there something you almost said during one of those sections but held back on? Something in your Hidden Window that's been on your mind but feels hard to put out there?
-```
-
-**STOP. Wait for response.**
-
-If they share something new, explore it with the layered approach. If they say they're good, ask one more:
-
-```
-One more. Is there anything you might be blind to right now? Something others might see that you're not seeing clearly, or something you might be minimizing?
-```
-
-**STOP. Wait for response.**
-
-If they engage, explore it. If not, move on. Don't push. The question itself plants the seed.
-
-### Step 6: Looking Ahead
+### Step 7: Looking Ahead
 
 ```
 **30-60 Days.** What's on the horizon that you're focused on?
@@ -292,7 +372,27 @@ Looking at everything you shared today, what's the one question you're trying to
 
 This often produces the most powerful line in the entire update. Capture it.
 
-### Step 7: Save and Review
+### Step 8: Depth Check
+
+Before saving, use the Johari Window to check for unexplored territory:
+
+```
+Before we wrap up. Is there something you almost said during one of those sections but held back on? Something in your Hidden Window?
+```
+
+**STOP. Wait for response.**
+
+If they share something new, explore it. If they're good, ask one more:
+
+```
+One more. Is there anything you might be blind to right now? Something others might see that you're not seeing clearly?
+```
+
+**STOP. Wait for response.**
+
+If they engage, explore it. If not, move on. Don't push. The question itself plants the seed.
+
+### Step 9: Save and Review
 
 1. Compile all answers into the standard format (see Template below)
 2. **Use Brent's actual words.** Lightly clean up for readability (fix obvious typos, add punctuation) but preserve his voice and phrasing. Do NOT rewrite or polish.
@@ -350,7 +450,7 @@ Present this as observations, not advice. Use the forum mindset: share, don't so
 
 ## FILE TEMPLATE
 
-When creating a new month's file:
+Based on the official EO 5% Reflection Worksheet (2024). Each section has three columns: Feelings, Context (what caused them), and Significance (the real 5%).
 
 ```markdown
 # 5% Update - [Month Year]
@@ -359,35 +459,39 @@ When creating a new month's file:
 
 ## Work
 
-**Feelings:** [feeling1], [feeling2], [feeling3]
+**Feelings:** [3-5 single emotion words]
 
-**Headline:** [headline]
+**What caused these feelings:** [1-2 sentences, brief context only]
 
-[significance/story - capture the deeper stuff, not just the facts]
+**Significance (5%):** [How was this personally significant to me? What do I realize about myself? This is where the depth lives.]
 
 ## Family
 
-**Feelings:** [feeling1], [feeling2], [feeling3]
+**Feelings:** [3-5 single emotion words]
 
-**Headline:** [headline]
+**What caused these feelings:** [1-2 sentences, brief context only]
 
-[significance/story]
+**Significance (5%):** [How was this personally significant to me? What do I realize about myself?]
 
 ## Personal
 
-**Feelings:** [feeling1], [feeling2], [feeling3]
+**Feelings:** [3-5 single emotion words]
 
-**Headline:** [headline]
+**What caused these feelings:** [1-2 sentences, brief context only]
 
-[significance/story]
+**Significance (5%):** [How was this personally significant to me? What do I realize about myself?]
 
 ## 30-60 Days
 
-[what's coming up]
+[What does the future look like in the next 30-60 days?]
 
-## Challenge/Opportunity
+## Deep Dive Parking Lot
 
-[challenge or opportunity for the forum]
+[Important/undecided emotionally complex topics I would like to add to my Deep Dive parking lot. These are "why" topics.]
+
+## Discussion Topics
+
+[Topics I would like to explore to learn or make better decisions. These are "what and how" topics.]
 
 ---
 ```
@@ -462,13 +566,14 @@ These are tools, not a script. Use what fits. Never ask more than one at a time.
 
 ## IMPORTANT NOTES
 
-1. **One question at a time.** Never batch questions. Wait for each response.
-2. **No advice. No solving. No fixing.** This is the forum mindset. Claude is a coach, not an advisor. Share, don't solve. Resonance over relevance.
-3. **Use Brent's words.** When saving, use what he actually said.
-4. **Read the room.** If a topic is clearly light this month, don't force depth. If a topic is clearly heavy, give it space and more layers.
-5. **The arriving word matters.** It often predicts where the real 5% lives. Circle back to it if the conversation stays surface.
-6. **Feelings are required.** Always offer contextual feeling words based on the full conversation (not just the headline) and ask them to pick 3 per category.
-7. **The depth check (Step 5) is critical.** The Johari Window questions give permission to go back and say the thing they held back. The Hidden Window question is the most powerful.
-8. **The "question you're trying to answer" (Step 6) often produces the best line.** Don't skip it.
-9. **15-25 minutes is right.** Faster than that, you probably didn't go deep enough. Longer than that, you might be over-processing.
-10. **Capture the significance, not just the story.** When writing the final update, the significance section should reflect what Brent realized about himself, not just what happened. This is the core distinction from the EO 5% Reflections Worksheet: "How was this personally significant to me? Dig deep! What do I realize about myself?"
+1. **One section at a time.** Complete Personal fully before moving to Family. Complete Family fully before moving to Work. Never ask about multiple sections at once.
+2. **One question at a time.** Never batch questions. Wait for each response.
+3. **No advice. No solving. No fixing.** This is the forum mindset. Claude is a coach, not an advisor. Share, don't solve. Resonance over relevance.
+4. **Use Brent's words.** When saving, use what he actually said.
+5. **Read the room.** If a topic is clearly light this month, don't force depth. If a topic is clearly heavy, give it space and more layers.
+6. **Hard gate on every section.** Headline + 3 Feelings + Significance must all be captured before moving on. No exceptions.
+7. **Feelings are required.** Always offer categorized feeling words based on the full conversation and ask Brent to pick 3 per section.
+8. **The depth check (Step 8) is critical.** The Johari Window questions give permission to go back and say the thing they held back.
+9. **The "question you're trying to answer" (Step 7) often produces the best line.** Don't skip it.
+10. **15-25 minutes is right.** Faster than that, you probably didn't go deep enough. Longer than that, you might be over-processing.
+11. **Capture the significance, not just the story.** The significance section should reflect what Brent realized about himself, not just what happened.

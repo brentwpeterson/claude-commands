@@ -22,8 +22,9 @@ If a percentage was passed and it is <8%, OR if `--emergency` flag is set, do ON
 1. Run ONE command: `git branch --show-current`
 2. **Get YOUR identity from conversation memory.** You know your name. Do NOT read `active-session.json` (shared file, could be another session's data).
 3. Write this file from conversation memory (NO other commands):
-   - Path: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[project]-[date]-[claude-name]-context.md`
-   - **Same filename as normal saves.** The emergency flag is INSIDE the file (`EMERGENCY CONTEXT SAVE` header), not in the filename.
+   - If you know your task slug: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/[task-slug]-[claude-name]-context.md`
+   - If you don't know: `/Users/brent/scripts/CB-Workspace/.claude/branch-context/emergency-[claude-name]-context.md`
+   - The emergency flag is INSIDE the file (`EMERGENCY CONTEXT SAVE` header), not in the filename.
    - `[claude-name]` = YOUR name from this conversation, lowercase (e.g., `turing`, `earhart`)
 4. Output: "Emergency context saved to: [path]" and STOP.
 
@@ -48,13 +49,15 @@ DO NOT commit, DO NOT run MCP, DO NOT validate anything. Just write and stop.
 
 1. **NEVER ask questions during save.** No time tracking, no task status, no clarification. Save and exit. Defer questions to /claude-start.
 2. **NEVER claim completion.** Say "ready for testing" not "complete."
-3. **One context file per workspace per Claude per day.** Filename MUST include Claude identity to prevent collisions between sessions.
+3. **One context file per task per Claude.** Filename is task-based, not date-based. Same task = update in place. No file accumulation across days.
 
 ---
 
 # MODE DETECTION
 
 Parse arguments: `/claude-save [project] [flags] [X%]`
+
+**Flags:** `--quick`, `--emergency`, `--close`, `--tomorrow`, `--no-todo`
 
 **No-argument resolution:**
 When no project argument is provided, resolve identity and workspace in this order:
@@ -134,9 +137,66 @@ Percentage parsing: `9%` -> extract `9` -> QUICK mode. `5%` -> EMERGENCY. No % p
 ```
 WORKSPACE_ROOT = /Users/brent/scripts/CB-Workspace
 CONTEXT_DIR    = /Users/brent/scripts/CB-Workspace/.claude/branch-context/
-CONTEXT_FILE   = [workspace]-[date]-[claude-name]-context.md  (e.g., brent-2026-02-05-tesla-context.md)
+CONTEXT_FILE   = [task-slug]-[claude-name]-context.md  (e.g., acg-newsletter-37-voltaire-context.md)
 SESSION_FILE   = /Users/brent/scripts/CB-Workspace/.claude/local/active-session.json
 SESSIONS_REG   = /Users/brent/scripts/CB-Workspace/.claude/local/active-sessions.json
+```
+
+## TASK-SLUG GENERATION
+
+The task slug is a short, lowercase, hyphenated name for what you're working on. Generate it from the task description in conversation memory.
+
+**Rules:**
+- 2-5 words, lowercase, hyphenated
+- Descriptive enough to identify the task at a glance
+- Stable across saves (same task = same slug)
+- Examples: `acg-newsletter-37`, `tc-wordpress-migration`, `llm-provider-fixes`, `shoptalk-meeting-prep`, `hubspot-crossbeam-outreach`
+
+**On first save:** Generate the slug from the task. Include it in the context file under `## TASK SLUG` so future saves reuse it.
+
+**On subsequent saves:** Read the existing context file for this Claude to get the slug. If the task has changed (Claude is working on something new), generate a new slug and archive the old file.
+
+## FILE LIFECYCLE
+
+```bash
+CONTEXT_DIR="/Users/brent/scripts/CB-Workspace/.claude/branch-context"
+CLAUDE_NAME="[lowercase-name]"  # e.g., "voltaire"
+
+# Find existing file for this Claude
+EXISTING=$(ls "$CONTEXT_DIR"/*-${CLAUDE_NAME}-context.md 2>/dev/null | head -1)
+
+if [ -n "$EXISTING" ]; then
+  # Read the task slug from the existing file
+  OLD_SLUG=$(grep "Task Slug:" "$EXISTING" | sed 's/.*: //' | tr -d '`* ')
+
+  if [ "$OLD_SLUG" = "$NEW_SLUG" ]; then
+    # Same task: UPDATE IN PLACE (overwrite)
+    CONTEXT_FILE="$EXISTING"
+  else
+    # Different task: ARCHIVE old, create new
+    mkdir -p "$CONTEXT_DIR/archive"
+    mv "$EXISTING" "$CONTEXT_DIR/archive/"
+    CONTEXT_FILE="$CONTEXT_DIR/${NEW_SLUG}-${CLAUDE_NAME}-context.md"
+  fi
+else
+  # No existing file: create new
+  CONTEXT_FILE="$CONTEXT_DIR/${NEW_SLUG}-${CLAUDE_NAME}-context.md"
+fi
+```
+
+## MIGRATING OLD DATE-BASED FILES
+
+When saving, also check for and clean up old date-based files for this Claude:
+```bash
+# Find old format files: [workspace]-YYYY-MM-DD-[name]-context.md
+OLD_FORMAT=$(ls "$CONTEXT_DIR"/*-20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]-${CLAUDE_NAME}-context.md 2>/dev/null)
+if [ -n "$OLD_FORMAT" ]; then
+  mkdir -p "$CONTEXT_DIR/archive"
+  for f in $OLD_FORMAT; do
+    mv "$f" "$CONTEXT_DIR/archive/"
+  done
+  echo "Archived $(echo "$OLD_FORMAT" | wc -l | tr -d ' ') old date-based context files"
+fi
 ```
 
 ---
@@ -167,8 +227,9 @@ SESSIONS_REG   = /Users/brent/scripts/CB-Workspace/.claude/local/active-sessions
     fi
   fi
   ```
-- Check for existing from THIS Claude today: `ls .claude/branch-context/[workspace]-$(date +%Y-%m-%d)-[claude-name]-context.md`
-- Update existing or create `[workspace]-[date]-[claude-name]-context.md`
+- Find existing file for this Claude: `ls .claude/branch-context/*-[claude-name]-context.md`
+- Update existing (same task) or create new `[task-slug]-[claude-name]-context.md`
+- Archive old date-based files if found
 - Use quick template (below)
 
 **Phase 3: Show path and exit**
@@ -180,6 +241,7 @@ Quick template:
 
 ## SESSION STATUS
 **Identity:** Claude-[Name]
+**Task Slug:** `[task-slug]`
 **Status:** SAVED
 **Last Saved:** [YYYY-MM-DD HH:MM]
 **Last Started:** [YYYY-MM-DD HH:MM or "New session"]
@@ -235,8 +297,9 @@ Quick template:
     fi
   fi
   ```
-- Filename: `[workspace]-[date]-[claude-name]-context.md` (e.g., `brent-2026-02-05-tesla-context.md`)
-- Check for existing from THIS Claude today (update, don't duplicate)
+- Find existing file for this Claude: `ls .claude/branch-context/*-[claude-name]-context.md`
+- Update existing (same task) or create new `[task-slug]-[claude-name]-context.md`
+- Archive old date-based files if found
 - Use full template (below)
 
 **Phase 4: Commit context + link to todo**
@@ -260,14 +323,17 @@ Quick template:
 
 Display this exact format for easy resume:
 ```
-📁 Context saved: [full path to context file]
-🤖 Identity: Claude-[Name]
-📋 Status: SAVED
+Context saved: [full path to context file]
+Identity: Claude-[Name]
+Task: [task-slug]
+Code: [first 6 chars of md5 of filename]
 
-To resume this session:
-  /claude-start [name]
+To resume: /resume [code]
+```
 
-Example: /claude-start curie
+Generate the resume code:
+```bash
+echo "$(basename "$CONTEXT_FILE")" | md5 | head -c 6
 ```
 
 Also show:
@@ -280,6 +346,7 @@ Full template:
 
 ## SESSION STATUS
 **Identity:** Claude-[Name]
+**Task Slug:** `[task-slug]`
 **Status:** SAVED
 **Last Saved:** [YYYY-MM-DD HH:MM]
 **Last Started:** [YYYY-MM-DD HH:MM or "New session"]
@@ -340,6 +407,29 @@ After normal save, append P0 entry to `/Users/brent/scripts/CB-Workspace/.claude
 ## --close
 Before normal save: scan staged files for credentials/API keys/hardcoded URLs. Block if critical issues found.
 After normal save: update project CLAUDE.md with `## LAST SESSION STATUS` header, add "SESSION CLOSED" to progress.log, verbose commit.
+
+## --tomorrow
+Save context normally, then move the context file to `tomorrow/` folder. This marks the session for next-day pickup without needing `/brent-finish` to triage it.
+
+After writing the context file:
+```bash
+TOMORROW_DIR="/Users/brent/scripts/CB-Workspace/.claude/branch-context/tomorrow"
+mkdir -p "$TOMORROW_DIR"
+mv "$CONTEXT_FILE" "$TOMORROW_DIR/"
+echo "Saved to tomorrow/: $(basename $CONTEXT_FILE)"
+echo "Will be available via /claude-start at next /brent-start"
+```
+
+Display:
+```
+Context saved: tomorrow/[filename]
+  Identity: Claude-[Name]
+  Status: SAVED (tomorrow)
+
+To resume tomorrow:
+  /brent-start will show this session
+  /claude-start [name] to pick it up
+```
 
 ## --no-todo
 Skip todo directory detection and progress.log linking.

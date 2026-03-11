@@ -17,32 +17,55 @@
    ```
 2. Extract `name` and `startWorkspace` fields
 3. Run `TaskList` to get all tasks
-4. Display this block:
+4. Display in this compact format:
 
 ```
-================================================
-  Claude-[Name] | [workspace] | [purpose]
-================================================
-
-Active:
-#3. [in_progress] Task subject here
-#5. [in_progress] Another active task
-
-Pending:
-#6. [ ] Next task waiting
-#8. [ ] Another pending task
+  N tasks (X done, Y in progress, Z open)
+  ◼ Claude-[Name] | [workspace] - [purpose]
+  ✔ Completed task subject
+  ▶ In-progress task subject
+  ◻ Pending task subject
+  ◻ Another pending task
 ```
 
 **Rules:**
-- Purpose comes from the pinned identity task (the one with "Claude-[Name] | [workspace]" in the subject)
-- **Every task MUST show its ID** as `#[id].` prefix (e.g., `#3.`, `#8.`) so the user can reference tasks by number
-- Show `in_progress` tasks under "Active:" with their task ID
-- Show `pending` tasks under "Pending:" with their task ID
-- Skip `completed` tasks entirely
-- If no in_progress tasks (besides the pin task itself), show "Active: none"
-- If no pending tasks, show "Pending: none"
-- The pinned identity task itself is NOT listed (it IS the header)
+- **First line:** Task summary count: `N tasks (X done, Y in progress, Z open)`
+- **Second line:** Session identity with `◼` prefix. Purpose comes from the pinned identity task (the one with "Claude-[Name] | [workspace]" in the subject). Use a dash separator, not pipe, between workspace and purpose.
+- **Task lines** use these markers:
+  - `✔` for completed tasks
+  - `▶` for in_progress tasks
+  - `◻` for pending tasks
+- List tasks in order: in_progress first, then pending, then completed
+- The pinned identity task itself is NOT listed (it IS the header line)
+- If no tasks exist, show only the identity line and "No tasks"
+- No task IDs, no section headers, no separators. Just the compact list.
 
-5. If active-session.json is missing or has no name, say: "No active session found. Run /claude-start to initialize."
+5. Check for an active todo directory. Look for the most recent directory in:
+   ```
+   /Users/brent/scripts/CB-Workspace/todo/current/
+   ```
+   If one exists, read its `README.md` and append a single line:
+   ```
+   📁 [branch-name] - [status from README]
+   ```
+   If no todo directory exists, omit this line entirely.
 
-**That's it. No commentary. No explanation. Just the header and task list.**
+6. **If NO identity task exists in TaskList** (no task with "Claude-[Name] | [workspace]" pattern):
+   - Read `active-session.json` for the `name` field
+   - If a name exists, automatically create the identity task: `TaskCreate` with subject `Claude-[Name] | [workspace] - [current work purpose]`
+   - Infer the purpose from conversation context (what the user is working on)
+   - Register the name: `mkdir -p .claude/local/names/Claude-[Name]`
+   - Then display the pin output as normal
+   - **DO NOT ask the user if you should create it. Just do it. /pin IS the trigger.**
+
+7. If `active-session.json` is missing or has no name:
+   - Pick a name (scientist, explorer, artist - not already in `.claude/local/names/`)
+   - Register it: `mkdir -p .claude/local/names/Claude-[Name]`
+   - Write `active-session.json` with the name, workspace, and timestamp
+   - Create the identity task
+   - Display the pin output
+   - **DO NOT ask. Just do it.**
+
+8. If active-session.json exists but truly cannot be created (permissions error, etc.), say: "No active session found. Run /claude-start to initialize."
+
+**That's it. No commentary. No explanation. Just the compact block.**

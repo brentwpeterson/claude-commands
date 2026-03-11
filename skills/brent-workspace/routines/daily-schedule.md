@@ -28,7 +28,38 @@ These run every morning regardless of what day it is. Complete before anything e
 4. **Review HubSpot deals** - Check pipeline, flag stale or closing-soon deals
 5. **Check sprint board** - Review active sprint items, know today's priorities
 
+6. **Draft Evrig daily email** - Draft status email to Vijay/team from CommerceKing action plan
+
 After the punch list, load the day-specific routine for content and rock work.
+
+---
+
+## Time-Limited Reminders
+
+These are temporary items with an expiration date. Remove them once the date has passed.
+
+### Shoptalk Spring 2026 (Remove after March 28, 2026)
+
+**Starts:** March 24, 2026
+
+Every morning, ask Brent: "Want to publish your Shoptalk attendee profile to LinkedIn today?"
+
+If yes, draft a LinkedIn post linking to: https://app.ingo.me/Shoptalk_Spring_2026/Attendees/attendee?ingo_source=ingo_vs_email
+
+Post angle ideas:
+- "I'll be at Shoptalk next week. Let's connect." (pre-event)
+- "At Shoptalk this week. Find me here:" (during event)
+- Adjust tone based on how close the event is
+
+---
+
+## CommerceKing/Evrig Daily Email (Non-Negotiable)
+
+**Runs every weekday morning as part of the punch list.**
+
+**Full workflow:** `.claude/skills/evrig-sales-collab/SKILL.md` (Daily Email Workflow section)
+
+Quick summary: Read action plan, check Gmail for Evrig responses, draft status email to Vijay. ALWAYS draft, NEVER send without Brent's approval.
 
 ---
 

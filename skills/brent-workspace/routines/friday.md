@@ -22,6 +22,7 @@ IF: Last Friday of month → Add "Monthly review" to punch list
 | 3 | Review HubSpot deals | HubSpot MCP | 10 min | On demand |
 | 4 | Quick CC site check | contentcucumber.com | 10 min | Manual |
 | 5 | Strety todos review (due Monday) | Strety MCP | 10 min | On demand |
+| 6 | Draft Evrig daily email | Gmail MCP | 10 min | On demand |
 
 **55 MIN MAX. Protect writing time.**
 

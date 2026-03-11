@@ -513,6 +513,54 @@ When `/deploy-code` triggers conversation compaction due to context limits, deta
      - **VERSION file unchanged:** [VERSION] (🚫 NEVER increment during deployment)
      - Remind to run `/claude-complete` after testing
 
+**Phase 5: Social Post & Blog Check**
+
+9. **Draft Deployment Social Post (X + BlueSky):**
+   - Using deployment context already available (tag, version, branch type, changelog entry), draft a 1-2 sentence post about what shipped.
+   - **Template guidance:**
+     - **MUST follow brand-brent voice rules.** Load the brand-brent skill before drafting.
+     - State what was deployed, not how it was built
+     - Use the changelog "Added/Changed/Fixed" entry as the source
+     - No em dashes, no emojis, no "actually", no adverbs
+     - No "Just shipped", "Just deployed", or any "Just..." openers (banned phrase)
+     - No vague hooks ("Something big", "Most people missed this")
+     - Keep it factual. No hype words ("game-changing", "revolutionary")
+     - First person voice
+   - **Example posts:**
+     - "RequestDesk now checks every piece of content against brand guidelines before publishing. Content terms enforcement is live."
+     - "Fixed a bug where Shopify product sync was dropping collection assignments. Small fix, big impact for merchants with large catalogs."
+   - **Display draft to user:**
+     ```
+     📣 DEPLOYMENT SOCIAL POST (Draft)
+
+     X: [draft post]
+     BlueSky: [same post or slightly adjusted for platform]
+
+     Approve? (Y/Edit/Skip)
+     ```
+   - **If approved:** Schedule via Vista Social API
+     - X profile: 23232, BlueSky profile: 457112
+     - Schedule 30-60 minutes from now (irregular minute, not :00/:15/:30/:45)
+     - Use -06:00 CST offset
+     - Do NOT schedule both platforms at the same time. Stagger by at least 1 day.
+   - **If user edits:** Use their version instead
+   - **If skipped:** Move on
+
+10. **Blog Post Check:**
+    - After social post is handled, ask:
+      ```
+      📝 BLOG CHECK
+
+      Can this deployment be compiled into a blog post?
+      (Y = yes, start a draft / L = later, add to ideas list / N = no)
+      ```
+    - **If Y:** Hand off to `/publish-blog [destination]` command. Do NOT draft the post yourself. Do NOT ask for angle/framing. The publish-blog command handles the full workflow.
+    - **If L:** Append one line to `brent-workspace/ob-notes/Brent Notes/Newsletters and Blogs/blog-ideas.md`:
+      ```
+      - [DATE] [tag] - [one-line description from changelog]
+      ```
+    - **If N:** Continue to next step
+
 **Next Step:** Test in production, then run `/claude-complete` when confirmed working
 
 **Key Changes from Old System:**

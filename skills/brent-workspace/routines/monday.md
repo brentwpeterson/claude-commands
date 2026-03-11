@@ -23,6 +23,19 @@ SPRINT_DATA=$(curl -s "https://app.requestdesk.ai/api/sprints" -H "Authorization
 
 ---
 
+## Article Deadline Checks (MANDATORY - ask FIRST before anything else)
+
+These are non-negotiable. Ask Brent before moving to the punch list.
+
+| # | Article | Publishes | Question |
+|---|---------|-----------|----------|
+| 1 | **TWC** (Tuesdays with Claude) | Tuesday | "Is the TWC article done for tomorrow?" |
+| 2 | **ACG** (Agentic Commerce Guy) | Wednesday | "Is the ACG article done for Wednesday?" |
+
+If either is NOT done, it becomes the #1 priority for the day. Do not proceed to punch list until Brent confirms status.
+
+---
+
 ## Punch List
 
 | # | Task | Tool | Time | Pull data? |
@@ -33,6 +46,7 @@ SPRINT_DATA=$(curl -s "https://app.requestdesk.ai/api/sprints" -H "Authorization
 | 4 | Review HubSpot deals | HubSpot MCP | 10 min | On demand |
 | 5 | Review/respond to LinkedIn | LinkedIn | 15 min | Manual |
 | 6 | Strety todos confirmation (due today) | Strety MCP | 5 min | On demand |
+| 7 | Draft Evrig daily email | Gmail MCP | 10 min | On demand |
 
 **75 MIN MAX for morning checklist. Then move to content/rocks.**
 
@@ -40,9 +54,9 @@ SPRINT_DATA=$(curl -s "https://app.requestdesk.ai/api/sprints" -H "Authorization
 
 ## Content Tasks
 
-### 1. Finish Wednesday's LinkedIn Newsletter
+### 1. Finish Wednesday's ACG (Agentic Commerce Guy)
 
-**Status check:** Is the LinkedIn Newsletter for Wednesday DONE?
+**Status check:** Is the ACG article for Wednesday DONE?
 
 - If not done: This is priority #1 after morning checklist
 - If done: Move to TWC LinkedIn scheduling

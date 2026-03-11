@@ -22,6 +22,7 @@ No recurring Wednesday conditionals currently.
 | 2 | Clear HubSpot tasks | HubSpot MCP | 20 min | On demand |
 | 3 | Review HubSpot deals | HubSpot MCP | 15 min | On demand |
 | 4 | Review CC site | contentcucumber.com | 10 min | Manual |
+| 5 | Draft Evrig daily email | Gmail MCP | 10 min | On demand |
 
 **1 HOUR MAX. Then move to content/rocks.**
 

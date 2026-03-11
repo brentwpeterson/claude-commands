@@ -14,6 +14,19 @@ No recurring Tuesday conditionals currently.
 
 ---
 
+## Article Deadline Checks (MANDATORY - ask FIRST before anything else)
+
+These are non-negotiable. Ask Brent before moving to the punch list.
+
+| # | Article | Publishes | Question |
+|---|---------|-----------|----------|
+| 1 | **TWC** (Tuesdays with Claude) | Today (Tuesday) | "Is the TWC article live/published? Need the Medium link." |
+| 2 | **ACG** (Agentic Commerce Guy) | Tomorrow (Wednesday) | "Is the ACG article done for tomorrow?" |
+
+If TWC is not published yet, that's a fire. If ACG is not done, it becomes the top priority after TWC is confirmed live.
+
+---
+
 ## Punch List
 
 | # | Task | Tool | Time | Pull data? |
@@ -22,6 +35,7 @@ No recurring Tuesday conditionals currently.
 | 2 | Clear HubSpot tasks | HubSpot MCP | 20 min | On demand |
 | 3 | Review HubSpot deals | HubSpot MCP | 15 min | On demand |
 | 4 | Review CC site | contentcucumber.com | 10 min | Manual |
+| 5 | Draft Evrig daily email | Gmail MCP | 10 min | On demand |
 
 **1 HOUR MAX. Then move to content/rocks.**
 

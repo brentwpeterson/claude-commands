@@ -22,7 +22,13 @@ Before trashing, scan your current session for open work:
    - Look for `## TODO LIST STATE` - are there in-progress or pending items?
    - Look for `## WHAT YOU WERE WORKING ON` - is there unfinished work described?
 
-2. **Check conversation memory:**
+2. **Check open comms with other Claudes:**
+   - Scan `/.claude/claude-comms/` for files with your name (`*${MY_NAME}*`)
+   - If any are NOT closed (no `SESSION CLOSED` marker), check: did the other Claude get everything they need?
+   - If another Claude requested a handoff or open items dump, make sure you replied before closing
+   - If you have unreplied comms, write your response BEFORE archiving
+
+3. **Check conversation memory:**
    - Were there any unanswered questions from the user?
    - Were there open tasks you didn't finish?
    - Were there items the user asked about but you didn't address?
@@ -90,13 +96,15 @@ done
 ### Step 4: Remove name from registries
 
 ```bash
-NAMES_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json"
-SESSIONS_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-sessions.json"
+NAMES_DIR="/Users/brent/scripts/CB-Workspace/.claude/local/names"
 MY_FULL_NAME="Claude-[Name]"
+
+# Release the atomic name lock
+rm -rf "$NAMES_DIR/$MY_FULL_NAME"
 ```
 
-- Remove from `active-claude-names.json`: filter out your name
-- Remove from `active-sessions.json`: filter your entry from both `sessions[]` and `resumable[]`
+- Remove lock directory from `names/` (this frees the name for reuse)
+- Also clean up `active-sessions.json` if it exists: filter your entry from both `sessions[]` and `resumable[]`
 
 ### Step 5: Report and exit
 

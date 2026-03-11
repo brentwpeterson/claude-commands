@@ -1,1 +1,0 @@
-../../.claude-local/commands/rd-blog.md

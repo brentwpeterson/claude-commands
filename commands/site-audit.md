@@ -7,6 +7,9 @@ Comprehensive site-level audit that catches everything WordPress plugins (Yoast,
 ```
 /site-audit <site>                  # Quick audit (source files only)
 /site-audit <site> --complete       # Full audit with Lighthouse + live checks
+/site-audit <site> --report         # Audit + generate Obsidian markdown + HTML report
+/site-audit <url>                   # Live audit of any external URL
+/site-audit <url> --report          # Live audit + generate deliverable reports
 /site-audit all                     # Quick audit all sites (summary scorecard)
 /site-audit all --complete          # Full audit all sites
 ```
@@ -38,6 +41,7 @@ Comprehensive site-level audit that catches everything WordPress plugins (Yoast,
 |------|---------|
 | (none) | Quick mode (default). Source file scan only. Fast, no network. |
 | `--complete` | Full mode. Adds Lighthouse, live URL checks, OG image validation. |
+| `--report` | Generate deliverable reports: Obsidian markdown + branded HTML. |
 | `--fix` | After audit, offer to fix critical issues automatically. |
 
 ---
@@ -47,16 +51,19 @@ Comprehensive site-level audit that catches everything WordPress plugins (Yoast,
 **When `--help` or `-h` is passed as an argument, show this and STOP:**
 
 ```
-site-audit - Full-site SEO/AEO/AIO analysis for Astro sites
+site-audit - Full-site SEO/AEO/AIO analysis
 
 Usage:
   /site-audit <site>              Quick audit (source files only, no network)
   /site-audit <site> --complete   Full audit with Lighthouse + live URL checks
+  /site-audit <site> --report     Audit + generate Obsidian markdown + branded HTML report
+  /site-audit <url>               Live audit of any external website
+  /site-audit <url> --report      Live audit + generate deliverable reports
   /site-audit <site> --fix        Audit then auto-fix critical issues
   /site-audit all                 Quick audit all sites (comparison scorecard)
   /site-audit all --complete      Full audit all sites with live checks
 
-Sites:
+Sites (internal Astro sites):
   rd        requestdesk-ai          requestdesk.ai
   tc        talkcommerce-com        talkcommerce.com
   cb-ai     contentbasis-ai         contentbasis.ai
@@ -66,9 +73,14 @@ Sites:
   dreamers  dreamers-inc            humans.contentcucumber.com
   mage      magento-masters-com     magentomasters.com
 
+External URLs:
+  Pass any full URL (https://example.com) to audit an external site.
+  External audits use live fetching (similar to --complete mode).
+
 Flags:
   (none)      Quick mode. Source file scan only. Fast, no network.
   --complete  Full mode. Adds Lighthouse, live URL checks, OG image validation.
+  --report    Generate deliverable reports (Obsidian markdown + branded HTML).
   --fix       After audit, offer to auto-fix critical issues.
 
 Scoring:
@@ -88,11 +100,18 @@ Complete mode adds:
   - OG image accessibility and dimensions
   - Sitemap validation (all pages present, no dead URLs)
 
+Report mode generates:
+  Phase 1: Markdown report saved to Obsidian (Lead Magnets folder)
+  Phase 2: Branded HTML report saved alongside the markdown
+  Phase 3: Shareable link via contentbasis.ai (TODO: hosting setup)
+
 Examples:
-  /site-audit tc                  Quick audit Talk Commerce
-  /site-audit rd --complete       Full audit RequestDesk with Lighthouse
-  /site-audit all                 Scorecard across all 8 sites
-  /site-audit tc --fix            Audit TC then auto-fix critical issues
+  /site-audit tc                              Quick audit Talk Commerce
+  /site-audit rd --complete                   Full audit RequestDesk with Lighthouse
+  /site-audit https://example.com             Live audit of external site
+  /site-audit https://example.com --report    External audit with deliverable reports
+  /site-audit all                             Scorecard across all 8 sites
+  /site-audit tc --fix                        Audit TC then auto-fix critical issues
 ```
 
 ---
@@ -130,6 +149,23 @@ SITES_DIR="/Users/brent/scripts/CB-Workspace/astro-sites/sites"
 | `mage` | `https://magentomasters.com` |
 
 If `all` is passed, loop through all sites. Generate a summary scorecard at the end.
+
+### External URL Detection
+
+If the argument starts with `http://` or `https://`, treat it as an **external site audit**:
+- Extract the domain name from the URL
+- Skip source file scanning (no local files)
+- Use **live fetching mode** (WebFetch for page analysis, curl for infrastructure checks)
+- Check: robots.txt, sitemap.xml, llms.txt, homepage + linked pages
+- Discover pages from the sitemap and navigation
+- Audit each discovered page for the same SEO/AEO/AIO criteria as internal audits
+
+**External audit page discovery order:**
+1. Fetch and parse sitemap.xml for all URLs
+2. Fetch homepage and extract navigation links
+3. Deduplicate and audit up to 15 key pages (prioritize: homepage, about, products/services, FAQ, contact, blog, pricing, reviews)
+
+**External audits automatically include live checks** (no need for --complete flag).
 
 ---
 
@@ -674,3 +710,70 @@ When `--fix` is passed along with a single site audit:
 - [ ] Design OG images for: /about, /pricing
 - [ ] Add FAQ section to: /how-it-works, /pricing
 ```
+
+---
+
+## --report FLAG
+
+When `--report` is passed, generate deliverable reports after the audit completes. This works with both internal Astro sites and external URLs.
+
+### Report Phase 1: Obsidian Markdown
+
+Save a comprehensive markdown report to the Obsidian Lead Magnets folder:
+
+**File path:** `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/Lead Magnets/{domain}-site-audit-{YYYY-MM-DD}.md`
+
+**The markdown report includes:**
+- Overall score with category breakdown (SEO, AEO, AIO, Technical)
+- Infrastructure scorecard (sitemap, robots.txt, llms.txt, OG images, SEO architecture)
+- Page-by-page analysis (titles, meta descriptions, OG tags, Twitter cards, schema, canonicals)
+- AEO scorecard (FAQ content, snippet readiness, question headings)
+- AIO scorecard (llms.txt, schema richness, semantic HTML, AI crawler rules)
+- Structured data opportunities with specific schema types per page
+- Sitemap health
+- Technical notes (rendering, performance, headers)
+- Critical issues list with impact ratings
+- Recommended improvements prioritized by impact and effort
+- "What Good Looks Like" section for context
+- Content Basis branding at footer
+
+**Confirm to user:** "Markdown report saved to Obsidian: [path]"
+
+### Report Phase 2: Branded HTML Report
+
+Generate a polished, dark-themed HTML report styled with Content Basis branding.
+
+**File path:** `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/Lead Magnets/{domain}-site-audit-{YYYY-MM-DD}.html`
+
+**HTML report design:**
+- Dark theme with accent color (#e94560)
+- Responsive layout (desktop + mobile + print)
+- Score circle visualization for overall score
+- Category score bars with fill animations
+- Color-coded badges (Pass=green, Warn=amber, Fail=red)
+- Issue cards with numbered priorities and impact badges
+- Schema opportunity cards
+- Recommendation table with impact/effort ratings
+- Clean typography, no external dependencies (self-contained CSS)
+- Content Basis branding in header and footer
+- Print-friendly styles
+
+**All styles must be inline/embedded (no external CSS/JS).** The HTML file must be completely self-contained and viewable by opening the file directly in a browser.
+
+**Confirm to user:** "HTML report saved: [path]" and offer to open it.
+
+### Report Phase 3: Shareable Link (TODO)
+
+> **Note:** This phase requires hosting infrastructure on contentbasis.ai that does not yet exist. When this is implemented, the flow will be:
+>
+> 1. Upload the HTML report to a public storage location
+> 2. Generate a unique URL key (e.g., `contentbasis.ai/reports/{key}`)
+> 3. Return the shareable link to the user
+> 4. The client can view the report at the link without authentication
+>
+> **Implementation options being evaluated:**
+> - Upload to S3/R2 with a public CDN URL
+> - Add a `/reports/{key}` route to contentbasis.ai
+> - Add a `/api/public/reports` endpoint to requestdesk
+>
+> For now, Phase 3 is skipped and the user is informed: "Shareable link feature coming soon. HTML report is available locally at [path]."

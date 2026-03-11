@@ -101,12 +101,15 @@ Read the instruction file created by `/claude-save` or `/claude-save-fast` and f
 ```
 WORKSPACE_ROOT = /Users/brent/scripts/CB-Workspace
 CONTEXT_DIR    = /Users/brent/scripts/CB-Workspace/.claude/branch-context/
-CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[workspace]-[date]-[claude-name]-context.md
+CONTEXT_FILE   = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[task-slug]-[claude-name]-context.md
+LEGACY_FORMAT  = /Users/brent/scripts/CB-Workspace/.claude/branch-context/[workspace]-[date]-[claude-name]-context.md
 ```
 **⚠️ ALWAYS use absolute paths. The `.claude/` directory is at WORKSPACE ROOT, NOT inside individual project directories.**
 
+**NOTE:** For resuming saved sessions by code, use `/resume` instead. `/claude-start` is for fresh sessions or name-based resume.
+
 **📁 CONTEXT FILE RESOLUTION:**
-Context files now include the Claude identity to prevent session collisions.
+Context files use task-based filenames (e.g., `acg-newsletter-37-voltaire-context.md`). Legacy date-based filenames are still supported.
 
 **Resolution order:**
 
@@ -114,12 +117,12 @@ Context files now include the Claude identity to prevent session collisions.
 
 **2. If argument looks like a Claude name (e.g., `curie`, `tesla`):**
 ```bash
-# Search for context file by Claude name in filename (case-insensitive)
+# Search for context file by Claude name in filename (task-based or date-based)
 ls -t /Users/brent/scripts/CB-Workspace/.claude/branch-context/*-[name]-context.md 2>/dev/null | head -1
 # Also check later/ directory
 ls -t /Users/brent/scripts/CB-Workspace/.claude/branch-context/later/*-[name]-context.md 2>/dev/null | head -1
 ```
-If found, use that file and inherit the identity.
+If found, use that file and inherit the identity. Works with both task-based (`acg-newsletter-37-voltaire-context.md`) and legacy date-based (`brent-2026-03-09-voltaire-context.md`) filenames.
 
 **FALLBACK - If filename search finds nothing, search inside file contents:**
 ```bash
@@ -129,7 +132,7 @@ grep -rl "Identity.*Claude-[Name]" /Users/brent/scripts/CB-Workspace/.claude/bra
 # Also check later/ directory
 grep -rl "Identity.*Claude-[Name]" /Users/brent/scripts/CB-Workspace/.claude/branch-context/later/*.md 2>/dev/null | xargs ls -t 2>/dev/null | head -1
 ```
-If found via content search, use that file. The Claude name exists inside the file but not in the filename (legacy format from before the naming convention was enforced). If multiple matches, the newest file (by modification time) is used.
+If found via content search, use that file. If multiple matches, the newest file (by modification time) is used.
 
 **AUTO-RENAME on fallback find:** When a file is found via content grep, rename it to include the Claude name so future lookups work by filename:
 ```bash
@@ -162,13 +165,52 @@ When `/claude-start` is called with NO arguments:
 
 1. **Detect workspace from pwd** using the "Workspace Detection from pwd" reverse lookup above
 2. **Pick a new Claude name** (do NOT try to resume an existing session)
-3. **Register name** in `active-claude-names.json`
-4. **Write `active-session.json`** with `name` field included
-5. **Register in `active-sessions.json`** registry
-6. **Skip context file loading** (this is a fresh session, no context to resume)
-7. **Run Step 0 (date verification)** and **Step 1 (work log)** and **Step 2 (navigate)**
-8. **Skip Steps 3-5** (no MCP context to load, no context file, no setup instructions)
-9. **Go to Step 6** (present status, ask for direction)
+3. **Validate name is unique AND claim it atomically:**
+   ```bash
+   NAMES_DIR="/Users/brent/scripts/CB-Workspace/.claude/local/names"
+   mkdir -p "$NAMES_DIR"
+   CHOSEN_NAME="Claude-[Name]"
+   if ! mkdir "$NAMES_DIR/$CHOSEN_NAME" 2>/dev/null; then
+     # Name is TAKEN! Pick another and retry mkdir. Repeat until one succeeds.
+   fi
+   date -u > "$NAMES_DIR/$CHOSEN_NAME/claimed"
+   ```
+   `mkdir` is atomic on macOS. If it fails, the name is taken. Keep picking until one succeeds.
+5. **Create blank context file** so the session is immediately trackable:
+   ```bash
+   CONTEXT_DIR="/Users/brent/scripts/CB-Workspace/.claude/branch-context"
+   SHORTCODE="[resolved-shortcode]"  # or "workspace" if at root
+   DATE=$(date "+%Y-%m-%d")
+   CLAUDE_NAME="[chosen-name]"  # lowercase, e.g., "shackleton"
+   CONTEXT_FILE="$CONTEXT_DIR/${SHORTCODE}-${DATE}-${CLAUDE_NAME}-context.md"
+
+   cat > "$CONTEXT_FILE" << EOF
+   # Resume Instructions for Claude
+
+   ## SESSION STATUS
+   **Identity:** Claude-[Name]
+   **Status:** ACTIVE
+   **Last Saved:** (not yet saved)
+   **Last Started:** $(date "+%Y-%m-%d %H:%M")
+
+   ## IMMEDIATE SETUP
+   1. **Directory:** \`$(pwd)\`
+   2. **Branch:** (to be determined)
+
+   ## WHAT YOU WERE WORKING ON
+   Fresh session. Awaiting direction from user.
+
+   ## NEXT ACTIONS (PRIORITY ORDER)
+   1. Wait for user direction
+   EOF
+   ```
+   This ensures every registered name has a corresponding context file from the start.
+6. **Write `active-session.json`** with `name` field included
+7. **Register in `active-sessions.json`** registry
+8. **Skip context file loading** (this is a fresh session, no context to resume)
+9. **Run Step 0 (date verification)** and **Step 1 (work log)** and **Step 2 (navigate)**
+10. **Skip Steps 3-5** (no MCP context to load, no context file, no setup instructions)
+11. **Go to Step 6** (present status, ask for direction)
 
 **Display for fresh session:**
 ```
@@ -315,13 +357,22 @@ INHERITED_NAME=$(grep "^\*\*Identity:\*\*" [context-file] | sed 's/.*Claude-//' 
 - Explorers: Shackleton, Earhart, Armstrong, Cousteau
 - Writers: Hemingway, Austen, Twain, Tolkien
 
-**3. Register Name (whether inherited or new):**
+**3. Register Name (whether inherited or new) using ATOMIC lock directory:**
 ```bash
-NAMES_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-claude-names.json"
-CURRENT=$(cat "$NAMES_FILE" 2>/dev/null || echo "[]")
-# Add name if not already present
-echo "$CURRENT" | jq '. + ["Claude-[Name]"] | unique' > "$NAMES_FILE"
+NAMES_DIR="/Users/brent/scripts/CB-Workspace/.claude/local/names"
+mkdir -p "$NAMES_DIR"
+NAME="Claude-[Name]"
+if ! mkdir "$NAMES_DIR/$NAME" 2>/dev/null; then
+  # Name is TAKEN by another window! Pick a different name.
+  # Try mkdir again with the new name. Repeat until one succeeds.
+  # NEVER overwrite or remove another session's lock directory.
+fi
+# Write a timestamp so we know when this name was claimed
+date -u > "$NAMES_DIR/$NAME/claimed"
 ```
+**WHY:** The old JSON file approach had race conditions. Multiple Claudes would read the same file, pick the same "available" name, and overwrite each other. `mkdir` is atomic on macOS - it fails immediately if the directory exists, guaranteeing uniqueness.
+
+**DO NOT use `active-claude-names.json` for registration.** It is deprecated. The names/ directory is the source of truth.
 
 **4. Update Context File Status to ACTIVE:**
 
@@ -414,25 +465,60 @@ For each top work item from the context file:
 
 **Why this exists:** `/pin` displays the identity header + top todos. If no tasks are loaded, `/pin` shows nothing useful. Every resumed session must have real work visible in the task list from the start.
 
-**Step 1: Read Work Log for Day Context**
+**Step 1: Read Work Log & Stamp Session Start**
 1. **Get today's date** from Step 0 (format: YYYY-MM-DD)
 2. **Read WORK-LOG.md:**
    ```
    WORK_LOG_PATH = /Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Daily/WORK-LOG.md
    ```
-3. **Parse today's entry** - Look for `## [today's date]` section
-4. **Extract timer status:**
-   - Start time (if present)
-   - End time (if present)
-   - Hours worked (if present)
-   - Accomplishments listed
+3. **If no entry for today:** Create today's section at the TOP of the log (after the header):
+   ```markdown
+   ## [YYYY-MM-DD]
+
+   **Sprint:** S[N] | **Day:** [X]
+
+   ### Sessions
+   | Time | Claude | Workspace | Purpose |
+   |------|--------|-----------|---------|
+   | [HH:MM] | Claude-[Name] | [shortcode] | [Fresh session / Resumed: purpose] |
+
+   ### Work Items
+   | Time | Item | Type | Sprint Item? | Hrs |
+   |------|------|------|-------------|-----|
+
+   ### Daily Tally
+   - **Hours worked:** TBD
+   - **Sprint points moved:** 0 (planned) + 0 (unplanned)
+   - **Admin hours:** 0
+   ```
+4. **If today's entry already exists:** Append a new row to the `### Sessions` table:
+   ```
+   | [HH:MM] | Claude-[Name] | [shortcode] | [Fresh session / Resumed: purpose] |
+   ```
 5. **Display Day Status:**
    ```
    ⏱️ Day Status: [date]
-   - Timer: [Started at X:XX AM | Not started | Completed X.X hrs]
-   - Accomplishments: [count] items logged
+   - Sessions today: [count]
+   - Work items logged: [count]
    ```
-6. **If no entry for today:** Display "⏱️ Timer not started today - no WORK-LOG entry for [date]"
+
+**Step 1.5: Write Contextual Work Items to Log (Resumed Sessions Only)**
+
+When resuming from a context file (not a fresh session), add the key work items from the context to the Work Items table. This keeps the daily log as the central record.
+
+1. **Parse context file** for `## WHAT YOU WERE WORKING ON` and `## NEXT ACTIONS` sections
+2. **For each significant item**, add a row to the Work Items table:
+   ```
+   | [HH:MM] | [Item description from context] | sprint | [Sprint item ref if known] | - |
+   ```
+3. **Type tags:** `sprint` (maps to a backlog item), `unplanned` (real work not in sprint), `admin` (inbox, meetings, routine)
+4. **Do NOT add items yet** - just prepare them. Hours get filled in as work happens or at /brent-finish.
+5. **Display:**
+   ```
+   📋 Loaded [N] work items from context into today's log
+   ```
+
+**Why /claude-start and not /claude-save:** /claude-save should stay lean (just save context for resume). The daily log is populated when work starts, not when it ends. This prevents bloat in /claude-save and ensures the log is the single source of truth.
 
 **Step 2: Navigate to Project (Using Directory Mapping)**
 1. **Resolve project name to directory:** Use the WORKSPACE SHORTCODES mapping above
@@ -666,3 +752,51 @@ NOTE: These are for /brent-start daily workflow, not session resume.
 - **Context Efficiency**: Targeted searches return clean, relevant results vs full graph dump
 - **Multi-Window Safe**: Knowledge graph approach prevents SQLite locking issues
 - **Benefits**: Cross-session continuity, pattern discovery, intelligent context bridging
+
+---
+
+**Step 7: Display Active Windows & Context Files (FINAL STEP - MANDATORY)**
+
+After all setup is complete, display the current active windows AND context files so the user can verify names, catch duplicates, and see who has saved state.
+
+```bash
+NAMES_DIR="/Users/brent/scripts/CB-Workspace/.claude/local/names"
+CONTEXT_DIR="/Users/brent/scripts/CB-Workspace/.claude/branch-context"
+
+echo "== ACTIVE WINDOWS =="
+ls -1 "$NAMES_DIR" 2>/dev/null | grep "^Claude-"
+
+echo ""
+echo "== CONTEXT FILES =="
+ls -lt "$CONTEXT_DIR"/*.md 2>/dev/null | grep -v "main-context\|master-context\|README"
+```
+
+**Display format:**
+```
+== ACTIVE WINDOWS ==
+  1. Claude-[Name] (controller)
+  2. Claude-[Name]
+  3. Claude-[Name]
+  ...
+Total: [N] names registered
+
+== CONTEXT FILES ==
+  [date] [filename] (Claude-[Name])
+  [date] [filename] (Claude-[Name])
+  ...
+Total: [N] context files
+
+WARNINGS:
+- [Name] has NO context file (never saved)
+- [Name] appears [X] times in names registry (duplicate!)
+- Context file [file] has no matching registered name (orphan)
+```
+
+**Cross-reference names vs files:** Compare the names registry against context files. Flag:
+1. **Registered names with no context file** - that session hasn't saved yet
+2. **Duplicate names** - two windows picked the same name
+3. **Context files with no matching registered name** - orphan file, session may have closed
+
+**Tip line:** "If you see duplicates or orphans, rename with /pin or archive the orphan."
+
+**Why this exists:** With multiple windows open, duplicate Claude names cause confusion in comms, context files, and session tracking. Showing both the roster AND context files at every session start gives the user a complete picture of session state. This was added after Violation #130 where the controller session archived active context files.

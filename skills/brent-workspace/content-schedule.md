@@ -2,12 +2,12 @@
 
 ## CRITICAL: Two Separate Weekly Articles
 
-**Tuesdays with Claude and LinkedIn Newsletter are COMPLETELY DIFFERENT content pieces.**
+**Tuesdays with Claude (TWC) and Agentic Commerce Guy (ACG) are COMPLETELY DIFFERENT content pieces.**
 
 | Content | Platform | Publish Day | Type |
 |---------|----------|-------------|------|
-| **Tuesdays with Claude** | Medium | Tuesday | Technical article - AI/Claude adventures |
-| **LinkedIn Newsletter** | LinkedIn | Wednesday | Professional insights - industry topics |
+| **Tuesdays with Claude (TWC)** | Medium | Tuesday | Technical article - AI/Claude adventures |
+| **Agentic Commerce Guy (ACG)** | LinkedIn | Wednesday | Professional insights - agentic commerce |
 
 These are NOT related. They have different audiences, different tones, and different topics.
 
@@ -17,9 +17,9 @@ These are NOT related. They have different audiences, different tones, and diffe
 
 | Day | Written Content | Media | Notes |
 |-----|-----------------|-------|-------|
-| **Monday** | Finish LinkedIn Newsletter | - | Newsletter publishes Wednesday |
+| **Monday** | Finish ACG article | - | ACG publishes Wednesday |
 | **Tuesday** | Tuesdays with Claude publishes | - | Should be done Friday before |
-| **Wednesday** | LinkedIn Newsletter publishes | - | Rock work after publish |
+| **Wednesday** | ACG publishes | - | Rock work after publish |
 | **Thursday** | Rock work | **Content in Commerce** (bi-weekly, noon) | |
 | **Friday** | Write NEXT Tuesday's article | - | Get ahead for next week |
 | Flexible | - | Talk Commerce recording | |
@@ -33,14 +33,14 @@ These are NOT related. They have different audiences, different tones, and diffe
 
 | Content | Ideal Timeline | Deadline |
 |---------|----------------|----------|
-| Tuesdays with Claude | Write Friday before | Publish Tuesday |
-| LinkedIn Newsletter | Write/finish Monday | Publish Wednesday |
+| Tuesdays with Claude (TWC) | Write Friday before | Publish Tuesday |
+| Agentic Commerce Guy (ACG) | Write/finish Monday | Publish Wednesday |
 | Quarter topics | Plan entire quarter | Have all 13 weeks outlined |
 
 ### Why Lead Time Matters
 
-- **Tuesdays with Claude done Friday:** No Monday panic, time for edits
-- **LinkedIn Newsletter done Monday:** Publishes Wednesday, buffer for review
+- **TWC done Friday:** No Monday panic, time for edits
+- **ACG done Monday:** Publishes Wednesday, buffer for review
 - **Quarter planned:** Know what you're writing weeks in advance
 
 ---
@@ -68,10 +68,10 @@ See `media-properties.md` for full details.
 - **Save to:** `Tuesdays with Claude/tuesdays-with-claude-[topic].md`
 - **Before writing:** Run `/brand-brent` for voice
 
-### LinkedIn Newsletter
-- **Platform:** LinkedIn
+### Agentic Commerce Guy (ACG)
+- **Platform:** LinkedIn Newsletter
 - **Frequency:** Weekly (Wednesday publish)
-- **Format:** Professional insights article
+- **Format:** Professional insights on agentic commerce
 - **Tone:** Thought leadership, industry perspective
 - **Length:** 800-1500 words
 - **Save to:** `LinkedIn Articles/[topic].md`
@@ -135,16 +135,16 @@ curl -X POST "https://vistasocial.com/api/integration/posts?api_key=KEY" \
 
 | Metric | Target | Where Tracked |
 |--------|--------|---------------|
-| Tuesdays with Claude | 1/week | WEEKLY-SCORECARD.md |
-| LinkedIn Newsletter | 1/week | WEEKLY-SCORECARD.md |
+| Tuesdays with Claude (TWC) | 1/week | WEEKLY-SCORECARD.md |
+| Agentic Commerce Guy (ACG) | 1/week | WEEKLY-SCORECARD.md |
 | LinkedIn posts | 2-3/week | WEEKLY-SCORECARD.md |
 
 ---
 
 ## Content Non-Negotiables
 
-- **Tuesday:** Tuesdays with Claude MUST publish
-- **Wednesday:** LinkedIn Newsletter MUST publish
+- **Tuesday:** TWC MUST publish
+- **Wednesday:** ACG MUST publish
 - **Friday:** At least one LinkedIn post for the week
 - If behind: Use catch-up time, but don't skip
 
@@ -159,7 +159,7 @@ Create file in: idea-stash/[topic].md
 # [Idea Title]
 
 **Captured:** [DATE]
-**Series:** Tuesdays with Claude / LinkedIn Newsletter / Post / Other
+**Series:** Tuesdays with Claude / Agentic Commerce Guy / Post / Other
 **Status:** idea
 
 ## The Idea

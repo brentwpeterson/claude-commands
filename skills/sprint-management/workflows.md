@@ -93,7 +93,7 @@ Standard sprint = 2 weeks (12 days excluding weekends)
      }'
    ```
 
-5. **Create all 5 sprint directory files** (see 000-planning-sop.md Step 1 for details)
+5. **Create all 4 sprint directory files** (see 000-planning-sop.md Step 1 for details)
 
 ---
 
@@ -344,10 +344,11 @@ curl -X PATCH https://app.requestdesk.ai/api/sprints/S2 \
 
 1. **Fill retro.md** (already exists in sprint directory from planning):
    - Location: `S[N]/retro.md`
-   - Sections: Metrics, What went well, What didn't, Improvements, Process changes
+   - Sections: Metrics, What went well, What didn't, Improvements, Action items, Carry-over decisions
    - ASK Brent directly for each section. Wait for real answers.
 
-2. **Fill scorecard.md** with actual vs estimated points, KPI actuals.
+2. **Fill scorecard.md** with actual vs estimated per item, hours, KPI actuals.
+   - Pull actual hours from centralized `Dashboard/Daily/WORK-LOG.md` entries for the sprint period.
 
 3. **Review retro-notes.md** - synthesize running observations into retro discussion.
 
@@ -371,13 +372,14 @@ curl -X PATCH https://app.requestdesk.ai/api/sprints/S2 \
 
 **Base:** `/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/Dashboard/Sprints/2026/Q1/`
 
-**Every sprint directory contains 5 files (see SKILL.md for full standard):**
+**Every sprint directory contains 4 files:**
 
-| Document | Path |
-|----------|------|
-| Sprint Plan | `S[N]/sprint-plan.md` |
-| Work Log | `S[N]/work-log.md` |
-| Scorecard | `S[N]/scorecard.md` |
-| Retrospective | `S[N]/retro.md` |
-| Retro Notes | `S[N]/retro-notes.md` |
-| Current Sprint | `../current/` (updated to match active sprint) |
+| Document | Path | When Filled |
+|----------|------|-------------|
+| Sprint Plan | `S[N]/sprint-plan.md` | Planning day (immutable after) |
+| Scorecard | `S[N]/scorecard.md` | During sprint as items complete |
+| Retrospective | `S[N]/retro.md` | Retro day |
+| Retro Notes | `S[N]/retro-notes.md` | Throughout sprint |
+| Current Sprint | `../current/` (symlink to active sprint) | |
+
+**Daily work logging:** Centralized at `Dashboard/Daily/WORK-LOG.md` (not per-sprint). This is the single source of truth for daily hours and work items.

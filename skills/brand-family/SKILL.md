@@ -185,14 +185,22 @@ When Content Basis lands a client that needs the full stack:
 
 ---
 
-## Brand Obsidian Docs
+## Brand Obsidian Docs (Source of Truth for Brand Data)
 
-Human-readable brand bibles for each brand:
-- `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/brands/content-cucumber.md`
+The Obsidian brand files are the **source of truth** for brand positioning, ICPs, services, voice rules, and punch lists. Each follows a standardized 22-section template. Skill files (below) remain the authority for API credentials and Claude-specific behavior.
+
+**Brand files:**
 - `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/brands/content-basis.md`
+- `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/brands/content-cucumber.md`
 - `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/brands/requestdesk.md`
 - `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/brands/talk-commerce.md`
 - `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/brands/brent-peterson.md`
+
+**ICP files:**
+- `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/ICPs/` (10 files across 4 brand subdirectories)
+
+**Ecosystem index:**
+- `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/brands/README.md`
 
 ---
 
