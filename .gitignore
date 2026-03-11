@@ -9,6 +9,7 @@ CLAUDE.md
 
 # Exclude ALL context files - contain session state and internal workflow details
 branch-context/*-context.md
+branch-context/archive/
 branch-context/archived/
 branch-context/later/
 branch-context/tomorrow/
@@ -37,6 +38,7 @@ claude-comms/archive/
 # Exclude learning logs (internal operational data)
 learning/moments/*.md
 learning/improvements/
+learning/rules-pending/
 learning/CLAUDE-LEARNER-PLAN.md
 !learning/README.md
 
