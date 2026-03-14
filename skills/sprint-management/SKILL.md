@@ -222,14 +222,73 @@ Story: "RequestDesk - new integration every 2 weeks" (NOT in sprint)
 
 ---
 
+## CAPACITY MODEL (Calibrated from S1-S5 Actuals)
+
+**The old formula (`working days x 6`) was wrong.** It assumed all hours go to sprint items. In reality, 2-3 hours/day consistently go to meetings, inbox, daily ops, ad-hoc requests, and strategic work.
+
+**Starting S6, all work gets a backlog item** (see `/claude-start` Step 6.5 and `/brent-finish` Step 5.7b). This means sprint velocity will reflect total output, not just pre-planned items.
+
+### Historical Velocity (pts/day of PLANNED sprint work)
+
+| Sprint | Days | Committed | Completed | Pts/Day |
+|--------|------|-----------|-----------|---------|
+| S1 | 10 | 50 | 42 | 4.2 |
+| S2 | 10 | 51 | 49 | 4.9 |
+| S3 | 4 | 24 | 14 | 3.5 |
+| S4 | 6 | 33 | 27 | 4.5 |
+| S5 | 9 | 54 | 33 | 3.7 |
+| **Avg** | | | | **4.0** |
+
+### Capacity Formula
+
+```
+Gross hours/day:              ~9 hrs
+Non-sprint overhead:          ~2-3 hrs (meetings, inbox, ops, social)
+Net sprint-planned capacity:  ~4 pts/day
+
+Sprint capacity = working_days x 4 pts/day (planned work)
+Daily ops buffer = working_days x 2 pts/day (emergent, will be captured via bulk items)
+```
+
+**At planning time:**
+1. Count working days (subtract travel, PTO, conferences)
+2. Calculate planned capacity: `working_days x 4`
+3. Subtract recurring items
+4. Subtract carryover items
+5. Remaining = available for new planned work
+6. Do NOT plan the daily-ops buffer. It fills itself via `/claude-start` and `/brent-finish`
+
+**Example (9-day sprint):**
+```
+Planned capacity:    9 x 4 = 36 pts
+Recurring items:     -12 pts
+Carryover:           -8 pts
+Available for new:   16 pts
+Daily ops (emergent): ~18 pts (captured after the fact, not pre-planned)
+Expected total:      ~54 pts in sprint at retro time
+```
+
+### Tracking the Split
+
+At retro time, filter backlog items by tag:
+- **No `emergent` or `daily-ops` tag** = planned work (measures planning accuracy)
+- **`emergent` tag** = work created at `/claude-start` that wasn't in the plan
+- **`daily-ops` tag** = bulk items from `/brent-finish` (meetings, inbox, overhead)
+
+Over time this data calibrates the split and tells us if the 4/2 ratio is accurate.
+
+---
+
 ## KEY METRICS
 
 | Metric | Formula | Target |
 |--------|---------|--------|
-| **Velocity** | completed_points / capacity_points | 0.80+ (80%+) |
+| **Velocity (total)** | all completed_points / capacity_points | Informational (includes emergent) |
+| **Velocity (planned)** | planned completed_points / planned committed_points | 0.80+ (80%+) |
 | **Hours/Point** | total_hours_worked / completed_points | ~1.0 (calibrate from history) |
-| **Commitment Rate** | completed_points / committed_points | 0.90+ |
+| **Commitment Rate** | planned completed / planned committed | 0.90+ |
 | **Carryover Rate** | carryover_items / committed_items | < 0.15 (15%) |
+| **Emergent %** | emergent+daily-ops pts / total pts | Track trend (lower = better planning) |
 
 ---
 
