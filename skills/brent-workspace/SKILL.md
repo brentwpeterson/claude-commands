@@ -115,7 +115,7 @@ Brent's writing must contain elements that AI would typically smooth over, hedge
 
 **Terms to AVOID (AI tells on itself):**
 - "actually"
-- "Here's the thing" / "And here's what" / "Here's something"
+- "Here's the thing" / "And here's what" / "Here's something" / "Here's the part"
 - "The Real [X]" (e.g., "The Real Cost", "The Real Problem")
 - "Here's Why It Matters"
 - "The Reality Check"

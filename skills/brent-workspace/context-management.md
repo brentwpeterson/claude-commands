@@ -75,36 +75,35 @@ On Jan 20, 2026, we had 3 context files for the same day:
 
 ## Registry Structure
 
-**File:** `.claude/local/active-sessions.json`
+**Database:** `.claude/local/sessions.db` (SQLite with WAL mode)
+**Helper script:** `.claude/local/session-db.sh`
 
-```json
-{
-  "config": {
-    "max_windows": 5,
-    "auto_archive_days": 7,
-    "heartbeat_interval_minutes": 30
-  },
-  "sessions": [
-    {
-      "name": "Claude-Tesla",
-      "status": "active",
-      "workspace": "brent",
-      "context_file": "brent-workspace-2026-01-22-context.md",
-      "started": "2026-01-22T16:00:00",
-      "last_heartbeat": "2026-01-22T16:30:00",
-      "task_summary": "Working on X"
-    }
-  ],
-  "resumable": [
-    {
-      "workspace": "rd",
-      "context_file": "rd-blog-context.md",
-      "last_active": "2026-01-21T14:58:00",
-      "task_summary": "Blog work"
-    }
-  ]
-}
+```sql
+CREATE TABLE sessions (
+    name TEXT PRIMARY KEY,        -- Kepler, Cervantes, etc.
+    workspace TEXT NOT NULL,      -- brent, astro, rd, etc.
+    started TEXT NOT NULL,        -- ISO timestamp
+    last_activity TEXT NOT NULL,  -- ISO timestamp
+    status TEXT DEFAULT 'active', -- active, saved, closed
+    workspaces_touched TEXT,      -- JSON array
+    task_summary TEXT
+);
 ```
+
+**Usage from commands:**
+```bash
+source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+session_db_upsert "Name" "workspace" '["ws1","ws2"]' "task summary"  # Register/update
+session_db_get_json "Name"         # Read your own session
+session_db_list_active             # List all active sessions
+session_db_close "Name"            # Mark as closed (/claude-trash, /brent-finish)
+session_db_save "Name"             # Mark as saved (/claude-save)
+session_db_heartbeat "Name"        # Touch last_activity
+session_db_touch_workspace "Name" "rd"  # Add workspace to touched list
+session_db_find_orphans 2          # Find sessions inactive for 2+ hours
+```
+
+**DEPRECATED:** `active-session.json` is a shared file that gets overwritten by every session. DO NOT read or write it. Use the SQLite DB instead. Each session has its own row keyed by name, so no session can stomp another.
 
 **Status values:**
 - `active` - Currently running (browser window open)

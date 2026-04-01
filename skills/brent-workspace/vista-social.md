@@ -33,6 +33,7 @@
 | Instagram | Brent W. Peterson | 43335 |
 | TikTok | Brent W. Peterson | 22468 |
 | Reddit | brentwpeterson | 411053 |
+| LinkedIn (CommerceKing) | CommerceKing | 700972 |
 
 ---
 
