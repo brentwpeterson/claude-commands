@@ -7,12 +7,17 @@ Media property and production service. The voice of the ecosystem. Podcasts, vid
 | Field | Value |
 |---|---|
 | **Name** | Talk Commerce |
-| **Domain** | talkcommerce.com |
+| **Domain** | talk-commerce.com |
 | **Type** | Media Property |
 | **Word** | Connect |
 | **Tagline** | Connect commerce. |
-| **Primary Color** | #E84E36 (orange-red) |
-| **Contact** | brent@talkcommerce.com |
+| **Primary Color** | #0033FF (electric blue) - primary accent |
+| **Structural Colors** | #000000 (black) + #FFFFFF (white) - base palette |
+| **Neutral Slates** | #334155, #1E293B |
+| **Secondary Palette** | #FF6568, #FCBB00, #F99C00, #F05100 (used for podcast episode tags, not as brand accents) |
+| **Font** | Outfit (sans-serif) |
+| **Source** | Verified from talk-commerce.com compiled CSS (2026-04-17) |
+| **Contact** | brent@talk-commerce.com |
 
 ## Positioning
 
@@ -53,6 +58,69 @@ Media property and production service. The voice of the ecosystem. Podcasts, vid
 - Specific, concrete references (not "some companies" but name them)
 - Questions that drive real conversation
 - Natural transitions, not scripted segues
+
+## Press Releases (Reprint Format)
+
+Talk Commerce publishes press releases as a `[Press Release]` category on the blog. Format: reprint the vendor's announcement with light voice cleanup and required frontmatter. Matches the Constructor/MIA and Rezolve/brainpowa patterns already in the folder.
+
+### When to Use
+- A commerce-related vendor sends a press release (partnership, product launch, funding, etc.)
+- An industry report is published and the vendor provides a release
+- Not a fit: TC announcing its own products or services. Use a standard announcement format for those.
+
+### File Location
+**Google Drive (NOT Obsidian):**
+```
+/Users/brent/My Drive/Sales and Marketing/Company Websites/Talk Commerce/Blog/
+```
+A folder-level README at that path documents the publishing flow and API.
+
+### Filename
+- Format: `YYYY-MM-DD-[Topic with spaces].md`
+- Date is the **publish date** on talk-commerce.com (not the vendor's announcement date)
+- ISO prefix keeps files sortable chronologically in the folder
+- Topic portion matches the vendor's announcement subject in natural reading order, spaces allowed
+- Example: `2026-04-17-Rezolve Ai Launches brainpowa Commerce-Tuned Models in Microsoft Foundry.md`
+- Older files in the folder predate this convention and lack the date prefix. New files always use it.
+
+### Required Frontmatter
+```yaml
+---
+title: "Full headline (can include ™, ®, other brand marks)"
+excerpt: "1-2 sentence summary. Used for list pages and meta description."
+tags: [comma-separated, relevant, keywords, 5-10 tags]
+categories: [Press Release]
+---
+```
+Optional extra fields (only when needed): `focus_keyphrase`, `seo_title`, `seo_description`, `status`.
+
+### Body Structure
+1. **Bold dek/subhead** at top (the vendor's subhead, not the headline)
+2. **Dateline** `CITY[, CITY], Month DD, YYYY. ` opens the lede paragraph
+3. **Body sections** with H2 headings, matching the vendor's structure
+4. **Both executive quotes verbatim** (CEO + partner spokesperson, if present)
+5. **Numbered or bulleted model/product list** when applicable
+6. **`## About [Company]`** section at end, with link to vendor site
+7. **Skip:** Media Contact block, Forward-Looking Statements, trademark legalese footer
+
+### Voice Cleanup (Apply to body, NOT quotes)
+- Replace em dashes with periods, commas, or parentheses
+- No emojis
+- Keep vendor's product names, ™/® marks, and capitalization choices intact
+- **Quotes are sacred.** Never edit an executive quote even if it violates brand-brent voice rules (e.g., contains "should" or em dashes).
+
+### Publishing
+```
+/publish-blog tc "<filename>"
+```
+- Destination: talk-commerce.com/blog
+- API: WordPress headless (`/wp-json/requestdesk/v1/headless/posts`)
+- Auth: X-RequestDesk-API-Key header
+- Publishes as DRAFT. Human editor reviews and publishes in WP admin.
+
+### Cross-Post Considerations
+- LinkedIn article (TC company page)
+- Talk Commerce newsletter
 
 ## Media Properties
 
@@ -163,7 +231,7 @@ Auth: Bearer [TALK_COMMERCE_API_KEY]
 - [ ] Add API key to workspace.env and this skill
 - [ ] Create `/brand-talkcommerce` command file in `.claude-local/commands/`
 - [ ] Define Talk Commerce content terms (avoid/use lists) in RequestDesk
-- [ ] Update talkcommerce.com with production services pages (video, webinar)
+- [ ] Update talk-commerce.com with production services pages (video, webinar)
 - [ ] Create Running Commerce as a formal sub-brand or section on the site
 - [ ] Define podcast guest outreach workflow
 - [ ] Create webinar production workflow template
