@@ -59,13 +59,33 @@ Media property and production service. The voice of the ecosystem. Podcasts, vid
 - Questions that drive real conversation
 - Natural transitions, not scripted segues
 
-## Press Releases (Reprint Format)
+## Press Releases
 
-Talk Commerce publishes press releases as a `[Press Release]` category on the blog. Format: reprint the vendor's announcement with light voice cleanup and required frontmatter. Matches the Constructor/MIA and Rezolve/brainpowa patterns already in the folder.
+Talk Commerce publishes PR-sourced content as a `[Press Release]` category on the blog. Two formats exist depending on what the source material supports. Both formats share file location, filename convention, frontmatter, and publishing flow. They differ only in body structure and tone.
+
+### Pick a Format First
+
+**Reprint Format** — use when the source is a formal press release with dateline, named spokespeople, and a clear corporate announcement structure (e.g., Constructor/MIA, Rezolve/brainpowa).
+- The vendor wrote it in PR style already
+- Has dateline like `CITY, STATE — DATE`
+- Has at least one verbatim executive quote
+- Has an "About [Company]" section
+- Has a structural narrative (the company announced X, here's how it works, quote, more details)
+
+**Editorial Coverage Format** — use when the source is a pitch, study summary, or email from a PR firm without formal PR structure (e.g., Gourmet Gift Baskets retention study, BERA Brand Equity Report).
+- The source is a pitch email or blog link, not a distributed press release
+- No dateline, no verbatim quotes, no "About" section in the source
+- Content is stat-heavy and works better as analysis than as reprint
+- You want to frame the material for a commerce operator audience
+
+When in doubt, editorial. Reprint demands PR-grade source material; editorial works with anything that has data and a point of view.
+
+## Reprint Format
 
 ### When to Use
-- A commerce-related vendor sends a press release (partnership, product launch, funding, etc.)
-- An industry report is published and the vendor provides a release
+- A commerce-related vendor sends a formal press release (partnership, product launch, funding, etc.)
+- An industry report is accompanied by a proper PR-formatted release
+- Source includes dateline, quotes, and About block
 - Not a fit: TC announcing its own products or services. Use a standard announcement format for those.
 
 ### File Location
@@ -121,6 +141,47 @@ Optional extra fields (only when needed): `focus_keyphrase`, `seo_title`, `seo_d
 ### Cross-Post Considerations
 - LinkedIn article (TC company page)
 - Talk Commerce newsletter
+
+## Editorial Coverage Format
+
+Use when the source is a PR pitch, study summary, report excerpt, or research blog post rather than a formal distributed press release. Frame the material as analysis for commerce operators instead of reprinting it. Matches the Gourmet Gift Baskets retention study and BERA Brand Equity Report posts.
+
+### When to Use
+- A PR firm sends a pitch email or study summary without traditional PR structure
+- An industry report or research piece is published and we want to cover it
+- Source has stats and a point of view but no dateline, verbatim quotes, or About block
+- You want to frame the material for a commerce operator audience rather than reprint it
+- Not a fit: source is a fully-structured press release (use Reprint Format instead)
+
+### File Location, Filename, Frontmatter, Publishing
+Same as Reprint Format:
+- Folder: `~/My Drive/Sales and Marketing/Company Websites/Talk Commerce/Blog/`
+- Filename: `YYYY-MM-DD-[Topic with spaces].md`
+- Frontmatter: `title`, `excerpt`, `tags`, `categories: [Press Release]`
+- Publishing: `/publish-blog tc "<filename>"`
+
+### Body Structure
+1. **Italic dek** at top (one sentence, sharpens the hook, names the stakes). This replaces the bold subhead used in reprint format.
+2. **Lede paragraph** - frames the story and states the reason it matters to commerce operators. No dateline.
+3. **Three H2 sections** typically:
+   - **What the data shows** (facts, specific numbers, named companies)
+   - **Why it matters / Why the trend is happening** (mechanism, nuance)
+   - **What this means for commerce** (analytical takeaway)
+4. **Closing paragraph** - pointer to the source with a link, any caveats (e.g., "claims are the vendor's own, independent benchmarks don't exist yet")
+
+### Rules
+- **No fabrication.** Only use stats, quotes, or claims present in the source material. If a number isn't in the source, don't invent one.
+- **Cite the source** with a real link somewhere in the piece (usually the closing paragraph).
+- **Preserve verbatim quotes** if the source includes any. Quotes are sacred even in editorial format.
+- **No "should"** per brand-brent voice rules.
+- **Named specifics beat vague claims.** "Retention searches jumped 5x from 2021 to 2025" not "retention has grown significantly."
+- **Flag when claims are the vendor's own** vs independently verified, if that distinction matters.
+
+### Headline Style
+- Punchy, no colon
+- Captures the angle (your angle, not the vendor's subject line)
+- Example: `Commerce Gets Its Own Foundational Model Inside Microsoft Foundry` (angle: category-level signal, not "Rezolve Launches X")
+- Example: `Retention Searches Jumped 5x While Buyers Pulled Back on Gift Budgets` (angle: the two-trend tension, not "Gourmet Gift Baskets Study Finds X")
 
 ## Media Properties
 

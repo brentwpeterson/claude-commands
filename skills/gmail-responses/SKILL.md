@@ -218,6 +218,76 @@ Looking forward to connecting.
 
 ---
 
+## SKIP RULES (do not draft a reply)
+
+When triaging the inbox, these patterns route to SKIP (leave unread/read as-is, no action, no draft). These are notifications, auto-replies, and recurring system mail that never need a human response.
+
+### By Sender Domain or Address
+- `notifications@vistasocial.com` — social post scheduled/published notifications
+- `noreply@notifications.hubspot.com` — HubSpot payment receipts, form submissions with no reply path
+- `*@beehiiv.*`, `*@substack.*` — newsletter send confirmations
+- `noreply@*`, `no-reply@*`, `donotreply@*` — any no-reply sender
+- `*@successai.*`, `*@warmup.*` — email warmup tool traffic
+- `calendar-noreply@google.com` — calendar ops
+- `*@transistor.fm` — podcast platform notifications
+- `*@riverside.fm` — recording platform notifications
+- `support@contentbasis.io` — RequestDesk scheduler heartbeats and self-monitoring pings (archive on sight)
+- `ads-account-noreply@google.com` — Google Ads automated status updates (spend limit, campaign state)
+- `sc-noreply@google.com` — Google Search Console automated notifications (NOTE: these can be actionable SEO alerts, route to MANUAL not SKIP when subject contains indexing/coverage issues)
+
+### By Subject Pattern
+- `Out of office*`, `Slow to respond*`, `Automatic reply*` — OOO replies
+- `*Invitation:*` (calendar invite notifications, not the actual invite)
+- `Accepted: *`, `Declined: *`, `Tentative: *` — calendar response notifications (auto-archive; even though the From field is a real person, the content is Google Calendar-generated)
+- `*Published to*`, `*Scheduled to*` — Vista Social etc.
+- `*payment*`, `*receipt*`, `*invoice paid*` (from known billing senders only)
+- `Your * report is ready` — automated analytics digests
+
+### By Recipient (Brent Not Addressed)
+- If `to:` header does NOT include one of Brent's addresses (`brent@contentbasis.io`, `brent@talk-commerce.com`, `brent@commercecucumber.com`, `admin@contentbasis.io`) and Brent is only CC'd/BCC'd → route to MANUAL by default. Do not draft a reply to mail not addressed to him.
+- Exception: if the sender asks Brent directly in the body ("Brent, what do you think?"), override to DRAFT.
+
+### By Gmail Category/Label
+- `CATEGORY_PROMOTIONS` (unless manually starred)
+- `CATEGORY_UPDATES` (unless from known-important sender)
+- Label `Beehiiv`, `Vista Social`, `Transistor`, `Riverside` — tool notifications already auto-labeled
+
+### Skip Behavior
+- Default: leave email as-is (unread stays unread, read stays read)
+- **Always auto-archive** (remove INBOX label, no confirmation needed) for:
+  - Calendar response notifications: `Accepted: *`, `Declined: *`, `Tentative: *` (confirmed 2026-04-20: these are always archive)
+  - RequestDesk heartbeats (`support@contentbasis.io`)
+  - Google Ads automated status updates (`ads-account-noreply@google.com`)
+  - Vista Social notifications, other platform notification senders listed above
+- For ambiguous skips (e.g., one-off newsletters, unfamiliar automated senders), ask before archiving
+- Never draft a reply. Never mark as spam.
+
+## SPAM SIGNALS (flag for user approval before trashing)
+
+When triaging, these patterns route to SPAM. **Never trash automatically.** Present the spam list to Brent first, get explicit approval before taking action.
+
+### Strong Signals (likely spam)
+- Unknown sender + generic subject (`Quick question`, `Loved your site`, `Collaboration opportunity`)
+- Cold SEO/backlink pitches ("I can get you backlinks from DA 70+ sites")
+- Unsolicited guest post offers from unknown senders
+- Generic PR pitches not matching a known PR firm pattern
+- Sender domain doesn't match the business they claim to represent
+- Multiple exclamation marks or ALL CAPS in subject
+- Attached PDF with generic name from unknown sender
+- "I tried to reach you" / "Following up on my previous email" when no previous email exists
+- Crypto/investment/get-rich pitches
+
+### Ambiguous Signals (needs human review)
+- Cold outreach from a named person at a real domain (could be legit or spam)
+- PR pitch from an unknown PR firm (could be valid, not automatically spam)
+- International sender with imperfect English pitching services
+
+### Spam Action Flow
+1. Collect all likely-spam emails during triage
+2. Show Brent the list: sender, subject, snippet, reason-classified-as-spam
+3. Options per email: `trash`, `mark spam` (adds SPAM label so Gmail learns), `keep`, `draft a brief decline`
+4. Never act without explicit approval. Default is to keep until Brent says otherwise.
+
 ## DELEGATION RULES
 
 | Email Type | Route To |
