@@ -11,10 +11,13 @@
 
 **THIS IS A DISPLAY COMMAND. You MUST:**
 
-1. Read the active session file:
+1. Read your session from the SQLite database:
+   ```bash
+   source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+   session_db_get_json "YOUR_NAME"
    ```
-   /Users/brent/scripts/CB-Workspace/.claude/local/active-session.json
-   ```
+   Use YOUR name from conversation memory (you know who you are).
+   **DO NOT read `active-session.json` - it is deprecated and shared/overwritten by other sessions.**
 2. Extract `name` and `startWorkspace` fields
 3. Run `TaskList` to get all tasks
 4. Display in this compact format:
@@ -51,21 +54,25 @@
    If no todo directory exists, omit this line entirely.
 
 6. **If NO identity task exists in TaskList** (no task with "Claude-[Name] | [workspace]" pattern):
-   - Read `active-session.json` for the `name` field
-   - If a name exists, automatically create the identity task: `TaskCreate` with subject `Claude-[Name] | [workspace] - [current work purpose]`
+   - Query the session DB for your name: `session_db_get_json "YOUR_NAME"`
+   - If found, automatically create the identity task: `TaskCreate` with subject `Claude-[Name] | [workspace] - [current work purpose]`
    - Infer the purpose from conversation context (what the user is working on)
    - Register the name: `mkdir -p .claude/local/names/Claude-[Name]`
    - Then display the pin output as normal
    - **DO NOT ask the user if you should create it. Just do it. /pin IS the trigger.**
 
-7. If `active-session.json` is missing or has no name:
+7. If no session found in DB for your name:
    - Pick a name (scientist, explorer, artist - not already in `.claude/local/names/`)
    - Register it: `mkdir -p .claude/local/names/Claude-[Name]`
-   - Write `active-session.json` with the name, workspace, and timestamp
+   - Register in session DB:
+     ```bash
+     source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+     session_db_upsert "YOUR_NAME" "WORKSPACE" '["WORKSPACE"]' "TASK_SUMMARY"
+     ```
    - Create the identity task
    - Display the pin output
    - **DO NOT ask. Just do it.**
 
-8. If active-session.json exists but truly cannot be created (permissions error, etc.), say: "No active session found. Run /claude-start to initialize."
+8. If the session DB cannot be accessed (permissions error, etc.), say: "No active session found. Run /claude-start to initialize."
 
 **That's it. No commentary. No explanation. Just the compact block.**

@@ -4,7 +4,7 @@
 
 **Rule:** No section:variant combo should appear on more than 4 pages. When it hits the cap, the next page MUST use a different variant. As the site grows past 20 JSON pages, revisit the cap.
 
-**Last updated:** 2026-02-24
+**Last updated:** 2026-03-12
 
 ## Full Site Inventory
 
@@ -17,6 +17,10 @@
 | 3 | Growth Marketing | growth-marketing | Service | Live |
 | 4 | Free HubSpot Audit | hubspot-audit | Service | Live |
 | 5 | HubSpot Loop Marketing | hubspot-loop-marketing | Service | Live |
+| 6 | Conference Interview | conference-interview | Campaign | Draft (needs HubSpot form + WP page) |
+| 7 | Conference PR Agencies | conference-pr | Partner | Draft (needs HubSpot form + WP page) |
+| 8 | 90-Day Revenue Engine Webinar | revenue-engine-webinar | Campaign | Draft (needs HubSpot form + WP page + header image) |
+| 9 | We Write Case Studies | we-write-case-studies | Campaign | Draft (needs WP page + HubSpot form ID) |
 
 ### Homepage (separate renderer: `homepage-json-renderer.php`)
 
@@ -112,7 +116,7 @@ When migrating, assign variants to ensure no combo exceeds the cap. This matrix 
 | Variant | Pages (max 4) | Slots remaining |
 |---|---|---|
 | `default` | agency-white-label, conference-video, growth-marketing, hubspot-audit, hubspot-loop-marketing | OVER (5/4) - need to move 1 |
-| `alternating` | (implemented, 0 assigned) | 4 |
+| `alternating` | revenue-engine-webinar, we-write-case-studies | 2 |
 | `icon-cards` | (not yet implemented) | 4 |
 | `compact` | (not yet implemented) | 4 |
 | `(need more)` | | |
@@ -121,7 +125,7 @@ When migrating, assign variants to ensure no combo exceeds the cap. This matrix 
 
 | Variant | Pages (max 4) | Slots remaining |
 |---|---|---|
-| `default` | agency-white-label, conference-video, growth-marketing, hubspot-audit, hubspot-loop-marketing | OVER (5/4) - need to move 1 |
+| `default` | agency-white-label, conference-video, growth-marketing, hubspot-audit, hubspot-loop-marketing, revenue-engine-webinar | OVER (6/4) - need to move 2 |
 | `centered` | (not yet implemented) | 4 |
 | `video-bg` | (PHP exists, 0 assigned) | 4 |
 | `(need more)` | | |
@@ -154,7 +158,7 @@ When migrating, assign variants to ensure no combo exceeds the cap. This matrix 
 
 | Variant | Pages (max 4) | Slots remaining |
 |---|---|---|
-| `default` | agency-white-label, hubspot-audit | 2 |
+| `default` | agency-white-label, hubspot-audit, revenue-engine-webinar | 1 |
 | `timeline` | (not yet implemented) | 4 |
 | `cards` | (not yet implemented) | 4 |
 
@@ -162,14 +166,14 @@ When migrating, assign variants to ensure no combo exceeds the cap. This matrix 
 
 | Variant | Pages (max 4) | Slots remaining |
 |---|---|---|
-| `default` | conference-video, growth-marketing, hubspot-loop-marketing | 1 |
+| `default` | conference-video, growth-marketing, hubspot-loop-marketing, revenue-engine-webinar | AT CAP (4/4) |
 | `side-by-side` | (not yet implemented) | 4 |
 
 ### credibility variants
 
 | Variant | Pages (max 4) | Slots remaining |
 |---|---|---|
-| `default` | agency-white-label, conference-video, growth-marketing, hubspot-loop-marketing | AT CAP (4/4) |
+| `default` | agency-white-label, conference-video, growth-marketing, hubspot-loop-marketing, revenue-engine-webinar | OVER (5/4) |
 | `stats-bar` | (not yet implemented) | 4 |
 
 ## Exempt Sections

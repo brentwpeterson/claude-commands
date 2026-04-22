@@ -104,6 +104,91 @@ Sales Hub Pro is where most clients are underutilizing. CC implements and config
 4. Required properties not set (deals move stages without data)
 5. No forecasting discipline (pipeline is a guess)
 
+### 10 Reasons to Upgrade to Sales Hub Pro (Sales Enablement)
+
+Use this list for pitching, landing pages, videos, and conference conversations. Ordered by impact.
+
+1. **Sequences for Automated Outreach** - Enroll leads in personalized, automated email sequences to nurture prospects. Sequences stop automatically once a prospect engages.
+2. **Advanced Sales Automation (Workflows)** - Automate routine tasks, internal notifications, and multi-stage sales processes. Reps spend more time selling, less time on admin.
+3. **AI-Powered Sales Tools (Breeze Assistant)** - AI drafts emails, creates call summaries, and updates CRM records automatically.
+4. **Multiple Deal Pipelines** - Manage different sales processes (new business, renewals, upsells) using separate, customized pipelines.
+5. **Sales Analytics and Forecasting** - Predict future revenue with real-time data. Team and individual performance visibility for better strategic decisions.
+6. **Custom Reporting and Dashboards** - Build tailored reports to track the metrics that matter. Deep visibility into sales activity across the team.
+7. **Conversation Intelligence (Call Recording)** - Record and analyze sales calls for coaching, detail tracking, and performance improvement.
+8. **Prospecting Workspace** - Unified workspace for reps to manage daily activities, prioritize leads, and spot buying signals early.
+9. **Required Fields and Goal Setting** - Standardize data entry and set trackable goals to drive accountability across the team.
+10. **Seamless Tool Integration** - Connects with Salesforce, LinkedIn Sales Navigator, and other tools. Native integration with HubSpot Marketing and Service Hubs for a unified customer view.
+
+### Objection Handling
+
+| Objection | Response |
+|-----------|----------|
+| "We already have a CRM" | Sales Hub Pro isn't just a CRM. It's automation, AI, and analytics on top of the CRM. Most CRMs stop at contact storage. |
+| "It's too expensive" | Companies paying for Pro but using it like Starter are wasting money. The tool pays for itself when sequences and automation are actually configured. |
+| "Our team won't adopt it" | That's an implementation problem, not a tool problem. Playbooks, required fields, and the prospecting workspace make adoption natural. CC handles the setup so your team walks into a working system. |
+| "We tried HubSpot before" | Most failed HubSpot implementations had zero content in the sequences and no pipeline structure. CC fills the tools with real content from day one. |
+| "Can't we just use free/Starter?" | Free and Starter don't have sequences, custom reporting, forecasting, or workflows. Those are the features that actually move revenue. |
+
+### ROI Talking Points
+- Average sales rep spends 65% of time on non-selling activities. Sequences and workflows reclaim that time.
+- Companies using sales automation see 10-15% higher win rates (HubSpot benchmark data).
+- One closed deal from a properly configured sequence can pay for a year of Sales Hub Pro.
+- Forecasting accuracy alone justifies the upgrade. You can't manage what you can't predict.
+
+---
+
+## Marketing Hub Pricing
+
+### Starter Promotional Pricing
+
+Save up to 40% off Starter. New customers only. No set end date, may be discontinued at any time.
+
+| Billing | Current Price | Was |
+|---------|--------------|-----|
+| Annual | $9/mo | $15/mo |
+| Monthly | $15/mo | $20/mo |
+
+### Marketing Contacts Model
+
+You only pay for **marketing contacts**, which are contacts you target with marketing emails and ads. Non-marketing contacts are stored in your CRM for free, up to 15 million overall contacts (marketing + non-marketing combined).
+
+**Key rules:**
+- Once you select a contact tier, you **cannot downgrade until your contract renews**
+- You can change marketing contacts to non-marketing contacts at any time
+- Status updates are processed **once a month**
+
+### Contact Tier Pricing (Marketing Hub Starter)
+
+| Marketing Contacts | Cost |
+|-------------------|------|
+| First 1,000 | $0 (included) |
+| 1,000 to 3,000 | $50/mo per 1,000 |
+| 4,000 to 5,000 | $45/mo per 1,000 |
+| 6,000+ | $40/mo per 1,000 |
+
+**Billing method:** Contacts are billed in minimum quantities of 1,000 at a **blended rate** based on the number of marketing contacts and the rate that applies. It is NOT an overall rate.
+
+**Example:** 4,000 marketing contacts:
+- First 1,000: $0
+- Next 2,000 (1,001-3,000): 2 x $50 = $100/mo
+- Next 1,000 (3,001-4,000): 1 x $45 = $45/mo
+- **Total: $145/mo** in contact fees
+
+### Email Send Limits
+
+| Limit | Renewal |
+|-------|---------|
+| 5x your number of marketing contacts | Monthly |
+
+Example: 1,000 marketing contacts = 5,000 email sends per month.
+
+### Important Notes
+
+- Prices are subject to applicable tax
+- Fees may increase with additional purchases and additional marketing contacts
+- Contact pricing shown is for **Marketing Hub Starter only**. Pro and Enterprise have different contact pricing (see HubSpot Product and Services Catalog)
+- Additional CRM limits and API limits apply (see HubSpot Product and Services Catalog)
+
 ---
 
 ## Marketing Hub Pro Deep Dive

@@ -48,6 +48,20 @@ Before trashing, scan your current session for open work:
    What would you prefer?
    ```
 
+4. **Ask about adding items to ACTION-ITEMS.md (MANDATORY):**
+   Regardless of whether unresolved items were found, always ask:
+   ```
+   Any open tasks to add to your Action Items list before closing?
+   (These go to ACTION-ITEMS.md in your Obsidian Daily folder)
+
+   1. Yes - let me tell you what to add
+   2. No - nothing to track
+   ```
+   If yes: use the same logic as `/action-items add` to append items to:
+   `brent-workspace/ob-notes/Brent Notes/Dashboard/Daily/ACTION-ITEMS.md`
+   Group them under the appropriate source (session work, meeting, ad-hoc).
+   Then proceed with trash cleanup.
+
 4. **If no unresolved items:** Proceed to Step 1.
 
 5. **If user confirms trash:** Continue. If user picks later: run `/claude-later` instead and stop.
@@ -98,13 +112,19 @@ done
 ```bash
 NAMES_DIR="/Users/brent/scripts/CB-Workspace/.claude/local/names"
 MY_FULL_NAME="Claude-[Name]"
+MY_SHORT_NAME="[Name]"
 
 # Release the atomic name lock
 rm -rf "$NAMES_DIR/$MY_FULL_NAME"
+
+# Close session in SQLite DB (safe - only touches your own row)
+source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+session_db_close "$MY_SHORT_NAME"
 ```
 
 - Remove lock directory from `names/` (this frees the name for reuse)
-- Also clean up `active-sessions.json` if it exists: filter your entry from both `sessions[]` and `resumable[]`
+- Close session in the SQLite DB (marks status as 'closed')
+- **DO NOT read or write `active-session.json` - it is deprecated**
 
 ### Step 5: Report and exit
 

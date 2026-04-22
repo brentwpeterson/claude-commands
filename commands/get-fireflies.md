@@ -9,6 +9,8 @@ Download new Fireflies meeting summaries, write to Obsidian, update the index, a
 /get-fireflies new          # Only show what's new (no writes)
 /get-fireflies actions      # Show open action items across all meetings
 /get-fireflies archive      # Run 30-day retention: archive old, delete from Fireflies
+/get-fireflies l10          # Pull latest L10 meeting, extract action items, push to Strety
+/get-fireflies l10 dry      # Show L10 action items without pushing to Strety
 /get-fireflies --help       # Show this help
 ```
 
@@ -86,6 +88,125 @@ STOP after displaying.
 ### Subcommand: `archive`
 
 Run Step 5 (retention) only. STOP after completing.
+
+---
+
+### Subcommand: `l10` / `l10 dry`
+
+Pull the most recent L10 meeting from Fireflies, extract action items by person, and push them as todos to Strety under the Leadership team.
+
+**Step L10-1: Find the latest L10 meeting**
+
+```
+mcp__fireflies__fireflies_search_transcripts with keyword: "L10", limit: 5
+```
+
+Pick the most recent result. If the summary is null (still processing), try `mcp__fireflies__fireflies_get_transcript` and extract the summary from the full transcript JSON.
+
+**Step L10-2: Get the summary and action items**
+
+```
+mcp__fireflies__fireflies_get_summary with transcript_id: "[ID]"
+```
+
+If summary is null, fall back to the full transcript:
+```
+mcp__fireflies__fireflies_get_transcript with transcript_id: "[ID]"
+```
+The transcript JSON has a `summary` field with `action_items` even when `get_summary` returns null. If the transcript is too large for direct output, read it from the saved file and extract the summary with:
+```bash
+python3 -c "
+import json
+with open('[saved-file-path]') as f:
+    data = json.load(f)
+s = data.get('summary', {})
+print('ACTION_ITEMS:', s.get('action_items', 'None'))
+print('OVERVIEW:', s.get('overview', 'None'))
+print('BULLETS:', s.get('shorthand_bullet', 'None'))
+"
+```
+
+**Step L10-3: Parse action items into structured todos**
+
+From the `action_items` text, extract:
+- **Person name** (appears as `**Person Name**` headers)
+- **Action items** (bullet points under each person)
+- **Timestamps** (in parentheses at end of each item)
+
+Map each action item to a todo with:
+- **title**: The action item text (first 80 chars, trim the timestamp)
+- **description**: `L10 [YYYY-MM-DD]: [full action item text]`
+- **assignee**: Match person name to Strety people (Brent, isaac, susan, david, vijay)
+- **due_date**: Default to 7 days from today for urgent items, 14 days for others. Use judgment:
+  - Items with explicit deadlines (e.g., "April 15 tax filing") get that date
+  - Items with "tomorrow" or "next day" get tomorrow's date
+  - Items with "two weeks" get 14 days out
+  - Everything else defaults to 7 days out
+
+**Step L10-4: Present for review**
+
+Display the proposed todos in a table:
+
+```
+## L10 Action Items -> Strety Todos
+
+Meeting: [Title] ([Date], [Duration] min)
+Participants: [names]
+
+| # | Todo | Assignee | Due |
+|---|------|----------|-----|
+| 1 | [title] | [name] | [date] |
+| 2 | [title] | [name] | [date] |
+...
+
+Total: [X] todos ([Y] for Brent, [Z] for Isaac, etc.)
+
+Push all to Strety? (y/n/edit)
+- **y** - Push all todos as shown
+- **n** - Cancel
+- **edit** - Let me adjust before pushing
+- **[numbers]** - Push only specific items (e.g., "1,3,5,7")
+```
+
+**If `l10 dry`:** Show the table and STOP. Do not push.
+
+**Step L10-5: Push to Strety**
+
+After user confirms, push each todo using `mcp__strety__strety_create_todo`:
+
+```
+mcp__strety__strety_create_todo with:
+  title: "[todo title]"
+  description: "[todo description]"
+  due_date: "[YYYY-MM-DD]"
+  assignee: "[person name]"
+  team: "Leadership"
+```
+
+**Rate limiting:** Add a 0.5s delay between calls. If rate-limited, note which failed and report at the end.
+
+**Step L10-6: Also save the meeting file (if not already synced)**
+
+Run the standard meeting file write (Step 3 from the main sync) for this L10 meeting if it's not already in the README index. This ensures the meeting notes are saved locally even when using the `l10` subcommand directly.
+
+**Step L10-7: Report**
+
+```
+## L10 Sync Complete
+
+Meeting: [Title] ([Date])
+Todos pushed to Strety: [X] ([Y] Brent, [Z] Isaac, etc.)
+Meeting file: [saved/already existed]
+
+Failed (retry manually):
+- [any failures]
+```
+
+**Strety API Notes:**
+- Strety requires `space_id` and `space_type` in attributes (not relationships) when creating todos
+- The Leadership team ID can be found via the `/teams` endpoint (look for `leadership: true`)
+- People IDs are resolved by name via `mcp__strety__strety_list_people`
+- The MCP tool handles team resolution automatically with the `team` parameter
 
 ---
 

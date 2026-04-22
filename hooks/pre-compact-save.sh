@@ -4,25 +4,32 @@
 # Output goes to compact-reinject.md for reload after compaction
 
 WORKSPACE_ROOT="/Users/brent/scripts/CB-Workspace"
-SESSION_FILE="$WORKSPACE_ROOT/.claude/local/active-session.json"
+DB_PATH="$WORKSPACE_ROOT/.claude/local/sessions.db"
 REINJECT_FILE="$WORKSPACE_ROOT/.claude/local/compact-reinject.md"
 CONTEXT_DIR="$WORKSPACE_ROOT/.claude/branch-context"
 
-# Read active session info
-if [ -f "$SESSION_FILE" ]; then
-  WORKSPACE=$(python3 -c "import json; print(json.load(open('$SESSION_FILE')).get('startWorkspace', 'unknown'))" 2>/dev/null)
-  TOUCHED=$(python3 -c "import json; print(', '.join(json.load(open('$SESSION_FILE')).get('workspacesTouched', [])))" 2>/dev/null)
-else
-  WORKSPACE="unknown"
-  TOUCHED="unknown"
+# Read session info from SQLite DB (replaces active-session.json)
+# Try to find the session by checking the names directory for who we might be
+WORKSPACE="unknown"
+TOUCHED="unknown"
+IDENTITY="unknown"
+
+# Check all active sessions and try to match by recent activity
+if [ -f "$DB_PATH" ]; then
+  # Get the most recently active session
+  LATEST=$(sqlite3 "$DB_PATH" "SELECT name, workspace, workspaces_touched FROM sessions WHERE status = 'active' ORDER BY last_activity DESC LIMIT 1;" 2>/dev/null)
+  if [ -n "$LATEST" ]; then
+    WORKSPACE=$(echo "$LATEST" | cut -d'|' -f2)
+    TOUCHED=$(echo "$LATEST" | cut -d'|' -f3)
+    IDENTITY="Claude-$(echo "$LATEST" | cut -d'|' -f1)"
+  fi
 fi
 
 # Find the most recent context file
 CONTEXT_FILE=$(ls -t "$CONTEXT_DIR"/*-context.md 2>/dev/null | head -1)
 
-# Extract identity from context file
-IDENTITY="unknown"
-if [ -n "$CONTEXT_FILE" ] && [ -f "$CONTEXT_FILE" ]; then
+# Extract identity from context file if not found in DB
+if [ "$IDENTITY" = "unknown" ] && [ -n "$CONTEXT_FILE" ] && [ -f "$CONTEXT_FILE" ]; then
   IDENTITY=$(grep '^\*\*Identity:\*\*' "$CONTEXT_FILE" | sed 's/.*\*\*Identity:\*\* //' | head -1)
 fi
 
@@ -40,6 +47,11 @@ cat > "$REINJECT_FILE" << EOF
 **Workspace:** $WORKSPACE
 **Workspaces Touched:** $TOUCHED
 **Context File:** $(basename "$CONTEXT_FILE" 2>/dev/null)
+
+## Session DB
+Sessions are stored in SQLite at: .claude/local/sessions.db
+Query your session: source .claude/local/session-db.sh && session_db_get_json "YOUR_NAME"
+DO NOT read active-session.json (deprecated, shared file that overwrites between sessions).
 
 ## Critical Rules (from CLAUDE.md)
 - NEVER write to the database. Not with permission, not without. NEVER.

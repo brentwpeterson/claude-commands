@@ -587,6 +587,54 @@ Useful when switching contexts or before a series of manual writing tasks.
 | WordPress Pages | `https://contentcucumber.com/wp-json/wp/v2/pages` | POST | Basic auth (ask user) |
 | WordPress Posts | `https://contentcucumber.com/wp-json/wp/v2/posts` | POST | Basic auth (ask user) |
 
+## Polylang (Multilingual)
+
+ContentCucumber.com uses **Polylang** for multilingual content. The publish API supports language assignment.
+
+### Publish API Language Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `language` | string | Polylang language slug: `en` (English), `es` (Spanish) |
+| `translation_of` | int | WordPress post ID of the original language post to link as translation |
+
+### Example: Create Spanish Translation
+
+```bash
+curl -s -X POST "https://contentcucumber.com/wp-json/requestdesk/v1/publish" \
+  -H "X-RequestDesk-API-Key: spF-vAD3uzTiEYyaxF9TD0zQ01zUny5DK4eVjIMPuB8" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Spanish Title Here",
+    "content": "<p>Spanish content...</p>",
+    "status": "draft",
+    "language": "es",
+    "translation_of": 21292,
+    "categories": ["Content Marketing"],
+    "tags": ["marketing", "contenido"]
+  }'
+```
+
+This will:
+1. Create the post
+2. Set its Polylang language to Spanish
+3. Link it as the Spanish translation of post 21292
+
+### Language Codes
+
+| Language | Code | Flag |
+|----------|------|------|
+| English | `en` | US |
+| Spanish | `es` | MX |
+
+### Notes
+- Always set `language` on every post (English posts should use `language: "en"`)
+- Use `/spanish-content` skill for Mexican Spanish rewrites
+- Spanish posts get new slugs (Spanish-language slugs, not translations of English slugs)
+- Brand terms stay in English: SEO, AEO, marketing, ecommerce, blog
+
+---
+
 ## TODOs
 
 - [ ] Update Canva Brand Kit with CC design system (colors, fonts, spacing to match child theme)

@@ -279,19 +279,30 @@ Apply this skill when user:
 
 ## Forum Members
 
+**Active members (6):** Brent, Randy, Mark, Kathy, Tom, James
+**Departing:** Paul (leaving July 2026 — sold business)
+
 | Name | Email | Note |
 |------|-------|------|
 | Brent Peterson | brent@contentbasis.io | (self) |
-| Mark Sigel | msigel@sofiascookies.com | |
-| Randy Stenger | randy@extremesandbox.com | |
-| Paul Jonas | paulj@breezynotes.com | Departing July 2026 (sold business) |
-| James Boys | james@boyswaterproducts.com | |
+| Randy Stenger | randy@extremesandbox.com | Moderator 2026/27 |
+| Mark Sigel | msigel@sofiascookies.com | Timekeeper, Social Chair |
 | Kathy Mrozek | kathy@windmillstrategy.com | |
-| Tom Suerth | tom@waterfrontrestoration.com | |
+| Tom Suerth | tom@waterfrontrestoration.com | Treasurer, Retreat Team |
+| James Boys | james@boyswaterproducts.com | |
+| Paul Jonas | paulj@breezynotes.com | DEPARTING July 2026 (sold business) |
+
+**When building forum tools/templates/tracking (parking lot, meeting sheets, schedules):**
+Use the 6 active members only: **Brent, Randy, Mark, Kathy, Tom, James**. Do not include Paul in new forward-looking artifacts.
 
 **Google Group (to create):** `dreamweavers@contentbasis.io` - Add all 7 members. Remove Paul after July 2026. Share EO Minnesota folder with this group instead of individual permissions.
 
-**All Recipients (for email):**
+**All Recipients (for email, through July 2026):**
 ```
 brent@contentbasis.io, msigel@sofiascookies.com, randy@extremesandbox.com, paulj@breezynotes.com, james@boyswaterproducts.com, kathy@windmillstrategy.com, tom@waterfrontrestoration.com
+```
+
+**All Recipients (after Paul's departure, August 2026+):**
+```
+brent@contentbasis.io, msigel@sofiascookies.com, randy@extremesandbox.com, james@boyswaterproducts.com, kathy@windmillstrategy.com, tom@waterfrontrestoration.com
 ```

@@ -49,9 +49,33 @@ See `cc-hubspot-services.md` for detailed service descriptions, processes, and p
 
 | File | Contents |
 |------|----------|
-| `hubspot-products.md` | HubSpot product knowledge (6 hubs, tiers, CMS/Sales/Marketing deep dives) |
+| `hubspot-products.md` | HubSpot product knowledge (6 hubs, tiers, pricing/contact tiers, CMS/Sales/Marketing deep dives) |
 | `cc-hubspot-services.md` | CC's specific service offerings, processes, competitive positioning |
 | `content-guidelines.md` | HubSpot branding rules, approved terms, schema requirements, linking strategy |
+
+---
+
+## Pricing Guidance
+
+When discussing HubSpot products with clients or creating proposals, always reference pricing from `hubspot-products.md`.
+
+**When to include pricing:**
+- Proposals and quotes (always include contact tier breakdown)
+- Service pages that mention HubSpot tiers
+- Sales conversations where the client asks "how much does HubSpot cost?"
+- Comparing upgrade paths (Free -> Starter -> Pro -> Enterprise)
+
+**When to ASK the user for pricing:**
+- If the client's contact count is unknown, ask: "How many marketing contacts does the client have (or expect)?"
+- If the billing preference is unknown, ask: "Annual or monthly billing?"
+- If the hub/tier isn't specified, ask: "Which hub and tier? (e.g., Marketing Hub Starter, Sales Hub Pro)"
+
+**Pricing rules:**
+- Always calculate contact tier costs using the blended rate formula in `hubspot-products.md`
+- Show the math (tier-by-tier breakdown), not just the total
+- Note that pricing is subject to change. Direct clients to hubspot.com/pricing for current rates.
+- Mention the Starter promo ($9/mo annual) when relevant for new customers
+- Separate HubSpot licensing costs from CC service fees in proposals
 
 ---
 

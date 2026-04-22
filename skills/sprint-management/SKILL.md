@@ -182,7 +182,14 @@ Story: "RequestDesk - new integration every 2 weeks" (NOT in sprint)
    - Update committed_points and committed_items
    - Recurring items auto-created on sprint creation
 
-2. COMMIT (mandatory gate between PLAN and START)
+1.5 ESTIMATE (mandatory gate between PLAN and COMMIT)
+   - Run /planning-poker for ALL non-recurring candidate items
+   - Present items to Brent for estimation discussion
+   - Update estimated_points based on poker results
+   - Items CANNOT be committed without going through planning poker
+   - This was skipped for S5, S6, and S7. Not optional.
+
+2. COMMIT (mandatory gate between PLAN and COMMIT → START)
    - SEE "SPRINT COMMIT & VERIFY GATE" SECTION BELOW
    - PATCH sprint_name on EVERY committed backlog item
    - Create any missing items (recurring, new tasks)
@@ -211,6 +218,85 @@ Story: "RequestDesk - new integration every 2 weeks" (NOT in sprint)
    - Set rating (1-5)
    - Link retrospective_file
 ```
+
+---
+
+## LOCAL SPRINT BOARD (CRITICAL - replaces API-dependent daily reads)
+
+**The sprint board lives in a local file. The API is the source of truth for planning and closing. The local file is the source of truth for daily work.**
+
+**File location:** `brent-workspace/ob-notes/Brent Notes/Dashboard/Sprints/current/sprint-board.md`
+
+### When to write the local file
+- **At sprint planning** (after commit gate passes): Pull all committed items from API, write to local file
+- **At sprint close** (retro): Reconcile local file back to API, archive
+
+### File format
+```markdown
+# S[N] Sprint Board
+
+**Sprint:** S[N] | [start] to [end]
+**Goals:** [goal 1], [goal 2], [goal 3]
+**Capacity:** [X] pts | **Committed:** [Y] pts
+
+## Open
+
+| Hash | Pts | Item | Status | Notes |
+|------|-----|------|--------|-------|
+| abc123 | 2 | LinkedIn Campaign #1 | backlog | Carryover from S7 |
+| def456 | 1 | TWC Article W1 (S8) | backlog | Recurring |
+
+## Completed
+
+| Hash | Pts | Item | Completed |
+|------|-----|------|-----------|
+| ghi789 | 2 | Define ICP profiles | 2026-04-14 |
+```
+
+### Daily workflow
+1. **At /brent-start:** Read `sprint-board.md` (instant, no API call). Present the Open table.
+2. **Brent picks an item:** Write a claude-comms file for a new Claude session (see below).
+3. **When item is done:** Move row from Open to Completed in the local file. Update API status.
+
+### Handing off sprint items to new Claude windows
+
+**When Brent picks a sprint item to work on, write a claude-comms file:**
+
+File: `.claude/claude-comms/sprint-[hash]-[short-title].md`
+
+```markdown
+# Sprint Item Handoff
+
+**From:** Claude-[CurrentName] (brent-start session)
+**To:** New Claude session
+**Date:** [today]
+
+## Task
+**Backlog Item:** [full title]
+**Hash:** [backlog item ID]
+**Points:** [X]
+**Sprint:** S[N]
+**Acceptance Criteria:** [from backlog item]
+
+## Instructions
+1. Run /start-work with branch: feature/[short-title]
+2. [Specific instructions for what needs to be done]
+3. When complete, update the sprint board:
+   - Move this item from Open to Completed in `Sprints/current/sprint-board.md`
+   - PATCH status to "completed" in API: `curl -X PATCH "https://app.requestdesk.ai/api/backlog/[hash]" -H "Authorization: Bearer [KEY]" -H "Content-Type: application/json" -d '{"status": "completed"}'`
+4. Send claude-comms back to brent-start session confirming completion
+
+## Context
+[Any relevant context, related files, dependencies]
+```
+
+**Brent opens a new terminal, runs /claude-start, and that Claude picks up the comms file.**
+
+This means:
+- brent-start session stays as the controller (daily ops, routing work)
+- Each sprint item gets focused attention in its own window
+- No API latency during the morning ritual
+- Sprint board is always visible and up to date
 
 ---
 
@@ -361,7 +447,37 @@ Apply this skill automatically when Brent:
 
 ---
 
-## S2 RETRO LEARNINGS (Applied to skill)
+## RETRO: UNPLANNED WORK IS REAL WORK (CRITICAL)
+
+**Every sprint has significant work that happens outside the sprint board.** Client requests, sales opportunities, CRM cleanup, content that wasn't planned, tool fixes. This work is real, valuable, and often more urgent than planned items.
+
+**At retro time, BEFORE scoring the sprint, Claude MUST:**
+
+1. **Scan the entire work log** for the sprint period (every day's "Accomplished" section)
+2. **Identify all work that wasn't on the sprint board** (look for days with 8+ hours worked but 0 sprint points moved)
+3. **Summarize unplanned work by category** (sales, content, CRM, client work, infrastructure, etc.)
+4. **Estimate unplanned points delivered** using the 1pt = 1hr rule
+5. **Present BOTH numbers:**
+   - Sprint board completion: X/Y pts (Z%)
+   - Total work delivered: sprint pts + unplanned pts
+   - Unplanned work breakdown by category
+
+**Example retro opening:**
+```
+S7 Sprint Board: 26/28 pts (93%)
+Unplanned Work:  ~35 pts (VTEX research 10, CRM cleanup 8, landing pages 6, email sequences 5, SEO 3, case study ICP 3)
+Total Delivered:  ~61 pts across 70+ hours
+
+The sprint wasn't 93% done. It was 93% of planned work done PLUS a full sprint's worth of unplanned work on top.
+```
+
+**Why this matters:** Without this step, every retro looks at the sprint board and asks "why didn't X ship?" when the answer is "because 35 points of real work happened that wasn't on the board." Six sprints ran without capturing this. The retro should celebrate what got done, not just audit what didn't.
+
+**For S8 planning:** Use the unplanned work data to calibrate how much buffer to leave. If unplanned work consistently runs 30-50% of total output, plan accordingly.
+
+---
+
+## RETRO LEARNINGS (Applied to skill)
 
 1. **Points must live in the backlog API.** Sprint-plan.md is a planning artifact, not a tracking tool.
 2. **Max 2 points per task.** Large tasks stall and become carryover. Break them down.
@@ -371,6 +487,9 @@ Apply this skill automatically when Brent:
 6. **Retro must be a conversation.** Ask Brent directly, wait for answers. No checkbox retros.
 7. **First /brent-start after retro: verify every action item is implemented.** Documentation without implementation is waste.
 8. **Always include hash IDs** when presenting backlog items to the user.
+9. **Reconcile sprint item status with Brent BEFORE scoring.** Present all open items as a batch and ask which are actually done. Never make Brent correct items one at a time. (S7 retro: API showed 61% but actual was 93% because reconciliation wasn't run.)
+10. **Sprint board must be presented every morning at /brent-start.** Don't wait for Brent to ask. Show open items, points remaining, days left, and % complete as part of the daily dashboard. Brent should never have to request sprint status. (S7 retro: "I always have to ask for it.")
+11. **Planning poker is mandatory before committing items.** Run /planning-poker for all non-recurring candidate items. Skipped for S5, S6, and S7. Not optional going forward.
 
 ---
 

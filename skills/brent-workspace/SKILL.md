@@ -126,6 +126,7 @@ Brent's writing must contain elements that AI would typically smooth over, hedge
 - "Nobody's Talking About"
 - "Worth Watching"
 - "I worked with..." (most overused AI phrase of 2025)
+- "I've been in [X] for over [N] years" (credential-stuffing opener, show experience through specifics not years)
 - Excessive hedging ("it might be worth considering...")
 - Colons before explanations (use periods instead)
 

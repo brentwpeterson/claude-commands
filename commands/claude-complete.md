@@ -34,8 +34,12 @@ You can ONLY complete a branch that YOUR session is actively working on. Jumping
 
 1. **Get current Claude identity and branch:**
    ```bash
-   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
-   CLAUDE_NAME=$(cat "$SESSION_FILE" 2>/dev/null | grep -o '"name": *"[^"]*"' | cut -d'"' -f4)
+   # Use YOUR name from conversation memory (primary source)
+   CLAUDE_NAME="YOUR_NAME_FROM_MEMORY"
+   # If unknown, query session DB:
+   source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+   session_db_get_json "$CLAUDE_NAME"
+   # DO NOT read active-session.json (deprecated, shared file that overwrites between sessions)
    CURRENT_BRANCH=$(git branch --show-current)
    echo "Claude Identity: $CLAUDE_NAME"
    echo "Current Branch: $CURRENT_BRANCH"
@@ -99,12 +103,11 @@ You can ONLY complete a branch that YOUR session is actively working on. Jumping
 ### Step 2: Multi-Workspace Detection
 **CRITICAL:** Check session tracking file for workspaces touched this session.
 
-1. **Read session tracking file:**
+1. **Read session tracking from SQLite DB:**
    ```bash
-   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
-   if [ -f "$SESSION_FILE" ]; then
-     cat "$SESSION_FILE"
-   fi
+   source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+   session_db_get_json "YOUR_NAME"
+   # DO NOT read active-session.json (deprecated)
    ```
 
 2. **Also check context files in `.claude/branch-context/` for additional context**
@@ -476,7 +479,20 @@ fi
     /claude-complete for each one separately.
     ```
 
-18. **Completion Summary:**
+18. **Action Items Check (MANDATORY):**
+    Before finishing, ask the user:
+    ```
+    Any open tasks to add to your Action Items list before closing?
+    (These go to ACTION-ITEMS.md in your Obsidian Daily folder)
+
+    1. Yes - let me tell you what to add
+    2. No - nothing to track
+    ```
+    If yes: append items to `brent-workspace/ob-notes/Brent Notes/Dashboard/Daily/ACTION-ITEMS.md`
+    under a group named `From: [branch-name] completion ([today's date])`.
+    Use the same format as `/action-items add`.
+
+19. **Completion Summary:**
     - Branch completed: [branch-name]
     - Branch type: [feature/fix/etc.]
     - Documentation updated in: /docs/ and /technical/

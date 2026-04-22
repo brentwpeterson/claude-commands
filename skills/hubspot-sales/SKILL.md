@@ -318,4 +318,65 @@ customers learn why a Created tumbler is worth the investment.
 
 ---
 
-*Last Updated: 2026-02-19*
+---
+
+## Ideal Customer Profiles (ICPs)
+
+**Full ICP documentation:** `brent-workspace/ob-notes/Brent Notes/Sales and Marketing/Company Websites/Content Cucumber/ICP - Case Study Production Client.md`
+
+### ICP #1: eCommerce Platform - Case Study Client
+
+| Field | Value |
+|-------|-------|
+| Name | eCommerce Platform - Case Study Client |
+| Job Titles | VP Marketing, Content Marketing Director, Partner Marketing Manager, Head of Customer Marketing, VP Partnerships |
+| Industry | Computer Software, Internet Software & Services |
+| Location | United States, Germany, United Kingdom, Brazil |
+| Company Size | 201-500, 501-1000, 1001-5000, 5001-10000 |
+| Revenue | $50M+ |
+
+**Examples:** Shopware, BigCommerce, VTEX
+**Service:** White-label case study production about their merchants
+**Deal size:** $1,500/study, $50K+ for batch deals
+
+### ICP #2: eCommerce Agency/SI - Case Study Client
+
+| Field | Value |
+|-------|-------|
+| Name | eCommerce Agency - Case Study Client |
+| Job Titles | CEO, Agency Principal, Owner, VP Marketing, Marketing Director, Head of Growth |
+| Industry | Marketing and Advertising, Internet Software & Services, Information Technology and Services |
+| Location | United States |
+| Company Size | 11-50, 51-200 |
+| Revenue | $1M - $50M |
+
+**Examples:** Wasserman Digital, Cadent Commerce
+**Service:** White-label case study production about their client projects
+**Deal size:** $1,500-5,000 per study
+
+### Custom Properties Needed for Case Study ICP
+
+These properties must exist on Contact and/or Company records to properly segment and track case study prospects:
+
+| Property | Object | Type | Values | Purpose |
+|----------|--------|------|--------|---------|
+| `icp_type` | Company | Dropdown | Platform, Agency/SI | Which buyer type |
+| `case_study_interest` | Contact | Dropdown | Active, Expressed Interest, Not Interested, Unknown | Track case study buying intent |
+| `case_study_volume` | Company | Number | (free entry) | How many case studies they need per quarter |
+| `case_study_deal_type` | Deal | Dropdown | Single, Batch Prepaid, Pay on Publish | Payment model |
+| `partner_program` | Company | Multi-checkbox | BigCommerce, Shopware, VTEX, Adobe Commerce, Shopify, Other | Which platform ecosystem they're in |
+| `content_type_interest` | Contact | Multi-checkbox | Case Study (Named), Case Study (Anonymous), Success Story, White Paper, Industry Report | Which service tiers interest them |
+| `acquisition_channel` | Contact | Dropdown | Partner Referral, LinkedIn Inbound, Event, Podcast, Cold Outreach | How they found CC |
+
+### Lists to Create
+
+| List Name | Type | Criteria |
+|-----------|------|----------|
+| Case Study ICP - Platforms | Active | `icp_type` = Platform AND `case_study_interest` != Not Interested |
+| Case Study ICP - Agencies | Active | `icp_type` = Agency/SI AND `case_study_interest` != Not Interested |
+| Case Study - Active Prospects | Active | `case_study_interest` = Active |
+| Case Study - Event Follow-up | Active | `acquisition_channel` = Event AND `case_study_interest` = Expressed Interest |
+
+---
+
+*Last Updated: 2026-04-08*

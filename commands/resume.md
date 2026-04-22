@@ -56,8 +56,13 @@ If `$ARGUMENTS` matches a code from the index:
 2. **Read the context file** in full
 3. **Detect if already in a session:**
    ```bash
-   # Check if active-session.json exists and has a name
-   CURRENT_SESSION=$(cat /Users/brent/scripts/CB-Workspace/.claude/local/active-session.json 2>/dev/null | python3 -c "import json,sys; print(json.load(sys.stdin).get('name',''))" 2>/dev/null)
+   # Check if you already have a name from conversation memory
+   # Your own conversation memory is the primary source
+   CURRENT_SESSION="YOUR_NAME_IF_YOU_HAVE_ONE"
+   # If unsure, check the session DB:
+   source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+   session_db_list_active
+   # DO NOT read active-session.json (deprecated, shared file)
    ```
 
 #### Mode A: Fresh window (no current session or CURRENT_SESSION is empty)
@@ -75,20 +80,12 @@ This is a new Claude instance resuming a saved task.
      # Try mkdir again with the new name. Repeat until one succeeds.
    fi
    ```
-6. **Write `active-session.json`:**
+6. **Register in session DB (safe - only writes your own row):**
    ```bash
-   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
-   NOW=$(date -u +"%Y-%m-%dT%H:%M:%S")
-   cat > "$SESSION_FILE" << EOF
-   {
-     "started": "$NOW",
-     "name": "[CLAUDE_NAME_FROM_FILE]",
-     "startWorkspace": "[WS]",
-     "workspacesTouched": ["[WS]"],
-     "lastActivity": "$NOW"
-   }
-   EOF
+   source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+   session_db_upsert "[CLAUDE_NAME_FROM_FILE]" "[WS]" '["[WS]"]' "[TASK_SUMMARY]"
    ```
+   **DO NOT write to `active-session.json` - it is deprecated.**
 7. **Update context file status** to ACTIVE with current timestamp
 8. **Create identity pin task:**
    ```
@@ -103,8 +100,15 @@ This is an already-running Claude loading a saved task into the current window. 
 
 4. **Keep your current identity.** Do NOT change your name or overwrite `active-session.json`.
 5. **Do NOT re-register in names directory** (you're already registered).
-6. **Update context file status** to ACTIVE with current timestamp.
-   - **Do NOT update the `Identity:` field.** Leave the original identity intact so that if this file is later resumed in a fresh window (Mode A), it gets the correct original name, not yours.
+6. **Merge the old context file into a new context file under your current name:**
+   - Read the old context file fully
+   - Create a new context file named with YOUR current identity (e.g., `submit-talk-skill-boswell-context.md`)
+   - Copy all content from the old file: task details, decisions, punch lists, next actions, context notes
+   - Update the Identity field to YOUR name
+   - Add a `Resumed From:` line referencing the original file and identity
+   - Update status to ACTIVE with current timestamp
+   - Move the old context file to `archive/`
+   - **This prevents orphan context files that look like active work in /resume listings**
 7. **Do NOT create a new identity pin task** (you already have one). Update the existing pin task description to reflect the new work.
 8. **Create work tasks** from the NEXT ACTIONS / TODO LIST STATE sections (5-10 tasks, all pending).
 

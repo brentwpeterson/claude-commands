@@ -35,7 +35,13 @@ Adds a new writing rule to the "Never Use" or "Concepts to Avoid" section below.
 
 ## Positioning
 
-Brent is the human at the center of the ecosystem. He's the founder and face of Content Basis, Content Cucumber, RequestDesk, and Talk Commerce. His personal brand drives credibility for all four companies.
+Brent is the human at the center of the ecosystem. He's the founder and face of Content Basis, RequestDesk, and Talk Commerce. He is **CEO of Content Cucumber** but is **NOT the founder** of Content Cucumber. His personal brand drives credibility across all four companies.
+
+> **NEVER claim Brent founded Content Cucumber.** This is a hard rule. He did not start it. He IS the current CEO, so "CEO of Content Cucumber" is accurate. Never use "founder," "founded," "started," or "created" in the same sentence as Content Cucumber.
+>
+> **Content Cucumber one-liner Brent uses:** "a company that employs humans to write content for humans." Use this framing in bios and intros when space allows.
+>
+> **For Content Basis, RequestDesk, and Talk Commerce:** "founder" is accurate. Those are Brent's.
 
 Brent doesn't sell services directly under his personal brand. He does commerce consulting through Content Basis. His personal brand is about thought leadership, speaking, and the "Agentic Commerce Guy" newsletter.
 
@@ -59,6 +65,7 @@ Brent doesn't sell services directly under his personal brand. He does commerce 
 - Direct and confident, not preachy
 - Short paragraphs, conversational flow
 - Client is the hero, Brent is the guide
+- **Write for the problem, not the award.** Most B2B brands treat social media like a press release channel. Announcements. Awards. New hires. Nobody cares about your award. They care about their problem. Write for the problem. Every single time.
 
 ### Never Use
 - Em dashes (use periods, commas, or parentheses)
@@ -83,6 +90,12 @@ Brent doesn't sell services directly under his personal brand. He does commerce 
 - "The Real Question" (AI dramatic pivot pattern. Just ask the question or make the point directly.)
 - "The pattern is clear." (If the pattern were clear, you wouldn't need to announce it. Show the pattern through evidence and let the reader see it.)
 - "Read that again." (AI emphasis trick. If Brent wants to emphasize a point, use "Let me repeat that." instead. First person, his voice.)
+- "What this means for [audience]." (Third-person setup. Put the reader IN the seat instead. "I am a merchant. Do I really care?" is stronger than "What this means for merchants.")
+- "The [Something] Is Real" (AI dramatic declaration pattern. "The trust gap is real," "The struggle is real." Just describe the thing. If it's real, the evidence will show it.)
+- "The results surprised me." (AI fake-surprise transition. If the results are surprising, the data will show it. Don't announce surprise, show the unexpected thing.)
+- "Honest question" (qualifier that implies other questions aren't honest. Just ask the question.)
+- "The honest answer is..." / "The honest truth is..." / any "The honest [noun]" construction (implies other answers would be dishonest. Just give the answer.)
+- "Genuinely curious" (use "very curious" or just "I'm curious" instead)
 
 ### Content Type Exceptions
 

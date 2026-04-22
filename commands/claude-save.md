@@ -67,17 +67,19 @@ When no project argument is provided, resolve identity and workspace in this ord
 - You know which workspace you're working in from the session.
 - **If you know both: use them. Do NOT read `active-session.json`.**
 
-**Step 2: Fall back to `active-session.json` ONLY if you don't know your own identity**
+**Step 2: Fall back to the SQLite session DB ONLY if you don't know your own identity**
 (This should rarely happen. If it does, something went wrong at session start.)
-1. Read `active-session.json`:
+1. Query the session DB:
    ```bash
-   SESSION_FILE="/Users/brent/scripts/CB-Workspace/.claude/local/active-session.json"
+   source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+   session_db_get_json "YOUR_NAME"
    ```
-2. Extract `name` and `startWorkspace` from the JSON
+2. Extract `name` and `startWorkspace` from the result
 3. **VERIFY** the name matches your conversation context. If it doesn't match, WARN:
    ```
-   ⚠️ active-session.json says [X] but I am Claude-[Y]. Using my own identity.
+   ⚠️ Session DB says [X] but I am Claude-[Y]. Using my own identity.
    ```
+**DO NOT read `active-session.json` - it is deprecated and will give you another session's data.**
 
 **Step 3: If neither works, AUTO-GENERATE a name:**
 - Pick a name from the standard list that is NOT already in use:
@@ -94,13 +96,25 @@ When no project argument is provided, resolve identity and workspace in this ord
   ls /Users/brent/scripts/CB-Workspace/.claude/branch-context/*-$(date +%Y-%m-%d)-*-context.md 2>/dev/null
   ```
 - Pick a name not in either list
-- Register the name in `active-claude-names.json`
-- Write/update `active-session.json` with the new name and detected workspace
+- Register the name in the names directory: `mkdir -p .claude/local/names/Claude-[Name]`
+- Register in the session DB:
+  ```bash
+  source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+  session_db_upsert "NAME" "WORKSPACE" '["WORKSPACE"]' "TASK_SUMMARY"
+  ```
+- **DO NOT write to `active-session.json` - it is deprecated**
 - Detect workspace from pwd using the shortcode mapping (same as `/claude-start`)
 - Log: `Auto-assigned identity: Claude-[Name] (no /claude-start was run)`
 - Continue with the save using the new name
 
-🚨 **WHY THIS ORDER MATTERS:** `active-session.json` is a shared file. If two Claude windows are open, the last one to start overwrites it. Reading it at save time could give you another session's identity, causing you to write to the wrong context file. Your own conversation memory is always authoritative.
+🚨 **WHY THIS ORDER MATTERS:** `active-session.json` is DEPRECATED (shared file, overwrites between sessions). Use the SQLite session DB instead. But conversation memory is still the PRIMARY source for your own identity.
+
+**Session DB (replaces active-session.json):**
+```bash
+source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+session_db_get_json "YOUR_NAME"  # Read your session safely
+session_db_save "YOUR_NAME"       # Mark session as saved (on /claude-save)
+```
 
 | Context % | Mode | What to do |
 |-----------|------|------------|
@@ -138,7 +152,7 @@ Percentage parsing: `9%` -> extract `9` -> QUICK mode. `5%` -> EMERGENCY. No % p
 WORKSPACE_ROOT = /Users/brent/scripts/CB-Workspace
 CONTEXT_DIR    = /Users/brent/scripts/CB-Workspace/.claude/branch-context/
 CONTEXT_FILE   = [task-slug]-[claude-name]-context.md  (e.g., acg-newsletter-37-voltaire-context.md)
-SESSION_FILE   = /Users/brent/scripts/CB-Workspace/.claude/local/active-session.json
+SESSION_DB     = /Users/brent/scripts/CB-Workspace/.claude/local/sessions.db  (SQLite - replaces active-session.json)
 SESSIONS_REG   = /Users/brent/scripts/CB-Workspace/.claude/local/active-sessions.json
 ```
 
@@ -209,11 +223,13 @@ fi
 - Commit: `git commit -m "[description] Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"`
 
 **Phase 2: Write context file**
-- Get Claude identity: **Primary source** is `active-session.json` `name` field. Fallback to conversation memory.
+- Get Claude identity: **Primary source** is conversation memory. Fallback to session DB.
   ```bash
-  # Read identity from session file (primary source)
-  CLAUDE_NAME=$(cat /Users/brent/scripts/CB-Workspace/.claude/local/active-session.json 2>/dev/null | jq -r '.name // empty')
-  # If empty, fall back to conversation memory (e.g., "Tesla", "Shackleton")
+  # Read identity from session DB (primary source after conversation memory)
+  source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+  CLAUDE_NAME="YOUR_NAME_FROM_MEMORY"  # Use conversation memory FIRST
+  # If unknown, query: session_db_get_json "$CLAUDE_NAME"
+  # DO NOT read active-session.json (deprecated, shared file)
   ```
 - **Check for legacy file without Claude name and RENAME it:**
   ```bash
@@ -275,15 +291,22 @@ Quick template:
 - Commit development work first
 
 **Phase 2: Check session tracking**
-- Read `active-session.json` to see workspaces touched
+- Query session DB for workspaces touched:
+  ```bash
+  source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+  session_db_get_json "YOUR_NAME"
+  ```
 - If multiple workspaces: note in context file
+- **DO NOT read `active-session.json` - it is deprecated**
 
 **Phase 3: Write context file**
-- Get Claude identity: **Primary source** is `active-session.json` `name` field. Fallback to conversation memory.
+- Get Claude identity: **Primary source** is conversation memory. Fallback to session DB.
   ```bash
-  # Read identity from session file (primary source)
-  CLAUDE_NAME=$(cat /Users/brent/scripts/CB-Workspace/.claude/local/active-session.json 2>/dev/null | jq -r '.name // empty')
-  # If empty, fall back to conversation memory (e.g., "Tesla", "Shackleton")
+  # Read identity from session DB (primary source after conversation memory)
+  source /Users/brent/scripts/CB-Workspace/.claude/local/session-db.sh
+  CLAUDE_NAME="YOUR_NAME_FROM_MEMORY"  # Use conversation memory FIRST
+  # If unknown, query: session_db_get_json "$CLAUDE_NAME"
+  # DO NOT read active-session.json (deprecated, shared file)
   ```
 - **Check for legacy file without Claude name and RENAME it:**
   ```bash

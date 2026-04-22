@@ -49,6 +49,36 @@ This is the day-before preparation. Schedule one hour of quiet time and work thr
 
 **STOP. Wait for response.**
 
+### Step 1.5: Read the 5% Events Log (Active Forum Window)
+
+**This is the raw material captured day-by-day at `/brent-start` and `/brent-finish`.** It's a brainstorm of moments Brent flagged as potentially significant between the last Forum meeting and the upcoming one. Use it as the starting point for Step 2 instead of asking Brent to remember the window cold.
+
+```bash
+EVENTS_FILE="/Users/brent/scripts/CB-Workspace/brent-workspace/ob-notes/Brent Notes/EO Material/Dreamweavers 2025-26/Forum 5%/5-percent-events.md"
+```
+
+Read the file and extract the **Active: For Forum on YYYY-MM-DD** section. Present it back to Brent:
+
+```
+Here's what you flagged since the last Forum as potentially 5% material for the upcoming Forum on [date]:
+
+- 2026-04-15: [event]
+- 2026-04-22: [event]
+  Emotions: [tags]
+- 2026-05-03: [event]
+[... etc]
+
+Which of these still feels significant? Anything you flagged that turned out to be nothing? Anything you forgot to capture that should be on this list?
+```
+
+**STOP. Wait for response.**
+
+**Rules for this step:**
+- The active window is tied to Forum meetings (second Tuesday of each month), not calendar months.
+- If the events log is empty for the active Forum window, say so and skip straight to Step 2.
+- Don't interpret the events for Brent. Just show them back. The why surfaces in Steps 3 and 4.
+- If Brent adds events during this step, append them to the events file before moving on.
+
 ### Step 2: Surface the Month (Structured Worksheet)
 
 Walk through each area with quick prompts. This is brainstorming, not writing. Capture raw material.
