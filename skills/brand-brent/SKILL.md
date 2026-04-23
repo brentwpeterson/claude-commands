@@ -96,6 +96,7 @@ Brent doesn't sell services directly under his personal brand. He does commerce 
 - "Honest question" (qualifier that implies other questions aren't honest. Just ask the question.)
 - "The honest answer is..." / "The honest truth is..." / any "The honest [noun]" construction (implies other answers would be dishonest. Just give the answer.)
 - "Genuinely curious" (use "very curious" or just "I'm curious" instead)
+- "One thing was clear" (AI setup phrase that announces an insight before delivering it. Just state the insight directly.)
 
 ### Content Type Exceptions
 
